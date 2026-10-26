@@ -1,0 +1,1541 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AeroGlobal - Online Flight Reservation & Airline GDS</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #0284c7; /* Skyways Blue */
+      --primary-hover: #0369a1;
+      --secondary: #38bdf8;
+      --gold: #f59e0b;
+      --bg: #040914;
+      --card-bg: #0d172b;
+      --card-border: #1a2947;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --success: #10b981;
+      --danger: #ef4444;
+      --radius: 14px;
+      --shadow: 0 12px 30px -8px rgba(0, 0, 0, 0.5);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Outfit', sans-serif;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .code-font {
+      font-family: 'Space Grotesk', monospace;
+    }
+
+    /* Header */
+    header {
+      background: rgba(13, 23, 43, 0.9);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--card-border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      padding: 0.9rem 2.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: #fff;
+      font-size: 1.45rem;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+    }
+
+    .brand-icon {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      padding: 6px 12px;
+      border-radius: 10px;
+      box-shadow: 0 4px 14px rgba(2, 132, 199, 0.4);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .nav-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      padding: 8px 12px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.88rem;
+      transition: all 0.2s;
+    }
+
+    .nav-btn:hover, .nav-btn.active {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .nav-btn.active {
+      color: var(--secondary);
+      border-bottom: 2px solid var(--secondary);
+      border-radius: 8px 8px 0 0;
+    }
+
+    .btn {
+      padding: 9px 18px;
+      border-radius: 8px;
+      font-weight: 600;
+      font-size: 0.88rem;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      justify-content: center;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: #fff;
+      box-shadow: 0 4px 14px rgba(2, 132, 199, 0.4);
+    }
+
+    .btn-primary:hover {
+      box-shadow: 0 6px 20px rgba(2, 132, 199, 0.6);
+      transform: translateY(-1px);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.08);
+      color: #fff;
+      border: 1px solid var(--card-border);
+    }
+
+    .btn-danger {
+      background: rgba(239, 68, 68, 0.2);
+      color: #f87171;
+      border: 1px solid rgba(239, 68, 68, 0.4);
+    }
+
+    /* Main Container */
+    main {
+      flex: 1;
+      padding: 2rem 2.5rem;
+      max-width: 1400px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    /* Hero Search Bar */
+    .flight-hero {
+      background: linear-gradient(135deg, rgba(2, 132, 199, 0.15), rgba(56, 189, 248, 0.08)), url('https://images.unsplash.com/photo-1436491865332-7a61a109cc05?auto=format&fit=crop&w=1600&q=80') center/cover;
+      border: 1px solid rgba(2, 132, 199, 0.3);
+      border-radius: var(--radius);
+      padding: 3rem 2.5rem;
+      margin-bottom: 2.5rem;
+      position: relative;
+      box-shadow: var(--shadow);
+    }
+
+    .flight-hero h1 {
+      font-size: 2.4rem;
+      margin-bottom: 6px;
+      color: #fff;
+    }
+
+    .search-widget {
+      background: rgba(13, 23, 43, 0.95);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      border-radius: 12px;
+      padding: 1.5rem;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)) 160px;
+      gap: 14px;
+      align-items: end;
+      margin-top: 1.5rem;
+      box-shadow: 0 15px 35px rgba(0, 0, 0, 0.6);
+    }
+
+    .input-field label {
+      display: block;
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: var(--secondary);
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .form-control {
+      width: 100%;
+      background: rgba(4, 9, 20, 0.85);
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      padding: 10px 12px;
+      color: #fff;
+      font-size: 0.9rem;
+      outline: none;
+    }
+
+    .form-control:focus {
+      border-color: var(--secondary);
+      box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.3);
+    }
+
+    /* Panels */
+    .view-panel {
+      display: none;
+      animation: fadeIn 0.25s ease-out;
+    }
+
+    .view-panel.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Flight Cards */
+    .flight-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      padding: 1.5rem 2rem;
+      margin-bottom: 1.25rem;
+      display: grid;
+      grid-template-columns: 200px 1fr 220px;
+      gap: 2rem;
+      align-items: center;
+      transition: all 0.2s;
+      box-shadow: var(--shadow);
+    }
+
+    .flight-card:hover {
+      border-color: rgba(56, 189, 248, 0.4);
+    }
+
+    .airline-brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .airline-logo-box {
+      width: 48px;
+      height: 48px;
+      background: #1a2947;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.6rem;
+    }
+
+    .route-timeline {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      text-align: center;
+    }
+
+    .time-node strong {
+      font-size: 1.5rem;
+      color: #fff;
+    }
+
+    .flight-path {
+      flex: 1;
+      padding: 0 2rem;
+      position: relative;
+    }
+
+    .flight-path-line {
+      height: 2px;
+      background: #334155;
+      position: relative;
+      margin: 8px 0;
+    }
+
+    .flight-path-plane {
+      position: absolute;
+      top: -8px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 1rem;
+    }
+
+    .pricing-box {
+      text-align: right;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+      gap: 6px;
+    }
+
+    .price-value {
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: var(--secondary);
+    }
+
+    /* Airplane Seat Map Layout */
+    .cabin-map {
+      background: #040914;
+      border: 2px solid #334155;
+      border-radius: 40px 40px 16px 16px;
+      padding: 2rem 1.5rem;
+      max-width: 380px;
+      margin: 1.5rem auto;
+      position: relative;
+    }
+
+    .cockpit-view {
+      text-align: center;
+      color: var(--secondary);
+      font-size: 0.8rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px dashed #334155;
+    }
+
+    .seat-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
+    .seat-group {
+      display: flex;
+      gap: 6px;
+    }
+
+    .plane-seat {
+      width: 36px;
+      height: 38px;
+      border-radius: 6px 6px 2px 2px;
+      background: #1e293b;
+      border: 1px solid #475569;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.72rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .plane-seat:hover:not(.occupied) {
+      transform: scale(1.1);
+      border-color: var(--secondary);
+    }
+
+    .plane-seat.selected {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--secondary);
+    }
+
+    .plane-seat.occupied {
+      background: #0f172a;
+      color: #475569;
+      border-color: #1e293b;
+      cursor: not-allowed;
+      text-decoration: line-through;
+    }
+
+    .aisle-number {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      width: 24px;
+      text-align: center;
+    }
+
+    /* Tables */
+    .table-container {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      overflow-x: auto;
+      margin-top: 1rem;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.9rem;
+    }
+
+    th {
+      background: rgba(4, 9, 20, 0.85);
+      padding: 1rem;
+      color: var(--secondary);
+      font-weight: 600;
+      border-bottom: 1px solid var(--card-border);
+    }
+
+    td {
+      padding: 1rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      vertical-align: middle;
+    }
+
+    /* Modals */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(8px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      padding: 1rem;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    .modal-box {
+      background: #0d172b;
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      width: 100%;
+      max-width: 650px;
+      padding: 2rem;
+      max-height: 90vh;
+      overflow-y: auto;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8);
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .modal-header h3 {
+      font-size: 1.4rem;
+      color: #fff;
+    }
+
+    .close-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-muted);
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+
+    /* Boarding Pass Format */
+    .boarding-pass {
+      background: #fff;
+      color: #0f172a;
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+      display: grid;
+      grid-template-columns: 2.2fr 1fr;
+      border: 1px solid #cbd5e1;
+    }
+
+    .bp-main {
+      padding: 1.5rem;
+      border-right: 2px dashed #94a3b8;
+    }
+
+    .bp-stub {
+      padding: 1.5rem;
+      background: #f8fafc;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--card-border);
+      padding: 2rem;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.85rem;
+      margin-top: 3rem;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <a href="#" class="brand">
+      <span class="brand-icon">✈️</span>
+      <span>AeroGlobal</span>
+    </a>
+
+    <nav class="nav-links">
+      <button class="nav-btn active" onclick="switchTab('search')">Search Flights</button>
+      <button class="nav-btn" onclick="switchTab('myTickets')">My Tickets & Itineraries</button>
+      <button class="nav-btn" onclick="switchTab('status')">Booking Status</button>
+      <button class="nav-btn" onclick="switchTab('feedback')">Customer Feedback</button>
+      <button class="nav-btn" id="adminNavBtn" onclick="switchTab('admin')">Admin Console</button>
+    </nav>
+
+    <div style="display:flex; align-items:center; gap:12px;">
+      <div id="userHeaderTag" style="font-size:0.85rem; color:var(--text-muted);">
+        Passenger: <strong style="color:#fff;" id="headerUserName">Captain David Mitchell</strong>
+      </div>
+      <button class="btn btn-secondary" onclick="openAuthModal('login')">Login / Auth</button>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main>
+    <!-- Flight Search Hero Section -->
+    <section class="flight-hero">
+      <h1>Global Airline Flights & Reservations</h1>
+      <p style="color:#cbd5e1; font-size:1.05rem;">Consolidated GDS network covering 450+ international airlines and real-time inventory.</p>
+
+      <div class="search-widget">
+        <div class="input-field">
+          <label>From (Origin)</label>
+          <select id="searchOrigin" class="form-control">
+            <option value="JFK">New York (JFK)</option>
+            <option value="LHR">London Heathrow (LHR)</option>
+            <option value="DXB">Dubai International (DXB)</option>
+            <option value="SIN">Singapore Changi (SIN)</option>
+            <option value="BOM">Mumbai Chhatrapati Shivaji (BOM)</option>
+            <option value="HND">Tokyo Haneda (HND)</option>
+          </select>
+        </div>
+        <div class="input-field">
+          <label>To (Destination)</label>
+          <select id="searchDest" class="form-control">
+            <option value="LHR">London Heathrow (LHR)</option>
+            <option value="JFK">New York (JFK)</option>
+            <option value="DXB">Dubai International (DXB)</option>
+            <option value="SIN">Singapore Changi (SIN)</option>
+            <option value="BOM">Mumbai Chhatrapati Shivaji (BOM)</option>
+            <option value="HND">Tokyo Haneda (HND)</option>
+          </select>
+        </div>
+        <div class="input-field">
+          <label>Departure Date</label>
+          <input type="date" id="searchDate" class="form-control">
+        </div>
+        <div class="input-field">
+          <label>Cabin Class</label>
+          <select id="searchCabin" class="form-control">
+            <option value="ALL">All Classes</option>
+            <option value="Economy">Economy</option>
+            <option value="Business">Business Class</option>
+            <option value="First">First Class Suites</option>
+          </select>
+        </div>
+        <button class="btn btn-primary" onclick="searchFlightsAction()">Search Flights</button>
+      </div>
+    </section>
+
+    <!-- TAB 1: FLIGHT SEARCH & RESULTS -->
+    <section id="panel-search" class="view-panel active">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem;">
+        <div>
+          <h3 style="font-size:1.4rem; color:#fff;" id="flightResultTitle">Available International Flights</h3>
+          <p style="color:var(--text-muted); font-size:0.85rem;" id="flightResultSub">Real-time seat inventories and transparent fares</p>
+        </div>
+      </div>
+
+      <div id="flightListContainer">
+        <!-- Rendered dynamically -->
+      </div>
+    </section>
+
+    <!-- TAB 2: MY TICKETS & ITINERARIES -->
+    <section id="panel-myTickets" class="view-panel">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1.5rem;">
+        <div>
+          <h2 style="font-size:1.8rem; color:#fff;">My E-Tickets & Travel Itineraries</h2>
+          <p style="color:var(--text-muted); font-size:0.85rem;">View confirmed boarding passes, print physical tickets, or process flight cancellations.</p>
+        </div>
+      </div>
+
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Flight PNR</th>
+              <th>Airline & Flight No</th>
+              <th>Sector</th>
+              <th>Flight Date</th>
+              <th>Seat(s)</th>
+              <th>Cabin</th>
+              <th>Paid Amount</th>
+              <th>Status</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody id="myTicketsTbody">
+            <!-- Rendered dynamically -->
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- TAB 3: VIEW BOOKING STATUS (Search by PNR or Flight No + Name) -->
+    <section id="panel-status" class="view-panel">
+      <div style="max-width:700px; margin:0 auto; background:var(--card-bg); border:1px solid var(--card-border); border-radius:var(--radius); padding:2.5rem;">
+        <h2 style="font-size:1.8rem; color:#fff; margin-bottom:6px;">View Booking & Flight Status</h2>
+        <p style="color:var(--text-muted); font-size:0.9rem; margin-bottom:1.5rem;">Enter your 6-character Airline PNR or Flight Number with Passenger Last Name.</p>
+
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:1.25rem;">
+          <div>
+            <label style="display:block; font-size:0.8rem; color:var(--text-muted); margin-bottom:4px;">Booking Reference / PNR</label>
+            <input type="text" id="statusPnrInput" class="form-control" placeholder="e.g. AG7492" maxlength="6" value="AG7492">
+          </div>
+          <div>
+            <label style="display:block; font-size:0.8rem; color:var(--text-muted); margin-bottom:4px;">Passenger Last Name</label>
+            <input type="text" id="statusNameInput" class="form-control" placeholder="Mitchell" value="Mitchell">
+          </div>
+        </div>
+
+        <button class="btn btn-primary" style="width:100%;" onclick="checkFlightStatusAction()">Inspect Flight Record</button>
+      </div>
+
+      <div id="statusResultBox" style="display:none; max-width:800px; margin:2rem auto 0 auto;"></div>
+    </section>
+
+    <!-- TAB 4: CUSTOMER FEEDBACK & REVIEWS -->
+    <section id="panel-feedback" class="view-panel">
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:2rem; margin-bottom:2rem;">
+        <div style="background:var(--card-bg); border:1px solid var(--card-border); border-radius:var(--radius); padding:2rem;">
+          <h3 style="color:#fff; margin-bottom:1rem;">📝 Submit Flight Feedback</h3>
+          <form onsubmit="handleFeedbackSubmit(event)">
+            <div style="margin-bottom:1rem;">
+              <label style="display:block; font-size:0.8rem; color:var(--text-muted); margin-bottom:4px;">Flight / Airline Flown</label>
+              <select id="fbFlightSelect" class="form-control">
+                <option>AeroGlobal Flight AG-102 (JFK to LHR)</option>
+                <option>SkyWings Flight SW-408 (DXB to BOM)</option>
+                <option>PacificAir Flight PA-901 (SIN to HND)</option>
+              </select>
+            </div>
+            <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:1rem;">
+              <div>
+                <label style="display:block; font-size:0.8rem; color:var(--text-muted); margin-bottom:4px;">Overall Rating</label>
+                <select id="fbRating" class="form-control">
+                  <option>⭐⭐⭐⭐⭐ (5/5) Superb</option>
+                  <option>⭐⭐⭐⭐ (4/5) Good</option>
+                  <option>⭐⭐⭐ (3/5) Average</option>
+                </select>
+              </div>
+              <div>
+                <label style="display:block; font-size:0.8rem; color:var(--text-muted); margin-bottom:4px;">Service Aspect</label>
+                <select id="fbAspect" class="form-control">
+                  <option>Cabin Crew & Hospitality</option>
+                  <option>In-Flight Meals & Beverage</option>
+                  <option>Punctuality & Baggage Handling</option>
+                </select>
+              </div>
+            </div>
+            <div style="margin-bottom:1.25rem;">
+              <label style="display:block; font-size:0.8rem; color:var(--text-muted); margin-bottom:4px;">Comments & Suggestions</label>
+              <textarea id="fbComments" class="form-control" rows="3" placeholder="Tell us how we can make your flights even better..." required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary" style="width:100%;">Submit Feedback</button>
+          </form>
+        </div>
+
+        <div style="background:var(--card-bg); border:1px solid var(--card-border); border-radius:var(--radius); padding:2rem;">
+          <h3 style="color:var(--secondary); margin-bottom:1rem;">🌟 Recent Passenger Testimonials</h3>
+          <div id="feedbackFeed" style="max-height:360px; overflow-y:auto;">
+            <!-- dynamic -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 5: ADMIN PANEL & GDS REPORT -->
+    <section id="panel-admin" class="view-panel">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:2rem;">
+        <div>
+          <h2 style="font-size:2rem; color:var(--secondary);">Global Airline Operations Center</h2>
+          <p style="color:var(--text-muted); font-size:0.9rem;">Consolidated inventory distribution, flight schedules, manifests, and revenue analytics.</p>
+        </div>
+        <button class="btn btn-primary" onclick="openAddFlightModal()">+ Add New Flight Schedule</button>
+      </div>
+
+      <!-- Module 1: Admin Report Metrics -->
+      <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(220px, 1fr)); gap:1.25rem; margin-bottom:2rem;" id="adminStatsGrid">
+        <!-- dynamic stats -->
+      </div>
+
+      <!-- Module 2: Manage Flight Schedules & Seat Inventory -->
+      <div style="background:var(--card-bg); border:1px solid var(--card-border); border-radius:var(--radius); padding:1.5rem; margin-bottom:2rem;">
+        <h3 style="color:#fff; margin-bottom:1rem;">🛫 Scheduled Flights & Real-Time Seat Capacity</h3>
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Flight No</th>
+                <th>Airline</th>
+                <th>Aircraft</th>
+                <th>Sector</th>
+                <th>Dep - Arr</th>
+                <th>Economy</th>
+                <th>Business</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="adminFlightTbody">
+              <!-- dynamic -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Module 3: Passenger Manifests & Booking Statuses -->
+      <div style="background:var(--card-bg); border:1px solid var(--card-border); border-radius:var(--radius); padding:1.5rem;">
+        <h3 style="color:#fff; margin-bottom:1rem;">📋 Master GDS Passenger Manifest</h3>
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>PNR</th>
+                <th>Passenger Name</th>
+                <th>Flight</th>
+                <th>Seat</th>
+                <th>Fare</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="adminManifestTbody">
+              <!-- dynamic -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- MODAL: SEAT SELECTION MAP & PAYMENT -->
+  <div class="modal-overlay" id="flightBookModal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 id="bookModalHeader">Flight Reservation & Seat Choice</h3>
+        <button class="close-btn" onclick="closeModal('flightBookModal')">&times;</button>
+      </div>
+
+      <div style="background:#040914; padding:12px 16px; border-radius:8px; border:1px solid var(--card-border); margin-bottom:1.5rem; display:flex; justify-content:space-between; align-items:center;">
+        <div>
+          <strong id="bmFlightName" style="color:#fff; font-size:1.1rem;"></strong>
+          <div id="bmSectorSub" style="font-size:0.8rem; color:var(--text-muted); margin-top:2px;"></div>
+        </div>
+        <div style="text-align:right;">
+          <div style="font-size:0.8rem; color:var(--text-muted);">Base Fare:</div>
+          <strong id="bmBaseFare" style="color:var(--secondary); font-size:1.3rem;"></strong>
+        </div>
+      </div>
+
+      <!-- Interactive Aircraft Cabin Map -->
+      <h4 style="text-align:center; font-size:0.9rem; color:var(--secondary); margin-bottom:6px;">Select Your Aircraft Seat</h4>
+      <div class="cabin-map">
+        <div class="cockpit-view">👨‍✈️ COCKPIT / FORWARD CABIN</div>
+        <div id="planeSeatRows">
+          <!-- Rendered dynamically -->
+        </div>
+      </div>
+
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem; padding:8px 0; border-top:1px dashed var(--card-border);">
+        <span>Allocated Seat: <strong id="selectedSeatTag" style="color:var(--secondary); font-size:1.1rem;">None Selected</strong></span>
+        <span>Ticket Total: <strong id="totalFareTag" style="color:#fff; font-size:1.2rem;">$0</strong></span>
+      </div>
+
+      <!-- Passenger Details Form -->
+      <form onsubmit="handleProceedTicketPayment(event)">
+        <h4 style="color:#fff; font-size:0.95rem; margin-bottom:8px;">Passenger Passport Details</h4>
+        <div style="display:grid; grid-template-columns:1fr 2fr; gap:10px; margin-bottom:10px;">
+          <select id="bmTitle" class="form-control">
+            <option>Capt.</option>
+            <option>Mr.</option>
+            <option>Ms.</option>
+            <option>Dr.</option>
+          </select>
+          <input type="text" id="bmPassName" class="form-control" placeholder="Full Legal Name" required value="David Mitchell">
+        </div>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:10px; margin-bottom:14px;">
+          <input type="text" id="bmPassport" class="form-control" placeholder="Passport Number" required value="USA-98241029">
+          <input type="email" id="bmEmail" class="form-control" placeholder="Email for E-Ticket" required value="david@skyways.com">
+        </div>
+
+        <!-- Integrated Airline Payment Gateway -->
+        <div style="background:rgba(2,132,199,0.08); border:1px solid var(--primary); border-radius:10px; padding:1.25rem; margin-bottom:1.5rem;">
+          <div style="display:flex; justify-content:space-between; margin-bottom:8px;">
+            <strong style="color:var(--secondary); font-size:0.9rem;">💳 IATA Certified Airline Payment Gateway</strong>
+            <span style="font-size:0.75rem; color:var(--success);">3D Secure 2.0</span>
+          </div>
+          <div style="margin-bottom:8px;">
+            <select class="form-control">
+              <option>Credit Card (Amex, Visa Infinite, Mastercard World)</option>
+              <option>Apple Pay / Google Pay</option>
+              <option>Airline Miles + Cash</option>
+            </select>
+          </div>
+          <div style="display:grid; grid-template-columns:2fr 1fr 1fr; gap:8px;">
+            <input type="text" class="form-control" placeholder="Card Number" value="3782 8224 9912 3004">
+            <input type="text" class="form-control" placeholder="MM/YY" value="08/29">
+            <input type="password" class="form-control" placeholder="CVV" value="492">
+          </div>
+        </div>
+
+        <button type="submit" class="btn btn-primary" style="width:100%;">Authorize Payment & Issue E-Ticket</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: PRINT BOARDING PASS (Requirement: Print Ticket Page) -->
+  <div class="modal-overlay" id="boardingPassModal">
+    <div class="modal-box" style="max-width:850px; background:#f1f5f9; padding:2rem;">
+      <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
+        <h3 style="color:#0f172a;">Official Airline Boarding Pass</h3>
+        <button class="close-btn" onclick="closeModal('boardingPassModal')" style="color:#0f172a;">&times;</button>
+      </div>
+
+      <div id="boardingPassContainer">
+        <!-- Rendered dynamically -->
+      </div>
+
+      <div style="display:flex; justify-content:flex-end; gap:10px; margin-top:1.5rem;">
+        <button class="btn btn-secondary" onclick="closeModal('boardingPassModal')" style="color:#0f172a; border-color:#cbd5e1;">Close</button>
+        <button class="btn btn-primary" onclick="window.print()">🖨️ Print Boarding Pass</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: AUTH / LOGIN / FORGOT PASSWORD -->
+  <div class="modal-overlay" id="authModal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 id="authModalTitle">AeroGlobal Authentication</h3>
+        <button class="close-btn" onclick="closeModal('authModal')">&times;</button>
+      </div>
+
+      <div style="display:flex; gap:8px; margin-bottom:1.25rem;">
+        <button type="button" class="btn btn-secondary" style="flex:1;" id="authTabLogin" onclick="setAuthMode('login')">Sign In</button>
+        <button type="button" class="btn btn-secondary" style="flex:1;" id="authTabForgot" onclick="setAuthMode('forgot')">Forgot Password</button>
+      </div>
+
+      <!-- Mode: Login -->
+      <form id="formLogin" onsubmit="handleAuthLogin(event)">
+        <div style="margin-bottom:10px;">
+          <label style="display:block; font-size:0.8rem; color:var(--text-muted); margin-bottom:4px;">Portal Role</label>
+          <select id="loginRole" class="form-control">
+            <option value="User">Passenger / Frequent Flyer</option>
+            <option value="Admin">Airline Administrator</option>
+          </select>
+        </div>
+        <div style="margin-bottom:10px;">
+          <label style="display:block; font-size:0.8rem; color:var(--text-muted); margin-bottom:4px;">Account Email / ID</label>
+          <input type="text" id="loginUser" class="form-control" value="david" required>
+        </div>
+        <div style="margin-bottom:14px;">
+          <label style="display:block; font-size:0.8rem; color:var(--text-muted); margin-bottom:4px;">Password</label>
+          <input type="password" id="loginPass" class="form-control" value="pass123" required>
+          <small style="color:var(--text-muted); font-size:0.75rem; margin-top:4px; display:block;">
+            Passenger: <code>david</code> / <code>pass123</code><br>
+            Administrator: <code>admin</code> / <code>admin123</code>
+          </small>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width:100%;">Authenticate & Enter</button>
+      </form>
+
+      <!-- Mode: Forgot Password Page -->
+      <form id="formForgot" style="display:none;" onsubmit="handleAuthForgot(event)">
+        <p style="color:var(--text-muted); font-size:0.85rem; margin-bottom:1rem;">Enter your verified airline member email to receive an instant password reset token.</p>
+        <div style="margin-bottom:14px;">
+          <label style="display:block; font-size:0.8rem; color:var(--text-muted); margin-bottom:4px;">Account Email</label>
+          <input type="email" id="forgotEmail" class="form-control" placeholder="captain@skyways.com" required>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width:100%;">Dispatch Reset Link & OTP</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <p>Experiment 5: Online Flight Reservation System &copy; 2026 | Internet Programming Lab Experiments</p>
+  </footer>
+
+  <script>
+    // Initial Flight Schedules Data
+    const defaultFlights = [
+      {
+        id: "AG-102",
+        airline: "AeroGlobal Airways",
+        logo: "🌐",
+        aircraft: "Boeing 787-9 Dreamliner",
+        origin: "JFK",
+        originCity: "New York (JFK)",
+        dest: "LHR",
+        destCity: "London Heathrow (LHR)",
+        dep: "18:30",
+        arr: "06:45",
+        duration: "7h 15m (Direct)",
+        economyFare: 680,
+        businessFare: 2450,
+        availableEco: 42,
+        availableBiz: 8,
+        occupiedSeats: ["1A", "2B", "3C", "4D", "5A", "6B"]
+      },
+      {
+        id: "SW-408",
+        airline: "SkyWings International",
+        logo: "🦅",
+        aircraft: "Airbus A350-1000",
+        origin: "DXB",
+        originCity: "Dubai Intl (DXB)",
+        dest: "BOM",
+        destCity: "Mumbai (BOM)",
+        dep: "09:15",
+        arr: "14:05",
+        duration: "3h 20m (Direct)",
+        economyFare: 320,
+        businessFare: 1100,
+        availableEco: 64,
+        availableBiz: 12,
+        occupiedSeats: ["1B", "2A", "4A"]
+      },
+      {
+        id: "PA-901",
+        airline: "PacificAir Alliance",
+        logo: "🌊",
+        aircraft: "Boeing 777-300ER",
+        origin: "SIN",
+        originCity: "Singapore (SIN)",
+        dest: "HND",
+        destCity: "Tokyo Haneda (HND)",
+        dep: "23:55",
+        arr: "07:30",
+        duration: "6h 35m (Direct)",
+        economyFare: 740,
+        businessFare: 2890,
+        availableEco: 28,
+        availableBiz: 4,
+        occupiedSeats: ["2A", "3B", "5D"]
+      }
+    ];
+
+    const defaultBookings = [
+      {
+        pnr: "AG7492",
+        flightId: "AG-102",
+        airline: "AeroGlobal Airways",
+        aircraft: "Boeing 787-9 Dreamliner",
+        sector: "JFK → LHR",
+        originCity: "New York",
+        destCity: "London",
+        date: "2026-11-04",
+        dep: "18:30",
+        arr: "06:45",
+        gate: "B22",
+        terminal: "T4",
+        boardingTime: "17:45",
+        seat: "3A",
+        cabin: "Business Class",
+        fare: 2450,
+        passengerName: "David Mitchell",
+        passport: "USA-98241029",
+        status: "Confirmed"
+      }
+    ];
+
+    const defaultFeedback = [
+      { flight: "AG-102 (JFK to LHR)", author: "Elena Rostova", rating: 5, aspect: "Cabin Crew & Hospitality", comment: "Outstanding transatlantic flight! Lie-flat business seat and exquisite champagne service.", date: "2026-10-22" },
+      { flight: "SW-408 (DXB to BOM)", author: "Arjun Mehta", rating: 4, aspect: "In-Flight Meals & Beverage", comment: "Smooth landing and punctual arrival. The hot meal options were tasty.", date: "2026-10-19" }
+    ];
+
+    // State
+    let flights = JSON.parse(localStorage.getItem('flight_inventory')) || defaultFlights;
+    let bookings = JSON.parse(localStorage.getItem('flight_bookings')) || defaultBookings;
+    let feedbacks = JSON.parse(localStorage.getItem('flight_feedbacks')) || defaultFeedback;
+    let currentRole = localStorage.getItem('flight_role') || 'User'; // 'User' or 'Admin'
+    let currentUserName = localStorage.getItem('flight_user_name') || 'David Mitchell';
+
+    function saveState() {
+      localStorage.setItem('flight_inventory', JSON.stringify(flights));
+      localStorage.setItem('flight_bookings', JSON.stringify(bookings));
+      localStorage.setItem('flight_feedbacks', JSON.stringify(feedbacks));
+      localStorage.setItem('flight_role', currentRole);
+      localStorage.setItem('flight_user_name', currentUserName);
+    }
+
+    // Tabs
+    function switchTab(tabId) {
+      document.querySelectorAll('.view-panel').forEach(p => p.classList.remove('active'));
+      document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+
+      const target = document.getElementById('panel-' + tabId);
+      if (target) target.classList.add('active');
+
+      const btn = Array.from(document.querySelectorAll('.nav-btn')).find(b => b.getAttribute('onclick')?.includes(tabId));
+      if (btn) btn.classList.add('active');
+
+      if (tabId === 'search') renderFlights();
+      if (tabId === 'myTickets') renderMyTickets();
+      if (tabId === 'feedback') renderFeedbacks();
+      if (tabId === 'admin') renderAdmin();
+    }
+
+    function updateRoleUI() {
+      const adminBtn = document.getElementById('adminNavBtn');
+      const tag = document.getElementById('headerUserName');
+      if (currentRole === 'Admin') {
+        adminBtn.style.display = 'inline-flex';
+        tag.textContent = 'GDS Flight Controller (Admin)';
+      } else {
+        adminBtn.style.display = 'none';
+        tag.textContent = currentUserName;
+      }
+    }
+
+    // Render Flights
+    function renderFlights(customList) {
+      const container = document.getElementById('flightListContainer');
+      const list = customList || flights;
+
+      if (list.length === 0) {
+        container.innerHTML = `<div style="text-align:center; padding:3rem; color:var(--text-muted); background:var(--card-bg); border-radius:12px;">No flights currently operating on this route.</div>`;
+        return;
+      }
+
+      container.innerHTML = list.map(f => `
+        <div class="flight-card">
+          <div class="airline-brand">
+            <div class="airline-logo-box">${f.logo}</div>
+            <div>
+              <strong style="color:#fff; font-size:1.05rem; display:block;">${f.airline}</strong>
+              <small style="color:var(--secondary); font-size:0.8rem;">${f.id} • ${f.aircraft}</small>
+            </div>
+          </div>
+
+          <div class="route-timeline">
+            <div class="time-node" style="text-align:left;">
+              <strong>${f.dep}</strong>
+              <div style="font-weight:600; color:#fff; font-size:0.85rem;">${f.origin}</div>
+              <small style="color:var(--text-muted); font-size:0.75rem;">${f.originCity}</small>
+            </div>
+            <div class="flight-path">
+              <span style="font-size:0.75rem; color:var(--text-muted);">${f.duration}</span>
+              <div class="flight-path-line">
+                <span class="flight-path-plane">✈️</span>
+              </div>
+              <span style="font-size:0.72rem; color:var(--success); font-weight:700;">● Non-Stop</span>
+            </div>
+            <div class="time-node" style="text-align:right;">
+              <strong>${f.arr}</strong>
+              <div style="font-weight:600; color:#fff; font-size:0.85rem;">${f.dest}</div>
+              <small style="color:var(--text-muted); font-size:0.75rem;">${f.destCity}</small>
+            </div>
+          </div>
+
+          <div class="pricing-box">
+            <div class="price-value">$${f.economyFare}</div>
+            <div style="font-size:0.75rem; color:var(--text-muted); margin-bottom:6px;">
+              Eco: ${f.availableEco} seats | Biz: $${f.businessFare} (${f.availableBiz} seats)
+            </div>
+            <button class="btn btn-primary" style="width:100%;" onclick="openFlightSeatModal('${f.id}')">
+              Select & Book
+            </button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function searchFlightsAction() {
+      const orig = document.getElementById('searchOrigin').value;
+      const dest = document.getElementById('searchDest').value;
+
+      const filtered = flights.filter(f => {
+        return (f.origin === orig && f.dest === dest) || orig === 'JFK';
+      });
+
+      document.getElementById('flightResultTitle').textContent = `Flights from ${orig} to ${dest}`;
+      document.getElementById('flightResultSub').textContent = `Found ${filtered.length} matching flight(s)`;
+      renderFlights(filtered);
+    }
+
+    // Seat Selection & Booking Modal
+    let activeFlight = null;
+    let selectedSeatNum = null;
+
+    function openFlightSeatModal(flightId) {
+      activeFlight = flights.find(f => f.id === flightId);
+      if (!activeFlight) return;
+
+      selectedSeatNum = null;
+      document.getElementById('bookModalHeader').textContent = `Reserve ${activeFlight.id} - ${activeFlight.airline}`;
+      document.getElementById('bmFlightName').textContent = `${activeFlight.id} (${activeFlight.aircraft})`;
+      document.getElementById('bmSectorSub').textContent = `${activeFlight.originCity} to ${activeFlight.destCity} | Dep ${activeFlight.dep}`;
+      document.getElementById('bmBaseFare').textContent = `$${activeFlight.economyFare}`;
+      document.getElementById('selectedSeatTag').textContent = "None Selected";
+      document.getElementById('totalFareTag').textContent = `$${activeFlight.economyFare}`;
+
+      renderSeatMap();
+      document.getElementById('flightBookModal').classList.add('active');
+    }
+
+    function renderSeatMap() {
+      const container = document.getElementById('planeSeatRows');
+      let html = '';
+      // 6 rows of 4 seats (A, B aisle C, D)
+      for (let r = 1; r <= 6; r++) {
+        const sA = `${r}A`, sB = `${r}B`, sC = `${r}C`, sD = `${r}D`;
+        html += `
+          <div class="seat-row">
+            <div class="seat-group">
+              ${renderPlaneSeat(sA)}
+              ${renderPlaneSeat(sB)}
+            </div>
+            <div class="aisle-number">${r}</div>
+            <div class="seat-group">
+              ${renderPlaneSeat(sC)}
+              ${renderPlaneSeat(sD)}
+            </div>
+          </div>
+        `;
+      }
+      container.innerHTML = html;
+    }
+
+    function renderPlaneSeat(seatCode) {
+      const isOccupied = activeFlight.occupiedSeats && activeFlight.occupiedSeats.includes(seatCode);
+      const isSel = selectedSeatNum === seatCode;
+
+      if (isOccupied) {
+        return `<div class="plane-seat occupied" title="Occupied">${seatCode}</div>`;
+      }
+      return `
+        <div class="plane-seat ${isSel ? 'selected' : ''}" onclick="selectPlaneSeat('${seatCode}')">
+          ${seatCode}
+        </div>
+      `;
+    }
+
+    function selectPlaneSeat(seatCode) {
+      selectedSeatNum = seatCode;
+      renderSeatMap();
+      document.getElementById('selectedSeatTag').textContent = seatCode + " (Confirmed)";
+    }
+
+    function handleProceedTicketPayment(e) {
+      e.preventDefault();
+      if (!selectedSeatNum) {
+        alert("Please select your preferred airplane seat from the cabin map!");
+        return;
+      }
+
+      const pName = document.getElementById('bmPassName').value.trim();
+      const pPassport = document.getElementById('bmPassport').value.trim();
+
+      const newPnr = "AG" + Math.floor(1000 + Math.random() * 9000);
+      const newBooking = {
+        pnr: newPnr,
+        flightId: activeFlight.id,
+        airline: activeFlight.airline,
+        aircraft: activeFlight.aircraft,
+        sector: `${activeFlight.origin} → ${activeFlight.dest}`,
+        originCity: activeFlight.originCity,
+        destCity: activeFlight.destCity,
+        date: document.getElementById('searchDate').value || new Date().toISOString().split('T')[0],
+        dep: activeFlight.dep,
+        arr: activeFlight.arr,
+        gate: "G" + Math.floor(10 + Math.random() * 40),
+        terminal: "T2",
+        boardingTime: "45 mins before dep",
+        seat: selectedSeatNum,
+        cabin: "Economy Class",
+        fare: activeFlight.economyFare,
+        passengerName: pName,
+        passport: pPassport,
+        status: "Confirmed"
+      };
+
+      activeFlight.occupiedSeats.push(selectedSeatNum);
+      activeFlight.availableEco = Math.max(0, activeFlight.availableEco - 1);
+
+      bookings.unshift(newBooking);
+      saveState();
+      closeModal('flightBookModal');
+      switchTab('myTickets');
+
+      alert(`✈️ Flight Ticket Confirmed!\nPNR: ${newBooking.pnr}\nPassenger: ${pName}\nSeat: ${selectedSeatNum}\nOfficial E-Ticket generated in My Tickets tab!`);
+    }
+
+    // My Tickets
+    function renderMyTickets() {
+      const tbody = document.getElementById('myTicketsTbody');
+      const list = bookings.filter(b => b.passengerName === currentUserName || currentRole === 'Admin');
+
+      if (list.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="9" style="text-align:center; padding:2rem; color:var(--text-muted);">No flight tickets issued yet.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = list.map(b => `
+        <tr>
+          <td style="font-weight:700; color:var(--secondary);" class="code-font">${b.pnr}</td>
+          <td style="color:#fff; font-weight:600;">${b.airline} (${b.flightId})</td>
+          <td>${b.sector}</td>
+          <td>${b.date}</td>
+          <td><span style="font-weight:700; color:var(--secondary); background:rgba(2,132,199,0.2); padding:3px 8px; border-radius:6px;">${b.seat}</span></td>
+          <td>${b.cabin}</td>
+          <td style="font-weight:700; color:#fff;">$${b.fare}</td>
+          <td>
+            <span style="padding:3px 8px; border-radius:12px; font-size:0.75rem; font-weight:700; background:${b.status === 'Confirmed' ? 'rgba(16,185,129,0.2)' : 'rgba(239,68,68,0.2)'}; color:${b.status === 'Confirmed' ? '#34d399' : '#f87171'};">
+              ${b.status}
+            </span>
+          </td>
+          <td>
+            ${b.status === 'Confirmed' ? `
+              <div style="display:flex; gap:6px;">
+                <button class="btn btn-secondary" style="padding:4px 8px; font-size:0.75rem;" onclick="openBoardingPassModal('${b.pnr}')">
+                  🖨️ Boarding Pass
+                </button>
+                <button class="btn btn-danger" style="padding:4px 8px; font-size:0.75rem;" onclick="cancelFlightTicket('${b.pnr}')">
+                  Cancel Flight
+                </button>
+              </div>
+            ` : `<span style="color:var(--text-muted); font-size:0.8rem;">Cancelled & Refunded</span>`}
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    // Cancel Ticket Page Action
+    function cancelFlightTicket(pnr) {
+      const b = bookings.find(item => item.pnr === pnr);
+      if (!b) return;
+
+      const airlineFee = 75; // Standard cancellation deduction
+      const refundAmt = Math.max(0, b.fare - airlineFee);
+
+      if (confirm(`Confirm cancellation of Flight Ticket #${pnr}?\nFare Paid: $${b.fare}\nAirline Processing Fee: $${airlineFee}\nRefundable to Account: $${refundAmt}`)) {
+        b.status = "Cancelled";
+        const f = flights.find(item => item.id === b.flightId);
+        if (f) {
+          f.occupiedSeats = f.occupiedSeats.filter(s => s !== b.seat);
+          f.availableEco += 1;
+        }
+        saveState();
+        renderMyTickets();
+        renderFlights();
+        alert(`Flight #${pnr} successfully cancelled.\n$${refundAmt} refund dispatched.`);
+      }
+    }
+
+    // Boarding Pass Modal (Print Ticket Page)
+    function openBoardingPassModal(pnr) {
+      const b = bookings.find(item => item.pnr === pnr);
+      if (!b) return;
+
+      document.getElementById('boardingPassContainer').innerHTML = `
+        <div class="boarding-pass">
+          <div class="bp-main">
+            <div style="display:flex; justify-content:space-between; margin-bottom:1rem; border-bottom:1px solid #e2e8f0; padding-bottom:0.75rem;">
+              <div>
+                <strong style="font-size:1.2rem; color:#0f172a;">${b.airline}</strong>
+                <div style="font-size:0.75rem; color:#64748b;">BOARDING PASS • ELECTRONIC TICKET</div>
+              </div>
+              <div style="text-align:right;">
+                <div style="font-size:0.75rem; color:#64748b;">BOOKING REF</div>
+                <strong style="color:#0284c7; font-size:1.2rem;" class="code-font">${b.pnr}</strong>
+              </div>
+            </div>
+
+            <div style="display:grid; grid-template-columns:2fr 1fr 1fr; gap:12px; margin-bottom:1rem;">
+              <div>
+                <small style="color:#64748b; display:block; font-size:0.75rem;">PASSENGER</small>
+                <strong style="color:#0f172a; font-size:1rem;">${b.passengerName}</strong>
+              </div>
+              <div>
+                <small style="color:#64748b; display:block; font-size:0.75rem;">FLIGHT</small>
+                <strong style="color:#0f172a;">${b.flightId}</strong>
+              </div>
+              <div>
+                <small style="color:#64748b; display:block; font-size:0.75rem;">DATE</small>
+                <strong style="color:#0f172a;">${b.date}</strong>
+              </div>
+            </div>
+
+            <div style="display:grid; grid-template-columns:1fr 1fr 1fr 1fr; gap:10px; background:#f8fafc; padding:10px; border-radius:8px;">
+              <div>
+                <small style="color:#64748b; font-size:0.75rem;">DEPARTURE</small>
+                <div style="font-size:1.1rem; font-weight:700; color:#0f172a;">${b.dep}</div>
+              </div>
+              <div>
+                <small style="color:#64748b; font-size:0.75rem;">GATE</small>
+                <div style="font-size:1.1rem; font-weight:700; color:#0284c7;">${b.gate || 'B12'}</div>
+              </div>
+              <div>
+                <small style="color:#64748b; font-size:0.75rem;">SEAT</small>
+                <div style="font-size:1.1rem; font-weight:700; color:#0f172a;">${b.seat}</div>
+              </div>
+              <div>
+                <small style="color:#64748b; font-size:0.75rem;">CABIN</small>
+                <div style="font-size:0.85rem; font-weight:700; color:#0f172a;">${b.cabin}</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="bp-stub">
+            <div>
+              <strong style="font-size:0.9rem; color:#0f172a;">${b.sector}</strong>
+              <div style="font-size:0.75rem; color:#64748b; margin-top:4px;">${b.passengerName}</div>
+              <div style="font-size:1.4rem; font-weight:800; color:#0284c7; margin-top:8px;">SEAT ${b.seat}</div>
+            </div>
+            <div style="text-align:center; padding-top:10px; border-top:1px dashed #cbd5e1; font-size:0.7rem; color:#64748b;">
+              BARCODE VERIFIED<br>
+              <span class="code-font">|||||||||||||||||||||||</span>
+            </div>
+          </div>
+        </div>
+      `;
+
+      document.getElementById('boardingPassModal').classList.add('active');
+    }
+
+    // View Booking Status Page
+    function checkFlightStatusAction() {
+      const pnr = document.getElementById('statusPnrInput').value.trim();
+      const lastName = document.getElementById('statusNameInput').value.trim();
+      const box = document.getElementById('statusResultBox');
+
+      const b = bookings.find(item => item.pnr.toLowerCase() === pnr.toLowerCase() || item.passengerName.toLowerCase().includes(lastName.toLowerCase()));
+
+      if (!b) {
+        alert("No flight booking record located for this PNR/Name.");
+        box.style.display = 'none';
+        return;
+      }
+
+      box.style.display = 'block';
+      box.innerHTML = `
+        <div style="background:var(--card-bg); border:1px solid var(--secondary); border-radius:var(--radius); padding:2rem; box-shadow:var(--shadow);">
+          <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid var(--card-border); padding-bottom:1rem; margin-bottom:1.25rem;">
+            <div>
+              <div style="font-size:0.8rem; color:var(--text-muted);">CONFIRMED RECORD (PNR)</div>
+              <strong style="font-size:1.6rem; color:var(--secondary);" class="code-font">${b.pnr}</strong>
+            </div>
+            <span style="padding:4px 12px; border-radius:20px; font-weight:700; background:rgba(16,185,129,0.2); color:#34d399;">
+              ● Flight Operational: On Time
+            </span>
+          </div>
+
+          <div style="display:grid; grid-template-columns:repeat(auto-fit, minmax(180px, 1fr)); gap:14px;">
+            <div>
+              <small style="color:var(--text-muted); display:block;">Flight</small>
+              <strong style="color:#fff;">${b.airline} (${b.flightId})</strong>
+            </div>
+            <div>
+              <small style="color:var(--text-muted); display:block;">Route</small>
+              <strong style="color:#fff;">${b.sector}</strong>
+            </div>
+            <div>
+              <small style="color:var(--text-muted); display:block;">Passenger</small>
+              <strong style="color:#fff;">${b.passengerName}</strong>
+            </div>
+            <div>
+              <small style="color:var(--text-muted); display:block;">Seat / Class</small>
+              <strong style="color:var(--secondary);">${b.seat} (${b.cabin})</strong>
+            </div>
+          </div>
+        </div>
+      `;
+    }
+
+    // Feedback
+    function renderFeedbacks() {
+      const feed = document.getElementById('feedbackFeed');
+      feed.innerHTML = feedbacks.map(f => `
+        <div style="background:#040914; padding:12px 14px; border-radius:8px; border:1px solid var(--card-border); margin-bottom:10px;">
+          <div style="display:flex; justify-content:space-between; margin-bottom:4px;">
+            <strong style="color:#fff; font-size:0.88rem;">${f.author}</strong>
+            <span style="color:var(--gold); font-size:0.78rem;">${'⭐'.repeat(f.rating || 5)} (${f.date})</span>
+          </div>
+          <div style="font-size:0.75rem; color:var(--secondary); margin-bottom:4px;">${f.flight} • ${f.aspect}</div>
+          <p style="color:var(--text-muted); font-size:0.82rem;">${f.comment}</p>
+        </div>
+      `).join('');
+    }
+
+    function handleFeedbackSubmit(e) {
+      e.preventDefault();
+      const fl = document.getElementById('fbFlightSelect').value;
+      const asp = document.getElementById('fbAspect').value;
+      const c = document.getElementById('fbComments').value.trim();
+
+      feedbacks.unshift({
+        flight: fl,
+        author: currentUserName,
+        rating: 5,
+        aspect: asp,
+        comment: c,
+        date: new Date().toISOString().split('T')[0]
+      });
+
+      saveState();
+      renderFeedbacks();
+      document.getElementById('fbComments').value = '';
+      alert("Thank you! Your passenger feedback has been recorded.");
+    }
+
+    // Admin Center & Reports
+    function renderAdmin() {
+      const totalRev = bookings.reduce((acc, b) => b.status === 'Confirmed' ? acc + b.fare : acc, 0);
+      const activeManifestCount = bookings.filter(b => b.status === 'Confirmed').length;
+
+      document.getElementById('adminStatsGrid').innerHTML = `
+        <div style="background:var(--card-bg); padding:1.25rem; border-radius:var(--radius); border:1px solid var(--card-border);">
+          <div style="font-size:0.8rem; color:var(--text-muted);">GDS System Revenue</div>
+          <div style="font-size:1.8rem; font-weight:800; color:var(--secondary); margin-top:4px;">$${totalRev}</div>
+        </div>
+        <div style="background:var(--card-bg); padding:1.25rem; border-radius:var(--radius); border:1px solid var(--card-border);">
+          <div style="font-size:0.8rem; color:var(--text-muted);">Active Booked Seats</div>
+          <div style="font-size:1.8rem; font-weight:800; color:#fff; margin-top:4px;">${activeManifestCount}</div>
+        </div>
+        <div style="background:var(--card-bg); padding:1.25rem; border-radius:var(--radius); border:1px solid var(--card-border);">
+          <div style="font-size:0.8rem; color:var(--text-muted);">Scheduled Aircraft Fleets</div>
+          <div style="font-size:1.8rem; font-weight:800; color:var(--success); margin-top:4px;">${flights.length} Wide-body</div>
+        </div>
+      `;
+
+      // Flight Table
+      const fTbody = document.getElementById('adminFlightTbody');
+      fTbody.innerHTML = flights.map(f => `
+        <tr>
+          <td style="font-weight:700; color:var(--secondary);">${f.id}</td>
+          <td style="color:#fff; font-weight:600;">${f.airline}</td>
+          <td>${f.aircraft}</td>
+          <td>${f.origin} → ${f.dest}</td>
+          <td>${f.dep} - ${f.arr}</td>
+          <td>$${f.economyFare} (${f.availableEco} seats)</td>
+          <td>$${f.businessFare} (${f.availableBiz} seats)</td>
+          <td>
+            <button class="btn btn-secondary" style="padding:2px 8px; font-size:0.75rem;" onclick="alert('Flight ${f.id} schedule editor')">Edit</button>
+          </td>
+        </tr>
+      `).join('');
+
+      // Manifest Table
+      const mTbody = document.getElementById('adminManifestTbody');
+      mTbody.innerHTML = bookings.map(b => `
+        <tr>
+          <td style="font-weight:700; color:var(--secondary);" class="code-font">${b.pnr}</td>
+          <td style="color:#fff;">${b.passengerName}</td>
+          <td>${b.flightId}</td>
+          <td>${b.seat}</td>
+          <td>$${b.fare}</td>
+          <td><span style="color:${b.status === 'Confirmed' ? '#34d399' : '#f87171'}; font-weight:700;">${b.status}</span></td>
+          <td>
+            <button class="btn btn-secondary" style="padding:2px 8px; font-size:0.75rem;" onclick="openBoardingPassModal('${b.pnr}')">Inspect</button>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    function openAddFlightModal() {
+      alert("Airline Schedule Creator: Deploy new Airbus A350 / Boeing 787 flights to international routes.");
+    }
+
+    // Auth
+    function openAuthModal(mode) {
+      document.getElementById('authModal').classList.add('active');
+      setAuthMode(mode || 'login');
+    }
+
+    function setAuthMode(mode) {
+      if (mode === 'login') {
+        document.getElementById('formLogin').style.display = 'block';
+        document.getElementById('formForgot').style.display = 'none';
+        document.getElementById('authTabLogin').classList.add('btn-primary');
+        document.getElementById('authTabForgot').classList.remove('btn-primary');
+      } else {
+        document.getElementById('formLogin').style.display = 'none';
+        document.getElementById('formForgot').style.display = 'block';
+        document.getElementById('authTabForgot').classList.add('btn-primary');
+        document.getElementById('authTabLogin').classList.remove('btn-primary');
+      }
+    }
+
+    function handleAuthLogin(e) {
+      e.preventDefault();
+      const role = document.getElementById('loginRole').value;
+      const u = document.getElementById('loginUser').value.trim();
+      const p = document.getElementById('loginPass').value.trim();
+
+      if (role === 'Admin') {
+        if (u === 'admin' && p === 'admin123') {
+          currentRole = 'Admin';
+        } else {
+          alert('Invalid Admin credentials. Use admin / admin123');
+          return;
+        }
+      } else {
+        currentRole = 'User';
+        currentUserName = u === 'david' ? 'David Mitchell' : u;
+      }
+
+      saveState();
+      updateRoleUI();
+      closeModal('authModal');
+      switchTab(currentRole === 'Admin' ? 'admin' : 'search');
+      alert(`Welcome! Authenticated as ${currentRole}.`);
+    }
+
+    function handleAuthForgot(e) {
+      e.preventDefault();
+      alert("OTP token has been sent to your email. Password reset link is active.");
+      setAuthMode('login');
+    }
+
+    function closeModal(id) {
+      document.getElementById(id).classList.remove('active');
+    }
+
+    // Init
+    window.onload = function() {
+      updateRoleUI();
+      renderFlights();
+      renderFeedbacks();
+    };
+  </script>
+</body>
+</html>
