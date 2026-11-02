@@ -1,0 +1,1503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>StyleHub - Premier Online Fashion Retailer & Couture Platform</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #f43f5e;
+      --primary-hover: #e11d48;
+      --secondary: #ec4899;
+      --accent: #eab308;
+      --danger: #ef4444;
+      --bg: #0f0a17;
+      --card-bg: #1a1226;
+      --card-border: #301f46;
+      --text: #fdf2f8;
+      --text-muted: #fda4af;
+      --text-dim: #9d7d9e;
+      --radius: 12px;
+      --shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .serif-title {
+      font-family: 'Playfair Display', serif;
+    }
+
+    header {
+      background: rgba(26, 18, 38, 0.92);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--card-border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      padding: 0.85rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: #fff;
+      font-size: 1.35rem;
+      font-weight: 800;
+    }
+
+    .brand-icon {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      padding: 8px 12px;
+      border-radius: 10px;
+      box-shadow: 0 4px 15px rgba(244, 63, 94, 0.4);
+      font-size: 1.2rem;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
+
+    .nav-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-dim);
+      padding: 8px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.9rem;
+      transition: all 0.2s;
+    }
+
+    .nav-btn:hover, .nav-btn.active {
+      color: #fff;
+      background: rgba(244, 63, 94, 0.12);
+    }
+
+    .nav-btn.active {
+      color: var(--primary);
+      border-bottom: 2px solid var(--primary);
+      border-radius: 8px 8px 0 0;
+    }
+
+    .user-pill {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--card-border);
+      padding: 6px 14px;
+      border-radius: 30px;
+      font-size: 0.85rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .badge {
+      padding: 3px 8px;
+      border-radius: 20px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .badge-primary { background: rgba(244, 63, 94, 0.2); color: var(--primary); border: 1px solid var(--primary); }
+    .badge-success { background: rgba(16, 185, 129, 0.2); color: #10b981; border: 1px solid #10b981; }
+    .badge-danger { background: rgba(239, 68, 68, 0.2); color: var(--danger); border: 1px solid var(--danger); }
+    .badge-gold { background: rgba(234, 179, 8, 0.2); color: var(--accent); border: 1px solid var(--accent); }
+
+    .btn {
+      padding: 9px 18px;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 0.88rem;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: #fff;
+      box-shadow: 0 4px 15px rgba(244, 63, 94, 0.35);
+    }
+
+    .btn-primary:hover {
+      box-shadow: 0 6px 20px rgba(244, 63, 94, 0.55);
+      transform: translateY(-2px);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.08);
+      color: #fff;
+      border: 1px solid var(--card-border);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    .btn-sm {
+      padding: 6px 12px;
+      font-size: 0.8rem;
+      border-radius: 7px;
+    }
+
+    .btn-danger {
+      background: rgba(239, 68, 68, 0.2);
+      color: var(--danger);
+      border: 1px solid var(--danger);
+    }
+
+    .btn-danger:hover {
+      background: var(--danger);
+      color: white;
+    }
+
+    main {
+      flex: 1;
+      max-width: 1350px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem;
+      width: 100%;
+    }
+
+    .tab-view {
+      display: none;
+    }
+
+    .tab-view.active {
+      display: block;
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Use Cases Navigator Bar */
+    .use-cases-bar {
+      background: rgba(244, 63, 94, 0.06);
+      border: 1px solid rgba(244, 63, 94, 0.3);
+      border-radius: var(--radius);
+      padding: 0.85rem 1.25rem;
+      margin-bottom: 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .use-cases-list {
+      display: flex;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    .uc-badge {
+      font-size: 0.72rem;
+      padding: 3px 8px;
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--card-border);
+      border-radius: 6px;
+      color: var(--text-muted);
+      cursor: pointer;
+    }
+
+    .uc-badge:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+
+    /* Flash Sale Banner */
+    .flash-sale-banner {
+      background: linear-gradient(135deg, rgba(244, 63, 94, 0.2), rgba(234, 179, 8, 0.15));
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      padding: 1.5rem 2rem;
+      margin-bottom: 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 15px;
+    }
+
+    .countdown-box {
+      background: rgba(0, 0, 0, 0.4);
+      padding: 8px 16px;
+      border-radius: 10px;
+      border: 1px solid var(--primary);
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: var(--primary);
+      letter-spacing: 1px;
+    }
+
+    /* Category Hierarchy Section */
+    .categories-tree-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .cat-tree-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 1.25rem;
+      margin-top: 1rem;
+    }
+
+    .cat-tree-block {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      padding: 1rem;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .cat-tree-block:hover, .cat-tree-block.active {
+      border-color: var(--primary);
+      background: rgba(244, 63, 94, 0.08);
+    }
+
+    .subcat-list {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      margin-top: 8px;
+    }
+
+    .subcat-pill {
+      font-size: 0.72rem;
+      padding: 2px 7px;
+      background: rgba(255, 255, 255, 0.06);
+      border-radius: 4px;
+      color: var(--text-muted);
+    }
+
+    /* Filter Bar */
+    .filter-bar {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 1.75rem;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .search-input-wrap {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      padding: 8px 14px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-width: 280px;
+      flex: 1;
+    }
+
+    .search-input-wrap input {
+      background: transparent;
+      border: none;
+      color: #fff;
+      outline: none;
+      width: 100%;
+      font-size: 0.9rem;
+    }
+
+    /* Products Grid */
+    .products-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .product-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: all 0.3s;
+      position: relative;
+    }
+
+    .product-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--primary);
+    }
+
+    .product-img-wrap {
+      height: 180px;
+      background: rgba(0, 0, 0, 0.25);
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3.5rem;
+      margin-bottom: 1rem;
+      position: relative;
+    }
+
+    .product-title {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 4px;
+      cursor: pointer;
+    }
+
+    .product-title:hover {
+      color: var(--primary);
+    }
+
+    .product-desc {
+      font-size: 0.82rem;
+      color: var(--text-dim);
+      margin-bottom: 1rem;
+      line-height: 1.5;
+    }
+
+    .product-price-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: auto;
+      padding-top: 10px;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .product-price {
+      font-size: 1.3rem;
+      font-weight: 800;
+      color: var(--primary);
+    }
+
+    /* Cart & Tables */
+    .table-container {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.88rem;
+    }
+
+    th {
+      background: rgba(255, 255, 255, 0.03);
+      padding: 12px 16px;
+      font-weight: 700;
+      color: var(--text-dim);
+      border-bottom: 1px solid var(--card-border);
+    }
+
+    td {
+      padding: 14px 16px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      color: #cbd5e1;
+    }
+
+    /* Modals */
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(8px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      padding: 1rem;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    .modal-box {
+      background: #1a1226;
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      width: 100%;
+      max-width: 650px;
+      max-height: 90vh;
+      overflow-y: auto;
+      padding: 2rem;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8);
+      position: relative;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 1.25rem;
+      right: 1.25rem;
+      background: transparent;
+      border: none;
+      color: var(--text-dim);
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+
+    .form-group {
+      margin-bottom: 12px;
+    }
+
+    .form-label {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--text-muted);
+    }
+
+    .form-input, .form-select, .form-textarea {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      padding: 9px 12px;
+      color: #fff;
+      font-size: 0.9rem;
+      outline: none;
+    }
+
+    .form-input:focus, .form-select:focus, .form-textarea:focus {
+      border-color: var(--primary);
+    }
+
+    /* Size guide table */
+    .size-table {
+      width: 100%;
+      margin: 12px 0;
+      border: 1px solid var(--card-border);
+      font-size: 0.8rem;
+    }
+
+    .size-table th, .size-table td {
+      padding: 8px;
+      text-align: center;
+      border: 1px solid var(--card-border);
+    }
+
+    /* Toast */
+    #toastContainer {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 2000;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .toast {
+      background: #251336;
+      border: 1px solid var(--primary);
+      color: #fff;
+      padding: 12px 18px;
+      border-radius: 10px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.7);
+      animation: slideIn 0.3s ease;
+      font-size: 0.9rem;
+    }
+
+    @keyframes slideIn {
+      from { transform: translateX(100%); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+
+    footer {
+      border-top: 1px solid var(--card-border);
+      padding: 1.5rem;
+      text-align: center;
+      font-size: 0.85rem;
+      color: var(--text-dim);
+      margin-top: auto;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <a href="#" class="brand">
+      <div class="brand-icon">👠</div>
+      <div>
+        <span class="serif-title">StyleHub</span>
+        <span style="font-size: 0.72rem; display: block; color: var(--primary); font-weight: 600;">PREMIER COUTURE & RUNWAY FASHION</span>
+      </div>
+    </a>
+
+    <div class="nav-links">
+      <button class="nav-btn active" onclick="switchTab('catalog')">1. Visit & Browse</button>
+      <button class="nav-btn" onclick="switchTab('cart')">5-8. Wardrobe Bag (<span id="navCartCount">0</span>)</button>
+      <button class="nav-btn" onclick="switchTab('orders')">9-10. Order Tracking</button>
+      <button class="nav-btn" onclick="openSizeGuideModal()">Size Guide</button>
+      <button class="nav-btn" onclick="switchTab('returns')">Returns & Exchange</button>
+      <button class="nav-btn" onclick="switchTab('admin')">Admin Panel</button>
+    </div>
+
+    <div style="display: flex; align-items: center; gap: 12px;">
+      <a href="index.html" class="btn btn-secondary btn-sm" title="Back to Experiments Hub">← Hub</a>
+      <div class="user-pill">
+        <span id="roleIndicator" class="badge badge-primary">Shopper</span>
+        <span id="userNameDisplay" style="font-weight: 600;">Emma Watson</span>
+        <button class="btn btn-secondary btn-sm" onclick="toggleAuthModal()" style="padding: 3px 8px; font-size: 0.72rem;">2. Login/Logout</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main -->
+  <main>
+
+    <!-- Lab Use Cases Quick Tracker Banner -->
+    <div class="use-cases-bar">
+      <div>
+        <strong style="color: var(--primary); font-size: 0.82rem;">EXPERIMENT 10 USE CASES (1 to 13):</strong>
+      </div>
+      <div class="use-cases-list">
+        <span class="uc-badge" onclick="switchTab('catalog')">1. Visit</span>
+        <span class="uc-badge" onclick="toggleAuthModal()">2. Login</span>
+        <span class="uc-badge" onclick="document.getElementById('searchInput').focus()">3. Search</span>
+        <span class="uc-badge" onclick="showToast('Availability: Real-time sizes & color stocks displayed!')">4. Availability</span>
+        <span class="uc-badge" onclick="switchTab('cart')">5. Add Bag</span>
+        <span class="uc-badge" onclick="switchTab('cart')">6. Edit Bag</span>
+        <span class="uc-badge" onclick="switchTab('cart')">7. Remove</span>
+        <span class="uc-badge" onclick="openCheckoutModal()">8. Checkout</span>
+        <span class="uc-badge" onclick="switchTab('orders')">9. Order Status</span>
+        <span class="uc-badge" onclick="switchTab('orders')">10. Order History</span>
+        <span class="uc-badge" onclick="showProductDetails(1)">11. Details & Size</span>
+        <span class="uc-badge" onclick="logoutUser()">12. Logout</span>
+        <span class="uc-badge" onclick="leaveSite()">13. Leave Site</span>
+      </div>
+    </div>
+
+    <!-- Flash Sale Countdown -->
+    <div class="flash-sale-banner">
+      <div>
+        <span class="badge badge-gold" style="margin-bottom: 6px; display: inline-block;">VIP Flash Event</span>
+        <h3 class="serif-title" style="font-size: 1.5rem; color: #fff;">Exclusive Autumn Runway Collection - 20% Off</h3>
+        <p style="color: var(--text-muted); font-size: 0.85rem;">Use promo code <strong style="color: #fff;">RUNWAY20</strong> at checkout for complimentary worldwide courier dispatch.</p>
+      </div>
+      <div style="display: flex; align-items: center; gap: 10px;">
+        <span style="font-size: 0.82rem; color: var(--text-dim);">Sale Ends In:</span>
+        <div class="countdown-box" id="flashTimer">08h : 42m : 19s</div>
+      </div>
+    </div>
+
+    <!-- TAB 1: Product Catalogue & Categories Hierarchy -->
+    <div id="tab-catalog" class="tab-view active">
+
+      <!-- Categories & Subcategories Showcase (Mandatory Requirement) -->
+      <div class="categories-tree-card">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <div>
+            <h3 class="serif-title" style="color: #fff; font-size: 1.3rem;">Curated Fashion Categories & Subcategories</h3>
+            <p style="color: var(--text-muted); font-size: 0.85rem;">Most popular couture categories displayed first for seamless shopping navigation.</p>
+          </div>
+          <button class="btn btn-secondary btn-sm" onclick="setCategoryFilter('All')">View All Collections</button>
+        </div>
+
+        <div class="cat-tree-grid" id="categoryTreeGrid">
+          <!-- Populated via JS -->
+        </div>
+      </div>
+
+      <!-- Search & Filters Bar -->
+      <div class="filter-bar">
+        <div class="search-input-wrap">
+          <span>🔍</span>
+          <input type="text" id="searchInput" placeholder="Search fashion: trench coat, silk gown, leather boots, blazer..." oninput="filterProducts()">
+        </div>
+
+        <div style="display: flex; gap: 8px;">
+          <select id="genderFilter" class="form-select" style="width: auto;" onchange="filterProducts()">
+            <option value="All">All Departments</option>
+            <option value="Women">Women's Collection</option>
+            <option value="Men">Men's Collection</option>
+            <option value="Children">Children / Youth</option>
+          </select>
+
+          <select id="sizeFilter" class="form-select" style="width: auto;" onchange="filterProducts()">
+            <option value="All">All Sizes</option>
+            <option value="XS">XS</option>
+            <option value="S">S</option>
+            <option value="M">M</option>
+            <option value="L">L</option>
+            <option value="XL">XL</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Products Grid -->
+      <div class="products-grid" id="productsGrid">
+        <!-- Rendered via JS -->
+      </div>
+    </div>
+
+    <!-- TAB 2: Shopping Cart & Checkout (Use Cases 5, 6, 7 & 8) -->
+    <div id="tab-cart" class="tab-view">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+        <div>
+          <h2 class="serif-title" style="font-size: 1.8rem; color: #fff;">Your Shopping Bag (Use Cases 5 to 8)</h2>
+          <p style="color: var(--text-muted); font-size: 0.85rem;">Review sizes, colors, edit quantities, and checkout securely.</p>
+        </div>
+        <button class="btn btn-secondary btn-sm" onclick="switchTab('catalog')">← Keep Shopping</button>
+      </div>
+
+      <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 1.5rem;">
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Item</th>
+                <th>Size / Color</th>
+                <th>Price</th>
+                <th>Quantity</th>
+                <th>Subtotal</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="cartTableBody">
+              <!-- Rendered via JS -->
+            </tbody>
+          </table>
+        </div>
+
+        <div style="background: var(--card-bg); border: 1px solid var(--card-border); border-radius: var(--radius); padding: 1.5rem; height: fit-content;">
+          <h3 class="serif-title" style="color: #fff; font-size: 1.3rem; margin-bottom: 1rem;">Bag Summary</h3>
+          <div style="display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 0.9rem; color: var(--text-muted);">
+            <span>Bag Subtotal:</span>
+            <span id="cartSubtotal" style="color: #fff; font-weight: 700;">$0.00</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; margin-bottom: 8px; font-size: 0.9rem; color: var(--text-muted);">
+            <span>Express Courier:</span>
+            <span style="color: var(--accent); font-weight: 700;">COMPLIMENTARY</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; margin-bottom: 12px; font-size: 0.9rem; color: var(--text-muted);">
+            <span>Estimated Sales Tax:</span>
+            <span id="cartTax" style="color: #fff;">$0.00</span>
+          </div>
+          <div style="border-top: 1px solid var(--card-border); padding-top: 12px; display: flex; justify-content: space-between; margin-bottom: 1.5rem;">
+            <strong style="color: #fff; font-size: 1.2rem;">Total:</strong>
+            <strong id="cartGrandTotal" style="color: var(--primary); font-size: 1.4rem;">$0.00</strong>
+          </div>
+          <button class="btn btn-primary" style="width: 100%; justify-content: center;" onclick="openCheckoutModal()">8. Proceed to Secure Checkout</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 3: Order Status Tracking & History -->
+    <div id="tab-orders" class="tab-view">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+        <div>
+          <h2 class="serif-title" style="font-size: 1.8rem; color: #fff;">Order Tracking & Purchase History (Use Cases 9 & 10)</h2>
+          <p style="color: var(--text-muted); font-size: 0.85rem;">Separate lifecycle tracking: Order Placed → Packaging → Dispatched → In Transit → Delivered.</p>
+        </div>
+      </div>
+
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Order ID</th>
+              <th>Customer</th>
+              <th>Date</th>
+              <th>Items & Sizes</th>
+              <th>Total Amount</th>
+              <th>Order Status</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="ordersTableBody">
+            <!-- Rendered via JS -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- TAB 4: Easy Return & Exchange Policy -->
+    <div id="tab-returns" class="tab-view">
+      <div style="background: var(--card-bg); border: 1px solid var(--card-border); border-radius: var(--radius); padding: 2rem; margin-bottom: 2rem;">
+        <h2 class="serif-title" style="color: #fff; font-size: 1.6rem; margin-bottom: 10px;">StyleHub 30-Day Easy Return & Exchange Policy</h2>
+        <p style="color: var(--text-muted); font-size: 0.9rem; line-height: 1.6; margin-bottom: 1.5rem;">
+          We want you to love your fit. If any garment doesn't fit like a dream, return or exchange it within 30 days of delivery. Items must be unwashed, unworn, with original designer security tags intact.
+        </p>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.25rem; margin-bottom: 2rem;">
+          <div style="background: rgba(255,255,255,0.02); border: 1px solid var(--card-border); padding: 1.25rem; border-radius: 10px;">
+            <h4 style="color: var(--primary); margin-bottom: 6px;">1. Free Return Shipping</h4>
+            <p style="font-size: 0.82rem; color: var(--text-dim);">Pre-paid return labels included in all domestic packages.</p>
+          </div>
+          <div style="background: rgba(255,255,255,0.02); border: 1px solid var(--card-border); padding: 1.25rem; border-radius: 10px;">
+            <h4 style="color: var(--secondary); margin-bottom: 6px;">2. Instant Size Exchange</h4>
+            <p style="font-size: 0.82rem; color: var(--text-dim);">Need a different size? We dispatch replacement immediately before return arrives.</p>
+          </div>
+          <div style="background: rgba(255,255,255,0.02); border: 1px solid var(--card-border); padding: 1.25rem; border-radius: 10px;">
+            <h4 style="color: var(--accent); margin-bottom: 6px;">3. Direct Card Refund</h4>
+            <p style="font-size: 0.82rem; color: var(--text-dim);">Full refund processed to original payment method within 48 hours of scan.</p>
+          </div>
+        </div>
+
+        <button class="btn btn-primary" onclick="simulateReturnInitiation()">Initiate a Return / Size Exchange</button>
+      </div>
+    </div>
+
+    <!-- TAB 5: Admin Panel & Customer Checkout Audit -->
+    <div id="tab-admin" class="tab-view">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+        <div>
+          <h2 class="serif-title" style="font-size: 1.8rem; color: #fff;">StyleHub Fashion Admin Authorities</h2>
+          <p style="color: var(--text-muted); font-size: 0.85rem;">Add/remove clothing lines, adjust prices, edit descriptions, and inspect customer checkout audit trails.</p>
+        </div>
+        <button class="btn btn-primary btn-sm" onclick="openAddItemModal()">+ Add New Fashion Line</button>
+      </div>
+
+      <!-- Item Management Table -->
+      <div class="table-container" style="margin-bottom: 2rem;">
+        <div style="padding: 1rem 1.5rem; border-bottom: 1px solid var(--card-border); display: flex; justify-content: space-between; align-items: center;">
+          <h4 style="color: #fff;">Fashion Items & Pricing Master Ledger</h4>
+          <span class="badge badge-primary">Merchandise Authority</span>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Garment Title</th>
+              <th>Category / Subcategory</th>
+              <th>Price</th>
+              <th>Department</th>
+              <th>Admin Authorities</th>
+            </tr>
+          </thead>
+          <tbody id="adminItemsTableBody">
+            <!-- Rendered via JS -->
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Customer Checkout Ledger -->
+      <div class="table-container">
+        <div style="padding: 1rem 1.5rem; border-bottom: 1px solid var(--card-border); display: flex; justify-content: space-between; align-items: center;">
+          <h4 style="color: #fff;">Customer Checkout Log (Customer Information Viewer)</h4>
+          <span class="badge badge-gold">Checkout Audit Trail</span>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Order ID</th>
+              <th>Customer Name</th>
+              <th>Email</th>
+              <th>Shipping Address</th>
+              <th>Garments Checked Out</th>
+              <th>Amount Paid</th>
+            </tr>
+          </thead>
+          <tbody id="adminCustomerLogsBody">
+            <!-- Rendered via JS -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- MODAL 1: Size Guide Modal -->
+  <div class="modal-overlay" id="sizeGuideModal">
+    <div class="modal-box">
+      <button class="modal-close" onclick="closeModal('sizeGuideModal')">&times;</button>
+      <h2 class="serif-title" style="color: #fff; margin-bottom: 8px;">StyleHub Universal Size Guide</h2>
+      <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1rem;">Accurate sizing metrics in inches and centimeters for the perfect couture drape.</p>
+      
+      <table class="size-table">
+        <thead>
+          <tr>
+            <th>Size</th>
+            <th>US / UK</th>
+            <th>Bust / Chest (in)</th>
+            <th>Waist (in)</th>
+            <th>Hips (in)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>XS</td><td>0 - 2</td><td>31 - 32"</td><td>24 - 25"</td><td>34 - 35"</td></tr>
+          <tr><td>S</td><td>4 - 6</td><td>33 - 34"</td><td>26 - 27"</td><td>36 - 37"</td></tr>
+          <tr><td>M</td><td>8 - 10</td><td>35 - 37"</td><td>28 - 30"</td><td>38 - 40"</td></tr>
+          <tr><td>L</td><td>12 - 14</td><td>38 - 40"</td><td>31 - 33"</td><td>41 - 43"</td></tr>
+          <tr><td>XL</td><td>16</td><td>41 - 43"</td><td>34 - 36"</td><td>44 - 46"</td></tr>
+        </tbody>
+      </table>
+
+      <div style="text-align: right; margin-top: 15px;">
+        <button class="btn btn-secondary" onclick="closeModal('sizeGuideModal')">Got It</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 2: Product Details & Size Selector (Use Case 11) -->
+  <div class="modal-overlay" id="detailsModal">
+    <div class="modal-box">
+      <button class="modal-close" onclick="closeModal('detailsModal')">&times;</button>
+      <div id="detailsModalContent">
+        <!-- Rendered via JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL 3: Checkout Modal (Use Case 8) -->
+  <div class="modal-overlay" id="checkoutModal">
+    <div class="modal-box">
+      <button class="modal-close" onclick="closeModal('checkoutModal')">&times;</button>
+      <h2 class="serif-title" style="color: #fff; margin-bottom: 8px;">Check Out Wardrobe Bag</h2>
+      <p style="color: var(--text-muted); font-size: 0.85rem; margin-bottom: 1.5rem;">Enter shipping credentials and complete order with promotional discounts.</p>
+
+      <form onsubmit="handleCheckoutSubmit(event)">
+        <div class="form-group">
+          <label class="form-label">Customer Name</label>
+          <input type="text" id="checkoutName" class="form-input" value="Emma Watson" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Email Address</label>
+          <input type="email" id="checkoutEmail" class="form-input" value="emma.watson@stylehub.com" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Shipping Destination</label>
+          <input type="text" id="checkoutAddress" class="form-input" value="5th Avenue Penthouse, New York, NY" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Promo / Flash Discount Code</label>
+          <div style="display: flex; gap: 8px;">
+            <input type="text" id="promoCode" class="form-input" value="RUNWAY20">
+            <button type="button" class="btn btn-secondary btn-sm" onclick="showToast('✅ Promo code RUNWAY20 applied! 20% discount calculated.')">Apply</button>
+          </div>
+        </div>
+        <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid var(--card-border); padding: 12px; border-radius: 8px; margin-bottom: 15px;">
+          <div style="display: flex; justify-content: space-between;">
+            <span>Payable Total:</span>
+            <strong id="checkoutTotalVal" style="color: var(--primary);">$0.00</strong>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width: 100%;">Place Fashion Order</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL 4: Admin Add/Edit Modal -->
+  <div class="modal-overlay" id="itemModal">
+    <div class="modal-box">
+      <button class="modal-close" onclick="closeModal('itemModal')">&times;</button>
+      <h2 id="itemModalTitle" class="serif-title" style="color: #fff; margin-bottom: 8px;">Add New Fashion Particular</h2>
+      <form onsubmit="handleSaveItem(event)">
+        <input type="hidden" id="editItemId">
+        <div class="form-group">
+          <label class="form-label">Garment Title</label>
+          <input type="text" id="itemTitle" class="form-input" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Department / Gender</label>
+          <select id="itemGender" class="form-select">
+            <option value="Women">Women</option>
+            <option value="Men">Men</option>
+            <option value="Children">Children</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Category</label>
+          <select id="itemCategory" class="form-select">
+            <option value="Casual Wear">Casual Wear</option>
+            <option value="Formal Attire">Formal Attire</option>
+            <option value="Seasonal Collections">Seasonal Collections</option>
+            <option value="Footwear">Footwear</option>
+            <option value="Accessories">Accessories</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Subcategory</label>
+          <input type="text" id="itemSubcategory" class="form-input" placeholder="e.g. Silk Blouses, Trench Coats" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Price ($)</label>
+          <input type="number" id="itemPrice" class="form-input" step="0.01" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Description & Fabric Notes</label>
+          <textarea id="itemDesc" class="form-textarea" rows="3" required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width: 100%;">Save Item</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL 5: Login (Use Case 2 & 12) -->
+  <div class="modal-overlay" id="authModal">
+    <div class="modal-box" style="max-width: 420px;">
+      <button class="modal-close" onclick="closeModal('authModal')">&times;</button>
+      <h2 class="serif-title" style="color: #fff; margin-bottom: 8px;">Fashion Portal Authentication</h2>
+      <form onsubmit="handleAuthLogin(event)">
+        <div class="form-group">
+          <label class="form-label">Username</label>
+          <input type="text" id="authUsername" class="form-input" value="emma_watson">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Role</label>
+          <select id="authRoleSelect" class="form-select">
+            <option value="Shopper">Shopper (Emma Watson)</option>
+            <option value="Admin">Administrator (Fashion Director)</option>
+          </select>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 10px;">Login</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Toast Container -->
+  <div id="toastContainer"></div>
+
+  <footer>
+    <p>Experiment 10: StyleHub Premier Online Fashion Retailer • 13 Core Use Cases & Admin Authorities</p>
+    <p style="margin-top: 4px; font-size: 0.75rem; color: var(--text-dim);">Internet Programming Laboratory • CSA4302</p>
+  </footer>
+
+  <script>
+    const CATEGORIES_DATA = [
+      { name: "Casual Wear", icon: "👗", subcategories: ["Denim & Jeans", "Oversized Tees", "Knit Sweaters", "Lounge Sets"], popular: true },
+      { name: "Formal Attire", icon: "🤵", subcategories: ["Tailored Tuxedos", "Evening Silk Gowns", "Double-Breasted Blazers", "Pencil Skirts"], popular: true },
+      { name: "Seasonal Collections", icon: "🍂", subcategories: ["Autumn Cashmere", "Winter Trench Coats", "Summer Linens", "Resort Beachwear"], popular: true },
+      { name: "Footwear", icon: "👠", subcategories: ["Stiletto Heels", "Italian Leather Oxfords", "Chunky Chelsea Boots", "Runway Sneakers"], popular: false },
+      { name: "Accessories", icon: "👜", subcategories: ["Designer Handbags", "Silk Scarves", "Statement Belts", "UV Sunglasses"], popular: false }
+    ];
+
+    const DEFAULT_PRODUCTS = [
+      { id: 1, title: "Sartorial Silk Evening Gown", gender: "Women", category: "Formal Attire", subcategory: "Evening Silk Gowns", price: 380.00, icon: "👗", desc: "100% Mulberry silk with a draped cowl neck, bias cut silhouette, and subtle champagne sheen." },
+      { id: 2, title: "Double-Breasted Wool Overcoat", gender: "Men", category: "Seasonal Collections", subcategory: "Winter Trench Coats", price: 420.00, icon: "🧥", desc: "Heavyweight virgin wool blend, horn buttons, peaked lapels, and tailored structured shoulders." },
+      { id: 3, title: "Italian Handcrafted Derby Shoes", gender: "Men", category: "Footwear", subcategory: "Italian Leather Oxfords", price: 295.00, icon: "👞", desc: "Full-grain calfskin leather with Goodyear welted leather sole and hand-burnished finish." },
+      { id: 4, title: "Cashmere Ribbed Knit Cardigan", gender: "Women", category: "Casual Wear", subcategory: "Knit Sweaters", price: 210.00, icon: "🧶", desc: "Grade-A Mongolian cashmere with relaxed drop shoulders and mother-of-pearl buttons." },
+      { id: 5, title: "Junior Velvet Holiday Blazer", gender: "Children", category: "Formal Attire", subcategory: "Double-Breasted Blazers", price: 115.00, icon: "🧒", desc: "Plush velvet dinner jacket for boys and girls with satin piping and breathable lining." },
+      { id: 6, title: "Runway Quilted Monogram Handbag", gender: "Women", category: "Accessories", subcategory: "Designer Handbags", price: 490.00, icon: "👜", desc: "Buttery soft lambskin leather with 24k gold-plated chain strap and signature turn-lock." }
+    ];
+
+    let products = JSON.parse(localStorage.getItem('style_products')) || DEFAULT_PRODUCTS;
+    let cart = JSON.parse(localStorage.getItem('style_cart')) || [];
+    let orders = JSON.parse(localStorage.getItem('style_orders')) || [
+      {
+        id: "SH-8902",
+        customerName: "Emma Watson",
+        customerEmail: "emma.watson@stylehub.com",
+        customerAddress: "5th Avenue Penthouse, New York, NY",
+        date: "2026-10-27",
+        itemsSummary: "Sartorial Silk Evening Gown (Size M, Champagne)",
+        totalAmount: 380.00,
+        status: "Delivered"
+      },
+      {
+        id: "SH-8941",
+        customerName: "Emma Watson",
+        customerEmail: "emma.watson@stylehub.com",
+        customerAddress: "5th Avenue Penthouse, New York, NY",
+        date: "2026-11-01",
+        itemsSummary: "Cashmere Ribbed Knit Cardigan (Size S, Camel)",
+        totalAmount: 210.00,
+        status: "In Transit"
+      }
+    ];
+
+    let currentRole = "Shopper";
+    let selectedCategory = "All";
+
+    function saveState() {
+      localStorage.setItem('style_products', JSON.stringify(products));
+      localStorage.setItem('style_cart', JSON.stringify(cart));
+      localStorage.setItem('style_orders', JSON.stringify(orders));
+    }
+
+    function showToast(msg) {
+      const c = document.getElementById('toastContainer');
+      const t = document.createElement('div');
+      t.className = 'toast';
+      t.innerHTML = msg;
+      c.appendChild(t);
+      setTimeout(() => t.remove(), 3500);
+    }
+
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-view').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+
+      const target = document.getElementById('tab-' + tabId);
+      if (target) target.classList.add('active');
+
+      const btn = Array.from(document.querySelectorAll('.nav-links .nav-btn')).find(b => 
+        b.getAttribute('onclick') && b.getAttribute('onclick').includes(tabId)
+      );
+      if (btn) btn.classList.add('active');
+
+      if (tabId === 'cart') renderCart();
+      if (tabId === 'orders') renderOrders();
+      if (tabId === 'admin') renderAdmin();
+    }
+
+    // Category Hierarchy
+    function renderCategoryHierarchy() {
+      const grid = document.getElementById('categoryTreeGrid');
+      grid.innerHTML = CATEGORIES_DATA.map(c => `
+        <div class="cat-tree-block ${selectedCategory === c.name ? 'active' : ''}" onclick="setCategoryFilter('${c.name}')">
+          <div style="display: flex; justify-content: space-between; align-items: center;">
+            <div style="font-weight: 700; color: #fff; font-size: 0.95rem;">${c.icon} ${c.name}</div>
+            ${c.popular ? '<span class="badge badge-primary">Popular</span>' : ''}
+          </div>
+          <div class="subcat-list">
+            ${c.subcategories.map(sub => `<span class="subcat-pill">${sub}</span>`).join('')}
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function setCategoryFilter(cat) {
+      selectedCategory = cat;
+      renderCategoryHierarchy();
+      filterProducts();
+    }
+
+    // Filter & Render
+    function filterProducts() {
+      const kw = (document.getElementById('searchInput').value || '').toLowerCase();
+      const gender = document.getElementById('genderFilter').value;
+      const grid = document.getElementById('productsGrid');
+
+      const filtered = products.filter(p => {
+        const matchCat = selectedCategory === "All" || p.category === selectedCategory;
+        const matchGender = gender === "All" || p.gender === gender;
+        const matchKw = p.title.toLowerCase().includes(kw) || p.desc.toLowerCase().includes(kw) || p.subcategory.toLowerCase().includes(kw);
+        return matchCat && matchGender && matchKw;
+      });
+
+      if (filtered.length === 0) {
+        grid.innerHTML = `<div style="grid-column: 1/-1; text-align: center; padding: 3rem; color: var(--text-dim);">No apparel found matching criteria.</div>`;
+        return;
+      }
+
+      grid.innerHTML = filtered.map(p => `
+        <div class="product-card">
+          <div class="product-img-wrap">
+            <span>${p.icon}</span>
+            <div style="position: absolute; top: 8px; right: 8px;">
+              <span class="badge badge-gold">${p.gender}</span>
+            </div>
+          </div>
+          <div style="font-size: 0.72rem; color: var(--primary); text-transform: uppercase; font-weight: 700;">${p.subcategory}</div>
+          <h3 class="product-title" onclick="showProductDetails(${p.id})">${p.title}</h3>
+          <p class="product-desc">${p.desc}</p>
+          <div class="product-price-row">
+            <div>
+              <div style="font-size: 0.72rem; color: var(--text-dim);">Couture Price</div>
+              <div class="product-price">$${p.price.toFixed(2)}</div>
+            </div>
+            <div style="display: flex; gap: 6px;">
+              <button class="btn btn-secondary btn-sm" onclick="showProductDetails(${p.id})">Fit & Size</button>
+              <button class="btn btn-primary btn-sm" onclick="quickAddToCart(${p.id})">+ Bag</button>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // Product Details & Size Selection (Use Case 11)
+    function showProductDetails(id) {
+      const p = products.find(x => x.id === id);
+      if (!p) return;
+
+      const content = document.getElementById('detailsModalContent');
+      content.innerHTML = `
+        <div style="display: flex; gap: 20px; align-items: center; margin-bottom: 1.5rem;">
+          <div style="font-size: 4rem; background: rgba(0,0,0,0.3); padding: 1.5rem; border-radius: 12px;">${p.icon}</div>
+          <div>
+            <span class="badge badge-primary">${p.category} (${p.gender})</span>
+            <h2 class="serif-title" style="color: #fff; margin-top: 6px;">${p.title}</h2>
+            <div style="color: var(--primary); font-size: 1.4rem; font-weight: 800; margin-top: 4px;">$${p.price.toFixed(2)}</div>
+            <span class="badge badge-success" style="margin-top: 4px;">In Stock - Ready to Dispatch</span>
+          </div>
+        </div>
+        <p style="color: #cbd5e1; font-size: 0.95rem; line-height: 1.6; margin-bottom: 1.25rem;">${p.desc}</p>
+        
+        <div class="form-group" style="margin-bottom: 12px;">
+          <label class="form-label">Select Runway Size (<a href="#" onclick="openSizeGuideModal()" style="color: var(--primary);">View Size Guide</a>)</label>
+          <select id="modalDetailSize" class="form-select">
+            <option value="XS">Extra Small (XS)</option>
+            <option value="S">Small (S)</option>
+            <option value="M" selected>Medium (M)</option>
+            <option value="L">Large (L)</option>
+            <option value="XL">Extra Large (XL)</option>
+          </select>
+        </div>
+
+        <div style="display: flex; justify-content: flex-end; gap: 10px; margin-top: 1.5rem;">
+          <button class="btn btn-secondary" onclick="closeModal('detailsModal')">Close</button>
+          <button class="btn btn-primary" onclick="addCustomToBag(${p.id})">+ Add to Bag</button>
+        </div>
+      `;
+
+      document.getElementById('detailsModal').classList.add('active');
+    }
+
+    function addCustomToBag(id) {
+      const p = products.find(x => x.id === id);
+      const size = document.getElementById('modalDetailSize').value;
+      cart.push({ id: p.id, title: p.title, price: p.price, size, qty: 1, icon: p.icon });
+      saveState();
+      updateCartBadge();
+      closeModal('detailsModal');
+      showToast(`Added <strong>${p.title}</strong> (Size ${size}) to shopping bag!`);
+    }
+
+    function quickAddToCart(id) {
+      const p = products.find(x => x.id === id);
+      cart.push({ id: p.id, title: p.title, price: p.price, size: "M", qty: 1, icon: p.icon });
+      saveState();
+      updateCartBadge();
+      showToast(`Added <strong>${p.title}</strong> (Size M) to shopping bag!`);
+    }
+
+    function updateCartBadge() {
+      const count = cart.reduce((acc, item) => acc + item.qty, 0);
+      document.getElementById('navCartCount').textContent = count;
+    }
+
+    function renderCart() {
+      const tbody = document.getElementById('cartTableBody');
+      if (cart.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: var(--text-dim); padding: 3rem;">Your StyleHub wardrobe bag is empty. Explore our fashion collections!</td></tr>`;
+        document.getElementById('cartSubtotal').textContent = "$0.00";
+        document.getElementById('cartTax').textContent = "$0.00";
+        document.getElementById('cartGrandTotal').textContent = "$0.00";
+        return;
+      }
+
+      tbody.innerHTML = cart.map((item, idx) => `
+        <tr>
+          <td>
+            <div style="display: flex; align-items: center; gap: 10px;">
+              <span style="font-size: 1.5rem;">${item.icon}</span>
+              <strong>${item.title}</strong>
+            </div>
+          </td>
+          <td><span class="badge badge-primary">Size ${item.size}</span></td>
+          <td>$${item.price.toFixed(2)}</td>
+          <td>
+            <div style="display: flex; align-items: center; gap: 6px;">
+              <button class="btn btn-secondary btn-sm" onclick="editCartQty(${idx}, -1)">-</button>
+              <span style="font-weight: 700; padding: 0 6px;">${item.qty}</span>
+              <button class="btn btn-secondary btn-sm" onclick="editCartQty(${idx}, 1)">+</button>
+            </div>
+          </td>
+          <td>$${(item.price * item.qty).toFixed(2)}</td>
+          <td>
+            <button class="btn btn-danger btn-sm" onclick="removeFromCart(${idx})">Remove</button>
+          </td>
+        </tr>
+      `).join('');
+
+      const subtotal = cart.reduce((acc, item) => acc + (item.price * item.qty), 0);
+      const tax = subtotal * 0.08;
+      const grandTotal = subtotal + tax;
+
+      document.getElementById('cartSubtotal').textContent = `$${subtotal.toFixed(2)}`;
+      document.getElementById('cartTax').textContent = `$${tax.toFixed(2)}`;
+      document.getElementById('cartGrandTotal').textContent = `$${grandTotal.toFixed(2)}`;
+    }
+
+    function editCartQty(idx, delta) {
+      cart[idx].qty += delta;
+      if (cart[idx].qty <= 0) {
+        cart.splice(idx, 1);
+      }
+      saveState();
+      updateCartBadge();
+      renderCart();
+    }
+
+    function removeFromCart(idx) {
+      cart.splice(idx, 1);
+      saveState();
+      updateCartBadge();
+      renderCart();
+      showToast("Garment removed from bag.");
+    }
+
+    // Checkout (Use Case 8)
+    function openCheckoutModal() {
+      if (cart.length === 0) {
+        alert("Your bag is empty. Please select garments before checkout.");
+        return;
+      }
+      const subtotal = cart.reduce((acc, item) => acc + (item.price * item.qty), 0);
+      const grandTotal = subtotal * 1.08;
+      document.getElementById('checkoutTotalVal').textContent = `$${grandTotal.toFixed(2)}`;
+      document.getElementById('checkoutModal').classList.add('active');
+    }
+
+    function handleCheckoutSubmit(e) {
+      e.preventDefault();
+      const name = document.getElementById('checkoutName').value;
+      const email = document.getElementById('checkoutEmail').value;
+      const address = document.getElementById('checkoutAddress').value;
+
+      const subtotal = cart.reduce((acc, item) => acc + (item.price * item.qty), 0);
+      const grandTotal = subtotal * 1.08;
+      const itemsSummary = cart.map(i => `${i.title} (Size ${i.size})`).join(', ');
+
+      const newOrder = {
+        id: "SH-" + Math.floor(8000 + Math.random() * 2000),
+        customerName: name,
+        customerEmail: email,
+        customerAddress: address,
+        date: new Date().toISOString().split('T')[0],
+        itemsSummary,
+        totalAmount: grandTotal,
+        status: "Processing"
+      };
+
+      orders.unshift(newOrder);
+      cart = [];
+      saveState();
+      updateCartBadge();
+      closeModal('checkoutModal');
+      
+      showToast(`✨ Fashion Order <strong>#${newOrder.id}</strong> Placed! Delivery dispatch email sent.`);
+      renderOrders();
+      renderAdmin();
+      switchTab('orders');
+    }
+
+    // Orders Tracking & History (Use Cases 9 & 10)
+    function renderOrders() {
+      const tbody = document.getElementById('ordersTableBody');
+      if (orders.length === 0) {
+        tbody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: var(--text-dim);">No orders found.</td></tr>`;
+        return;
+      }
+
+      tbody.innerHTML = orders.map(o => `
+        <tr>
+          <td><strong>#${o.id}</strong></td>
+          <td>${o.customerName}</td>
+          <td>${o.date}</td>
+          <td style="max-width: 300px;"><span style="font-size: 0.8rem; color: #cbd5e1;">${o.itemsSummary}</span></td>
+          <td>$${o.totalAmount.toFixed(2)}</td>
+          <td><span class="badge ${o.status === 'Delivered' ? 'badge-success' : 'badge-primary'}">${o.status}</span></td>
+          <td>
+            <button class="btn btn-secondary btn-sm" onclick="alert('Order #${o.id} Courier Status: ${o.status}. Expected Delivery in 2 business days.')">Track Courier</button>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    function simulateReturnInitiation() {
+      const id = prompt("Enter Order ID to initiate return or size exchange (e.g. SH-8902):", "SH-8902");
+      if (id) {
+        showToast(`🔄 Pre-paid return shipping label generated for Order #${id}. Courier pickup scheduled.`);
+      }
+    }
+
+    // Size Guide Modal
+    function openSizeGuideModal() {
+      document.getElementById('sizeGuideModal').classList.add('active');
+    }
+
+    // Admin Panel
+    function renderAdmin() {
+      const itemsBody = document.getElementById('adminItemsTableBody');
+      itemsBody.innerHTML = products.map(p => `
+        <tr>
+          <td>#${p.id}</td>
+          <td><strong>${p.title}</strong></td>
+          <td>${p.category} <span style="font-size: 0.75rem; color: var(--text-dim);">(${p.subcategory})</span></td>
+          <td><strong>$${p.price.toFixed(2)}</strong></td>
+          <td>${p.gender}</td>
+          <td>
+            <div style="display: flex; gap: 6px;">
+              <button class="btn btn-secondary btn-sm" onclick="openEditItemModal(${p.id})">Edit Price/Desc</button>
+              <button class="btn btn-danger btn-sm" onclick="adminRemoveItem(${p.id})">Remove</button>
+            </div>
+          </td>
+        </tr>
+      `).join('');
+
+      const logsBody = document.getElementById('adminCustomerLogsBody');
+      logsBody.innerHTML = orders.map(o => `
+        <tr>
+          <td><strong>#${o.id}</strong></td>
+          <td><strong>${o.customerName}</strong></td>
+          <td>${o.customerEmail}</td>
+          <td>${o.customerAddress}</td>
+          <td><span style="font-size: 0.8rem; color: #cbd5e1;">${o.itemsSummary}</span></td>
+          <td><strong style="color: var(--primary);">$${o.totalAmount.toFixed(2)}</strong></td>
+        </tr>
+      `).join('');
+    }
+
+    function openAddItemModal() {
+      document.getElementById('itemModalTitle').textContent = "Add New Fashion Particular";
+      document.getElementById('editItemId').value = "";
+      document.getElementById('itemTitle').value = "";
+      document.getElementById('itemSubcategory').value = "";
+      document.getElementById('itemPrice').value = "";
+      document.getElementById('itemDesc').value = "";
+      document.getElementById('itemModal').classList.add('active');
+    }
+
+    function openEditItemModal(id) {
+      const p = products.find(x => x.id === id);
+      if (!p) return;
+
+      document.getElementById('itemModalTitle').textContent = `Modify Garment #${p.id}`;
+      document.getElementById('editItemId').value = p.id;
+      document.getElementById('itemTitle').value = p.title;
+      document.getElementById('itemGender').value = p.gender;
+      document.getElementById('itemCategory').value = p.category;
+      document.getElementById('itemSubcategory').value = p.subcategory;
+      document.getElementById('itemPrice').value = p.price;
+      document.getElementById('itemDesc').value = p.desc;
+      document.getElementById('itemModal').classList.add('active');
+    }
+
+    function handleSaveItem(e) {
+      e.preventDefault();
+      const id = document.getElementById('editItemId').value;
+      const title = document.getElementById('itemTitle').value;
+      const gender = document.getElementById('itemGender').value;
+      const category = document.getElementById('itemCategory').value;
+      const subcategory = document.getElementById('itemSubcategory').value;
+      const price = parseFloat(document.getElementById('itemPrice').value);
+      const desc = document.getElementById('itemDesc').value;
+
+      if (id) {
+        const p = products.find(x => x.id === parseInt(id));
+        if (p) {
+          p.title = title;
+          p.gender = gender;
+          p.category = category;
+          p.subcategory = subcategory;
+          p.price = price;
+          p.desc = desc;
+          showToast(`Admin: Updated garment <strong>${title}</strong>.`);
+        }
+      } else {
+        const newProduct = {
+          id: products.length > 0 ? Math.max(...products.map(x => x.id)) + 1 : 1,
+          title,
+          gender,
+          category,
+          subcategory,
+          price,
+          icon: "👗",
+          desc
+        };
+        products.push(newProduct);
+        showToast(`Admin: Published new garment <strong>${title}</strong> to runway storefront.`);
+      }
+
+      saveState();
+      closeModal('itemModal');
+      filterProducts();
+      renderAdmin();
+    }
+
+    function adminRemoveItem(id) {
+      if (confirm(`Administrator Authority: Remove item #${id} from the catalog?`)) {
+        products = products.filter(x => x.id !== id);
+        saveState();
+        filterProducts();
+        renderAdmin();
+        showToast(`Admin: Garment #${id} removed from active catalog.`);
+      }
+    }
+
+    // Login & Logout
+    function toggleAuthModal() {
+      document.getElementById('authModal').classList.add('active');
+    }
+
+    function handleAuthLogin(e) {
+      e.preventDefault();
+      const role = document.getElementById('authRoleSelect').value;
+      const user = document.getElementById('authUsername').value;
+
+      currentRole = role;
+      document.getElementById('roleIndicator').textContent = role;
+      document.getElementById('roleIndicator').className = role === 'Admin' ? 'badge badge-danger' : 'badge badge-primary';
+      document.getElementById('userNameDisplay').textContent = role === 'Admin' ? 'Fashion Director' : user;
+
+      closeModal('authModal');
+      showToast(`Logged in successfully as <strong>${role}</strong>.`);
+      if (role === 'Admin') switchTab('admin');
+    }
+
+    function logoutUser() {
+      currentRole = "Shopper";
+      document.getElementById('roleIndicator').textContent = "Shopper";
+      document.getElementById('roleIndicator').className = "badge badge-primary";
+      document.getElementById('userNameDisplay').textContent = "Guest";
+      showToast("Logged out of session (Use Case 12).");
+    }
+
+    function leaveSite() {
+      if (confirm("Leave StyleHub fashion portal? (Use Case 13)")) {
+        window.location.href = "index.html";
+      }
+    }
+
+    function closeModal(id) {
+      document.getElementById(id).classList.remove('active');
+    }
+
+    // Init
+    window.onload = function() {
+      renderCategoryHierarchy();
+      filterProducts();
+      updateCartBadge();
+      renderOrders();
+      renderAdmin();
+    };
+  </script>
+</body>
+</html>
+

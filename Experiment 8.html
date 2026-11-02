@@ -1,0 +1,1518 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MedCare Hospital - Online Appointment Booking & Patient Management System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #0284c7;
+      --primary-hover: #0369a1;
+      --secondary: #06b6d4;
+      --accent: #10b981;
+      --danger: #ef4444;
+      --warning: #f59e0b;
+      --bg: #0b1329;
+      --card-bg: #132247;
+      --card-border: #1e3a8a;
+      --text: #f0fdf4;
+      --text-muted: #93c5fd;
+      --text-dim: #7da0ca;
+      --radius: 14px;
+      --shadow: 0 12px 30px -8px rgba(0, 0, 0, 0.6);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      background: rgba(19, 34, 71, 0.9);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--card-border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      padding: 0.85rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: #fff;
+      font-size: 1.35rem;
+      font-weight: 800;
+    }
+
+    .brand-icon {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      padding: 8px 12px;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(2, 132, 199, 0.4);
+      font-size: 1.2rem;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
+
+    .nav-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-dim);
+      padding: 8px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.9rem;
+      transition: all 0.2s;
+    }
+
+    .nav-btn:hover, .nav-btn.active {
+      color: #fff;
+      background: rgba(2, 132, 199, 0.15);
+    }
+
+    .nav-btn.active {
+      color: var(--secondary);
+      border-bottom: 2px solid var(--secondary);
+      border-radius: 8px 8px 0 0;
+    }
+
+    .user-pill {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--card-border);
+      padding: 6px 14px;
+      border-radius: 30px;
+      font-size: 0.85rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .badge {
+      padding: 3px 8px;
+      border-radius: 20px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .badge-primary { background: rgba(2, 132, 199, 0.2); color: var(--secondary); border: 1px solid var(--secondary); }
+    .badge-success { background: rgba(16, 185, 129, 0.2); color: var(--accent); border: 1px solid var(--accent); }
+    .badge-warning { background: rgba(245, 158, 11, 0.2); color: var(--warning); border: 1px solid var(--warning); }
+    .badge-danger { background: rgba(239, 68, 68, 0.2); color: var(--danger); border: 1px solid var(--danger); }
+
+    .btn {
+      padding: 9px 18px;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 0.88rem;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: white;
+      box-shadow: 0 4px 15px rgba(2, 132, 199, 0.4);
+    }
+
+    .btn-primary:hover {
+      box-shadow: 0 6px 20px rgba(2, 132, 199, 0.6);
+      transform: translateY(-2px);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.08);
+      color: #fff;
+      border: 1px solid var(--card-border);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    .btn-sm {
+      padding: 6px 12px;
+      font-size: 0.8rem;
+      border-radius: 7px;
+    }
+
+    .btn-danger {
+      background: rgba(239, 68, 68, 0.2);
+      color: var(--danger);
+      border: 1px solid var(--danger);
+    }
+
+    .btn-danger:hover {
+      background: var(--danger);
+      color: white;
+    }
+
+    main {
+      flex: 1;
+      max-width: 1350px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem;
+      width: 100%;
+    }
+
+    .tab-view {
+      display: none;
+    }
+
+    .tab-view.active {
+      display: block;
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Hero Banner */
+    .hero-banner {
+      background: linear-gradient(135deg, rgba(2, 132, 199, 0.2), rgba(6, 182, 212, 0.12));
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      padding: 2.5rem;
+      margin-bottom: 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-content h1 {
+      font-size: 2.3rem;
+      margin-bottom: 8px;
+      background: linear-gradient(to right, #fff, #93c5fd);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero-content p {
+      color: var(--text-dim);
+      max-width: 680px;
+      line-height: 1.6;
+    }
+
+    /* Search Bar Module */
+    .search-module {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr auto;
+      gap: 12px;
+      align-items: flex-end;
+      box-shadow: var(--shadow);
+    }
+
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .form-label {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .form-input, .form-select, .form-textarea {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      padding: 10px 14px;
+      color: #fff;
+      font-size: 0.9rem;
+      outline: none;
+      transition: border 0.2s;
+    }
+
+    .form-input:focus, .form-select:focus, .form-textarea:focus {
+      border-color: var(--secondary);
+    }
+
+    /* Doctors Grid */
+    .doctors-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .doctor-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      transition: all 0.3s;
+      box-shadow: var(--shadow);
+    }
+
+    .doctor-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--secondary);
+    }
+
+    .doctor-header {
+      display: flex;
+      gap: 14px;
+      align-items: center;
+      margin-bottom: 12px;
+    }
+
+    .doctor-avatar {
+      width: 70px;
+      height: 70px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.8rem;
+      border: 2px solid var(--secondary);
+      flex-shrink: 0;
+    }
+
+    .doctor-info h3 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    .doctor-spec {
+      color: var(--secondary);
+      font-size: 0.85rem;
+      font-weight: 600;
+    }
+
+    .doctor-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 10px 0;
+      font-size: 0.82rem;
+      color: var(--text-dim);
+    }
+
+    .doctor-meta span {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .doctor-footer {
+      margin-top: auto;
+      padding-top: 14px;
+      border-top: 1px solid rgba(255, 255, 255, 0.06);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .consultation-fee {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: var(--accent);
+    }
+
+    /* Hospital Profiles & Simulated Google Map */
+    .hospitals-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .hospital-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    .map-preview-box {
+      height: 180px;
+      background: #0f1c3f;
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-image: radial-gradient(rgba(2, 132, 199, 0.25) 1px, transparent 1px);
+      background-size: 18px 18px;
+    }
+
+    .map-pin {
+      position: absolute;
+      transform: translate(-50%, -50%);
+      font-size: 2rem;
+      filter: drop-shadow(0 4px 8px rgba(0,0,0,0.8));
+      cursor: pointer;
+      animation: bounce 1.8s infinite;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translate(-50%, -50%) translateY(0); }
+      50% { transform: translate(-50%, -50%) translateY(-8px); }
+    }
+
+    /* Tables */
+    .table-container {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.88rem;
+    }
+
+    th {
+      background: rgba(255, 255, 255, 0.03);
+      padding: 12px 16px;
+      font-weight: 700;
+      color: var(--text-dim);
+      border-bottom: 1px solid var(--card-border);
+    }
+
+    td {
+      padding: 14px 16px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      color: #cbd5e1;
+    }
+
+    tr:hover td {
+      background: rgba(2, 132, 199, 0.05);
+    }
+
+    /* Modals */
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(8px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      padding: 1rem;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    .modal-box {
+      background: #132247;
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      width: 100%;
+      max-width: 650px;
+      max-height: 90vh;
+      overflow-y: auto;
+      padding: 2rem;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8);
+      position: relative;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 1.25rem;
+      right: 1.25rem;
+      background: transparent;
+      border: none;
+      color: var(--text-dim);
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+
+    .slots-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .slot-pill {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      padding: 8px;
+      text-align: center;
+      font-size: 0.82rem;
+      cursor: pointer;
+      color: #fff;
+      transition: all 0.2s;
+    }
+
+    .slot-pill:hover, .slot-pill.active {
+      border-color: var(--secondary);
+      background: rgba(2, 132, 199, 0.2);
+    }
+
+    .slot-pill.active {
+      background: var(--primary);
+      font-weight: 700;
+    }
+
+    /* Stats Grid */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 1.25rem;
+      margin-bottom: 2rem;
+    }
+
+    .stat-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      padding: 1.25rem;
+      text-align: center;
+    }
+
+    .stat-val {
+      font-size: 2rem;
+      font-weight: 800;
+      color: var(--secondary);
+    }
+
+    .stat-label {
+      font-size: 0.85rem;
+      color: var(--text-dim);
+      margin-top: 4px;
+    }
+
+    /* Toast */
+    #toastContainer {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 2000;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .toast {
+      background: #10224d;
+      border: 1px solid var(--secondary);
+      color: #fff;
+      padding: 12px 18px;
+      border-radius: 10px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.7);
+      animation: slideIn 0.3s ease;
+      font-size: 0.9rem;
+    }
+
+    @keyframes slideIn {
+      from { transform: translateX(100%); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+
+    footer {
+      border-top: 1px solid var(--card-border);
+      padding: 1.5rem;
+      text-align: center;
+      font-size: 0.85rem;
+      color: var(--text-dim);
+      margin-top: auto;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header Navigation -->
+  <header>
+    <a href="#" class="brand">
+      <div class="brand-icon">🏥</div>
+      <div>
+        <span>MedCare Hospital</span>
+        <span style="font-size: 0.72rem; display: block; color: var(--secondary); font-weight: 500;">DIGITAL HEALTHCARE & CLINIC SYSTEM</span>
+      </div>
+    </a>
+
+    <div class="nav-links">
+      <button class="nav-btn active" onclick="switchTab('search')">Find Doctors & Book</button>
+      <button class="nav-btn" onclick="switchTab('hospitals')">Hospitals & Map</button>
+      <button class="nav-btn" onclick="switchTab('patient')">Patient Portal</button>
+      <button class="nav-btn" onclick="switchTab('admin')">Hospital Admin & Stats</button>
+    </div>
+
+    <div style="display: flex; align-items: center; gap: 12px;">
+      <a href="index.html" class="btn btn-secondary btn-sm" title="Back to Experiments Hub">← Hub</a>
+      <div class="user-pill">
+        <span id="roleIndicator" class="badge badge-primary">Patient</span>
+        <span id="userNameDisplay" style="font-weight: 600;">David Reynolds</span>
+        <button class="btn btn-secondary btn-sm" onclick="toggleRole()" style="padding: 3px 8px; font-size: 0.72rem;">Switch Role</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main>
+
+    <!-- TAB 1: Search Module & Find Doctors -->
+    <div id="tab-search" class="tab-view active">
+      <div class="hero-banner">
+        <div class="hero-content">
+          <span class="badge badge-primary" style="margin-bottom: 8px; display: inline-block;">HIPAA Compliant • Reduced Wait Times</span>
+          <h1>Seamless Online Doctor Appointments</h1>
+          <p>Search board-certified doctors across specialized departments and hospital networks. Complete online digital check-in to minimize clinic paperwork and receive automated email/SMS reminders.</p>
+          <div style="margin-top: 1.25rem; display: flex; gap: 12px;">
+            <button class="btn btn-primary" onclick="openBookingModal()">📅 Book Appointment Now</button>
+            <button class="btn btn-secondary" onclick="switchTab('hospitals')">Explore Hospital Locations</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Search & Filter Module -->
+      <div class="search-module">
+        <div class="form-group">
+          <label class="form-label">Location / City</label>
+          <select id="searchLocation" class="form-select" onchange="filterDoctors()">
+            <option value="All">All Metropolitan Areas</option>
+            <option value="New York, NY">New York, NY</option>
+            <option value="Boston, MA">Boston, MA</option>
+            <option value="Chicago, IL">Chicago, IL</option>
+            <option value="Houston, TX">Houston, TX</option>
+            <option value="San Francisco, CA">San Francisco, CA</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Medical Specialty</label>
+          <select id="searchSpecialty" class="form-select" onchange="filterDoctors()">
+            <option value="All">All Specialties</option>
+            <option value="Cardiology">Cardiology (Heart Care)</option>
+            <option value="Neurology">Neurology (Brain & Spine)</option>
+            <option value="Orthopedics">Orthopedics (Bones & Joints)</option>
+            <option value="Pediatrics">Pediatrics (Children's Care)</option>
+            <option value="Dermatology">Dermatology (Skin Care)</option>
+            <option value="General Medicine">General Medicine / Internal</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Doctor Name / Keyword</label>
+          <input type="text" id="searchKeyword" class="form-input" placeholder="e.g. Dr. Sarah, Harvard, surgeon..." oninput="filterDoctors()">
+        </div>
+
+        <button class="btn btn-primary" style="height: 42px;" onclick="filterDoctors()">🔍 Filter</button>
+      </div>
+
+      <!-- Doctors Grid -->
+      <div class="doctors-grid" id="doctorsGrid">
+        <!-- Rendered via JS -->
+      </div>
+    </div>
+
+    <!-- TAB 2: Hospitals & Google Maps View -->
+    <div id="tab-hospitals" class="tab-view">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+        <div>
+          <h2 style="font-size: 1.8rem; color: #fff;">Partner Hospital Facilities & Network</h2>
+          <p style="color: var(--text-dim); font-size: 0.9rem;">Register hospital facilities, inspect emergency trauma centers, and navigate using Google Maps coordinates.</p>
+        </div>
+        <button class="btn btn-primary btn-sm" onclick="openHospitalRegisterModal()">+ Register Hospital</button>
+      </div>
+
+      <div class="hospitals-grid" id="hospitalsGrid">
+        <!-- Rendered via JS -->
+      </div>
+
+      <!-- Google Map Simulation Modal Viewer -->
+      <div id="mapViewerContainer" style="background: var(--card-bg); border: 1px solid var(--card-border); border-radius: var(--radius); padding: 1.5rem;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+          <div>
+            <h3 id="activeMapHospitalTitle" style="color: var(--secondary);">MedCare Central Apex Medical Center</h3>
+            <p id="activeMapHospitalAddr" style="font-size: 0.85rem; color: var(--text-dim);">450 Lexington Ave, New York, NY 10017 • Geolocation Coordinates: 40.7512° N, 73.9754° W</p>
+          </div>
+          <span class="badge badge-success">Google Maps Live Sync</span>
+        </div>
+        
+        <div class="map-preview-box" style="height: 320px;">
+          <div class="map-pin" style="top: 48%; left: 52%;" title="Hospital Location Pin">📍</div>
+          <div style="position: absolute; bottom: 15px; left: 15px; background: rgba(11, 19, 41, 0.9); padding: 10px 14px; border-radius: 8px; border: 1px solid var(--card-border); font-size: 0.8rem;">
+            <div><strong>🏥 Facility Type:</strong> Tertiary Level-1 Trauma Hospital</div>
+            <div><strong>🚑 Emergency Hotline:</strong> (800) 555-MED-911</div>
+            <div><strong>🚗 Direct Navigation:</strong> Turn-by-Turn GPS Active</div>
+          </div>
+          <div style="position: absolute; top: 15px; right: 15px;">
+            <button class="btn btn-secondary btn-sm" onclick="simulateGoogleDirections()">Get Directions in Google Maps</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 3: Patient Portal -->
+    <div id="tab-patient" class="tab-view">
+      <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 1.5rem; margin-bottom: 2rem;">
+        <!-- Patient Profile & Check-in Details -->
+        <div style="background: var(--card-bg); border: 1px solid var(--card-border); border-radius: var(--radius); padding: 1.5rem;">
+          <h3 style="font-size: 1.25rem; margin-bottom: 1rem; color: #fff;">Patient Profile & Digital Records</h3>
+          <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 1rem;">
+            <div style="width: 55px; height: 55px; border-radius: 50%; background: linear-gradient(135deg, var(--primary), var(--secondary)); display: flex; align-items: center; justify-content: center; font-size: 1.5rem;">👨‍💼</div>
+            <div>
+              <h4 style="color: #fff;">David Reynolds</h4>
+              <p style="font-size: 0.82rem; color: var(--text-dim);">MRN: #MC-90412 • Insured: BlueCross PPO</p>
+            </div>
+          </div>
+          
+          <div class="form-group" style="margin-bottom: 10px;">
+            <label class="form-label">Emergency Contact</label>
+            <input type="text" class="form-input" id="patEmergency" value="Claire Reynolds (Spouse) - (555) 392-8810">
+          </div>
+          <div class="form-group" style="margin-bottom: 10px;">
+            <label class="form-label">Allergies / Adverse Reactions</label>
+            <input type="text" class="form-input" id="patAllergies" value="Penicillin, Peanuts (Mild)">
+          </div>
+          <div class="form-group" style="margin-bottom: 10px;">
+            <label class="form-label">Current Medications</label>
+            <input type="text" class="form-input" id="patMeds" value="Lisinopril 10mg, Multivitamin">
+          </div>
+          <button class="btn btn-primary btn-sm" onclick="savePatientDetails()">Update Digital Health Record</button>
+        </div>
+
+        <!-- Appointment Reminders & History Summary -->
+        <div style="background: var(--card-bg); border: 1px solid var(--card-border); border-radius: var(--radius); padding: 1.5rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+            <h3 style="font-size: 1.25rem; color: #fff;">Automated Appointment Reminders</h3>
+            <span class="badge badge-success">Email & SMS Dispatched</span>
+          </div>
+
+          <div style="background: rgba(2, 132, 199, 0.1); border-left: 4px solid var(--secondary); padding: 12px; border-radius: 8px; margin-bottom: 1rem; font-size: 0.85rem;">
+            <strong>📲 SMS Reminder Simulator:</strong> "Hello David, your appointment with Dr. Robert Hayes is scheduled for Nov 08 at 09:30 AM. Fasting 8 hours prior is requested. Reply 'C' to confirm."
+          </div>
+
+          <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px;">
+            <div class="stat-card" style="padding: 1rem;">
+              <div class="stat-val" id="patientUpcomingCount">1</div>
+              <div class="stat-label">Upcoming Visits</div>
+            </div>
+            <div class="stat-card" style="padding: 1rem;">
+              <div class="stat-val" id="patientPastCount">2</div>
+              <div class="stat-label">Past Consultations</div>
+            </div>
+            <div class="stat-card" style="padding: 1rem;">
+              <div class="stat-val" style="color: var(--accent);">Active</div>
+              <div class="stat-label">HIPAA Status</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Upcoming Appointments -->
+      <div style="margin-bottom: 2rem;">
+        <h3 style="font-size: 1.3rem; margin-bottom: 1rem; color: #fff;">Upcoming Appointments</h3>
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Appt ID</th>
+                <th>Doctor</th>
+                <th>Specialty & Hospital</th>
+                <th>Date & Time</th>
+                <th>Check-in Form</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="patientUpcomingBody">
+              <!-- Rendered via JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Past Appointments Management & Reviews -->
+      <div>
+        <h3 style="font-size: 1.3rem; margin-bottom: 1rem; color: #fff;">Past Appointments & Doctor Reviews</h3>
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Appt ID</th>
+                <th>Doctor</th>
+                <th>Consultation Date</th>
+                <th>Clinical Diagnosis</th>
+                <th>Patient Review</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="patientPastBody">
+              <!-- Rendered via JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 4: Admin Features & Statistics -->
+    <div id="tab-admin" class="tab-view">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+        <div>
+          <h2 style="font-size: 1.8rem; color: #fff;">MedCare Hospital Administration</h2>
+          <p style="color: var(--text-dim); font-size: 0.9rem;">Manage hospital doctors, appointment statistics, patient satisfaction ratings, and compliance protocols.</p>
+        </div>
+        <div style="display: flex; gap: 8px;">
+          <button class="btn btn-secondary btn-sm" onclick="openAddDoctorModal()">+ Add New Doctor</button>
+          <button class="btn btn-primary btn-sm" onclick="openBookingModal()">+ Schedule Appointment</button>
+        </div>
+      </div>
+
+      <!-- Stats Grid -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-val" id="adminTotalAppts">12</div>
+          <div class="stat-label">Total Appointments</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-val" id="adminActiveDoctors">6</div>
+          <div class="stat-label">Active Doctors</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-val" style="color: var(--accent);" id="adminAvgRating">4.9 ★</div>
+          <div class="stat-label">Patient Satisfaction</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-val" style="color: #38bdf8;">$1,650</div>
+          <div class="stat-label">Consultation Revenue</div>
+        </div>
+      </div>
+
+      <!-- Master Appointment Management Table -->
+      <div class="table-container" style="margin-bottom: 2rem;">
+        <div style="padding: 1rem 1.5rem; border-bottom: 1px solid var(--card-border); display: flex; justify-content: space-between; align-items: center;">
+          <h4 style="color: #fff;">Live Hospital Appointments Registry</h4>
+          <span class="badge badge-primary">Authorized Clinic Staff</span>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Patient Name</th>
+              <th>Doctor</th>
+              <th>Date & Slot</th>
+              <th>Check-in Symptoms</th>
+              <th>Status</th>
+              <th>Admin Action</th>
+            </tr>
+          </thead>
+          <tbody id="adminAppointmentsBody">
+            <!-- Rendered via JS -->
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Doctor Ratings & Reviews Feed -->
+      <div style="background: var(--card-bg); border: 1px solid var(--card-border); border-radius: var(--radius); padding: 1.5rem;">
+        <h3 style="font-size: 1.25rem; margin-bottom: 1rem; color: #fff;">Patient Feedback & Rating Details</h3>
+        <div id="adminReviewsFeed" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.25rem;">
+          <!-- Rendered via JS -->
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- MODAL: Book Appointment Wizard -->
+  <div class="modal-overlay" id="bookingModal">
+    <div class="modal-box">
+      <button class="modal-close" onclick="closeModal('bookingModal')">&times;</button>
+      <h2 style="margin-bottom: 6px; color: #fff;">Book Medical Appointment</h2>
+      <p style="color: var(--text-dim); font-size: 0.85rem; margin-bottom: 1.5rem;">Select your doctor, convenient date, and submit your pre-visit digital check-in form.</p>
+
+      <form onsubmit="handleBookAppointment(event)">
+        <div class="form-group" style="margin-bottom: 12px;">
+          <label class="form-label">Select Doctor & Specialty</label>
+          <select id="modalDoctorSelect" class="form-select" onchange="updateBookingSlots()">
+            <!-- Populated via JS -->
+          </select>
+        </div>
+
+        <div class="form-group" style="margin-bottom: 12px;">
+          <label class="form-label">Preferred Date</label>
+          <input type="date" id="modalApptDate" class="form-input" value="2026-11-09" onchange="updateBookingSlots()">
+        </div>
+
+        <div class="form-group" style="margin-bottom: 12px;">
+          <label class="form-label">Available Consultation Slot</label>
+          <div class="slots-grid" id="modalSlotsContainer">
+            <!-- Rendered via JS -->
+          </div>
+          <input type="hidden" id="modalSelectedSlot" required>
+        </div>
+
+        <!-- Check-in Form Submitting -->
+        <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid var(--card-border); border-radius: 10px; padding: 1rem; margin-bottom: 15px;">
+          <h4 style="color: var(--secondary); font-size: 0.9rem; margin-bottom: 8px;">📋 Pre-Visit Check-in Form Submission</h4>
+          <div class="form-group" style="margin-bottom: 8px;">
+            <label class="form-label">Reason for Visit / Symptoms</label>
+            <input type="text" id="modalCheckinSymptoms" class="form-input" placeholder="e.g. Mild chest tightness, annual wellness check, headache" required>
+          </div>
+          <div class="form-group" style="margin-bottom: 8px;">
+            <label class="form-label">Any Existing Medications or Allergies</label>
+            <input type="text" id="modalCheckinMeds" class="form-input" value="Lisinopril 10mg / Penicillin allergy">
+          </div>
+        </div>
+
+        <div style="display: flex; justify-content: flex-end; gap: 10px;">
+          <button type="button" class="btn btn-secondary" onclick="closeModal('bookingModal')">Cancel</button>
+          <button type="submit" class="btn btn-primary">Confirm Appointment & Submit Check-in</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: Doctor Review -->
+  <div class="modal-overlay" id="reviewModal">
+    <div class="modal-box">
+      <button class="modal-close" onclick="closeModal('reviewModal')">&times;</button>
+      <h2 style="margin-bottom: 6px; color: #fff;">Write Doctor Review</h2>
+      <p style="color: var(--text-dim); font-size: 0.85rem; margin-bottom: 1.5rem;">Help other patients choose the best care by sharing your clinical consultation experience.</p>
+      
+      <form onsubmit="handleReviewSubmit(event)">
+        <input type="hidden" id="reviewApptId">
+        <div class="form-group" style="margin-bottom: 12px;">
+          <label class="form-label">Consultation Rating</label>
+          <select id="reviewRatingSelect" class="form-select">
+            <option value="5">⭐⭐⭐⭐⭐ (5/5) - Excellent Doctor Care</option>
+            <option value="4">⭐⭐⭐⭐ (4/5) - Very Good</option>
+            <option value="3">⭐⭐⭐ (3/5) - Satisfactory</option>
+            <option value="2">⭐⭐ (2/5) - Poor</option>
+          </select>
+        </div>
+        <div class="form-group" style="margin-bottom: 15px;">
+          <label class="form-label">Your Review & Feedback</label>
+          <textarea id="reviewText" class="form-textarea" rows="3" placeholder="Doctor's bedside manner, clarity of diagnosis, clinic wait times..." required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width: 100%;">Post Doctor Review</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: Add Hospital -->
+  <div class="modal-overlay" id="hospitalModal">
+    <div class="modal-box">
+      <button class="modal-close" onclick="closeModal('hospitalModal')">&times;</button>
+      <h2 style="margin-bottom: 6px; color: #fff;">Hospital Registration</h2>
+      <p style="color: var(--text-dim); font-size: 0.85rem; margin-bottom: 1.5rem;">Add a new hospital facility, update location coordinates, and embed in Google Map directory.</p>
+      
+      <form onsubmit="handleAddHospital(event)">
+        <div class="form-group" style="margin-bottom: 10px;">
+          <label class="form-label">Hospital Name</label>
+          <input type="text" id="hospName" class="form-input" placeholder="e.g. St. Jude Healthcare Pavilion" required>
+        </div>
+        <div class="form-group" style="margin-bottom: 10px;">
+          <label class="form-label">Location / City</label>
+          <input type="text" id="hospCity" class="form-input" placeholder="e.g. Chicago, IL" required>
+        </div>
+        <div class="form-group" style="margin-bottom: 10px;">
+          <label class="form-label">Street Address</label>
+          <input type="text" id="hospAddress" class="form-input" placeholder="e.g. 780 Michigan Ave" required>
+        </div>
+        <div class="form-group" style="margin-bottom: 15px;">
+          <label class="form-label">Bed Capacity & Emergency Specialty</label>
+          <input type="text" id="hospDetails" class="form-input" placeholder="e.g. 450 Beds • 24/7 Stroke & Cardiac ICU" required>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width: 100%;">Register Hospital</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: Add Doctor (Admin) -->
+  <div class="modal-overlay" id="doctorModal">
+    <div class="modal-box">
+      <button class="modal-close" onclick="closeModal('doctorModal')">&times;</button>
+      <h2 style="margin-bottom: 6px; color: #fff;">Add New Medical Doctor</h2>
+      <p style="color: var(--text-dim); font-size: 0.85rem; margin-bottom: 1.5rem;">Onboard a certified medical doctor, set consultation fees and schedule.</p>
+      
+      <form onsubmit="handleAddDoctor(event)">
+        <div class="form-group" style="margin-bottom: 10px;">
+          <label class="form-label">Doctor Name</label>
+          <input type="text" id="docName" class="form-input" placeholder="e.g. Dr. Jennifer Collins, MD" required>
+        </div>
+        <div class="form-group" style="margin-bottom: 10px;">
+          <label class="form-label">Specialty</label>
+          <select id="docSpecialty" class="form-select">
+            <option value="Cardiology">Cardiology</option>
+            <option value="Neurology">Neurology</option>
+            <option value="Orthopedics">Orthopedics</option>
+            <option value="Pediatrics">Pediatrics</option>
+            <option value="Dermatology">Dermatology</option>
+            <option value="General Medicine">General Medicine</option>
+          </select>
+        </div>
+        <div class="form-group" style="margin-bottom: 10px;">
+          <label class="form-label">Hospital Affiliation & Location</label>
+          <input type="text" id="docHospital" class="form-input" value="MedCare Central, New York, NY" required>
+        </div>
+        <div class="form-group" style="margin-bottom: 15px;">
+          <label class="form-label">Consultation Fee ($)</label>
+          <input type="number" id="docFee" class="form-input" value="150" required>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width: 100%;">Save Doctor Profile</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Toast Container -->
+  <div id="toastContainer"></div>
+
+  <footer>
+    <p>Experiment 8: MedCare Hospital Online Appointment Booking & Healthcare System</p>
+    <p style="margin-top: 4px; font-size: 0.75rem; color: var(--text-dim);">Internet Programming Laboratory • CSA4302</p>
+  </footer>
+
+  <script>
+    // Seed Data
+    const DEFAULT_DOCTORS = [
+      { id: 1, name: "Dr. Robert Hayes, MD", specialty: "Cardiology", hospital: "MedCare Central", location: "New York, NY", qualifications: "Harvard Medical School • 14 Years Exp.", rating: 4.9, reviewsCount: 38, fee: 180, avatar: "👨‍⚕️" },
+      { id: 2, name: "Dr. Alisha Patel, MD", specialty: "Neurology", hospital: "Apex Health Pavilion", location: "Boston, MA", qualifications: "Johns Hopkins • 11 Years Exp.", rating: 4.8, reviewsCount: 29, fee: 195, avatar: "👩‍⚕️" },
+      { id: 3, name: "Dr. Marcus Vance, MD", specialty: "Orthopedics", hospital: "St. Jude General", location: "Chicago, IL", qualifications: "Mayo Clinic Fellow • 16 Years Exp.", rating: 5.0, reviewsCount: 52, fee: 165, avatar: "👨‍⚕️" },
+      { id: 4, name: "Dr. Emily Zhang, MD", specialty: "Pediatrics", hospital: "Children's Health Hub", location: "Houston, TX", qualifications: "Columbia Medical Center • 9 Years Exp.", rating: 4.9, reviewsCount: 44, fee: 130, avatar: "👩‍⚕️" },
+      { id: 5, name: "Dr. Christopher Lee, MD", specialty: "Dermatology", hospital: "Bay Area Skin Institute", location: "San Francisco, CA", qualifications: "Stanford Medicine • 12 Years Exp.", rating: 4.8, reviewsCount: 31, fee: 150, avatar: "👨‍⚕️" },
+      { id: 6, name: "Dr. Rachel Green, MD", specialty: "General Medicine", hospital: "MedCare Central", location: "New York, NY", qualifications: "NYU Grossman • 8 Years Exp.", rating: 4.7, reviewsCount: 26, fee: 110, avatar: "👩‍⚕️" }
+    ];
+
+    const DEFAULT_HOSPITALS = [
+      { id: 1, name: "MedCare Central Hospital", city: "New York, NY", address: "450 Lexington Ave, New York, NY", beds: "600 Beds • 24/7 Level-1 Trauma", lat: "40.7512", lng: "-73.9754" },
+      { id: 2, name: "Apex Health Pavilion", city: "Boston, MA", address: "200 Longwood Ave, Boston, MA", beds: "420 Beds • Neurological Center of Excellence", lat: "42.3364", lng: "-71.1030" },
+      { id: 3, name: "St. Jude General Hospital", city: "Chicago, IL", address: "840 N Michigan Ave, Chicago, IL", beds: "550 Beds • Orthopedic & Sports Medicine", lat: "41.8988", lng: "-87.6241" }
+    ];
+
+    const SLOTS = ["09:00 AM", "09:30 AM", "10:30 AM", "11:15 AM", "02:00 PM", "03:15 PM", "04:30 PM"];
+
+    let doctors = JSON.parse(localStorage.getItem('med_doctors')) || DEFAULT_DOCTORS;
+    let hospitals = JSON.parse(localStorage.getItem('med_hospitals')) || DEFAULT_HOSPITALS;
+    let appointments = JSON.parse(localStorage.getItem('med_appointments')) || [
+      {
+        id: "MC-701",
+        patientName: "David Reynolds",
+        doctorName: "Dr. Robert Hayes, MD",
+        specialty: "Cardiology",
+        hospital: "MedCare Central",
+        date: "2026-11-08",
+        timeSlot: "09:30 AM",
+        symptoms: "Routine cardiac screening & blood pressure follow up",
+        status: "Confirmed",
+        diagnosis: null,
+        rating: null,
+        review: null
+      },
+      {
+        id: "MC-694",
+        patientName: "David Reynolds",
+        doctorName: "Dr. Rachel Green, MD",
+        specialty: "General Medicine",
+        hospital: "MedCare Central",
+        date: "2026-10-15",
+        timeSlot: "11:15 AM",
+        symptoms: "Seasonal allergic rhinitis and dry cough",
+        status: "Completed",
+        diagnosis: "Mild seasonal allergies; antihistamines prescribed.",
+        rating: 5,
+        review: "Dr. Green was very thorough, listened carefully, and the medication worked within 2 days!"
+      }
+    ];
+
+    let currentRole = "Patient"; // 'Patient' or 'Hospital Admin'
+
+    function saveState() {
+      localStorage.setItem('med_doctors', JSON.stringify(doctors));
+      localStorage.setItem('med_hospitals', JSON.stringify(hospitals));
+      localStorage.setItem('med_appointments', JSON.stringify(appointments));
+    }
+
+    function showToast(msg) {
+      const c = document.getElementById('toastContainer');
+      const t = document.createElement('div');
+      t.className = 'toast';
+      t.innerHTML = msg;
+      c.appendChild(t);
+      setTimeout(() => t.remove(), 3500);
+    }
+
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-view').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+
+      const target = document.getElementById('tab-' + tabId);
+      if (target) target.classList.add('active');
+
+      const btn = Array.from(document.querySelectorAll('.nav-links .nav-btn')).find(b => 
+        b.getAttribute('onclick') && b.getAttribute('onclick').includes(tabId)
+      );
+      if (btn) btn.classList.add('active');
+
+      if (tabId === 'patient') renderPatientPortal();
+      if (tabId === 'admin') renderAdminPortal();
+    }
+
+    function toggleRole() {
+      if (currentRole === 'Patient') {
+        currentRole = 'Hospital Admin';
+        document.getElementById('roleIndicator').textContent = 'Admin / Doctor';
+        document.getElementById('roleIndicator').className = 'badge badge-warning';
+        document.getElementById('userNameDisplay').textContent = 'Dr. Robert Hayes (Chief)';
+        showToast("Switched clearance to: <strong>Hospital Admin & Medical Officer</strong>");
+      } else {
+        currentRole = 'Patient';
+        document.getElementById('roleIndicator').textContent = 'Patient';
+        document.getElementById('roleIndicator').className = 'badge badge-primary';
+        document.getElementById('userNameDisplay').textContent = 'David Reynolds';
+        showToast("Switched profile to: <strong>Patient Portal</strong>");
+      }
+    }
+
+    // Filter Doctors
+    function filterDoctors() {
+      const loc = document.getElementById('searchLocation').value;
+      const spec = document.getElementById('searchSpecialty').value;
+      const kw = (document.getElementById('searchKeyword').value || '').toLowerCase();
+
+      const grid = document.getElementById('doctorsGrid');
+      const filtered = doctors.filter(d => {
+        const matchLoc = loc === "All" || d.location === loc;
+        const matchSpec = spec === "All" || d.specialty === spec;
+        const matchKw = d.name.toLowerCase().includes(kw) || d.specialty.toLowerCase().includes(kw) || d.hospital.toLowerCase().includes(kw);
+        return matchLoc && matchSpec && matchKw;
+      });
+
+      if (filtered.length === 0) {
+        grid.innerHTML = `<div style="grid-column: 1/-1; text-align: center; padding: 3rem; color: var(--text-dim);">No doctors found matching the search criteria.</div>`;
+        return;
+      }
+
+      grid.innerHTML = filtered.map(d => `
+        <div class="doctor-card">
+          <div class="doctor-header">
+            <div class="doctor-avatar">${d.avatar}</div>
+            <div class="doctor-info">
+              <h3>${d.name}</h3>
+              <div class="doctor-spec">${d.specialty}</div>
+              <div style="font-size: 0.8rem; color: var(--text-dim);">${d.hospital}</div>
+            </div>
+          </div>
+          <p style="font-size: 0.85rem; color: #cbd5e1; margin-bottom: 8px;">${d.qualifications}</p>
+          <div class="doctor-meta">
+            <span>📍 ${d.location}</span>
+            <span>⭐ ${d.rating} (${d.reviewsCount} reviews)</span>
+          </div>
+          <div class="doctor-footer">
+            <div>
+              <div style="font-size: 0.72rem; color: var(--text-dim);">Consultation Fee</div>
+              <div class="consultation-fee">$${d.fee}</div>
+            </div>
+            <button class="btn btn-primary btn-sm" onclick="quickBookDoctor('${d.name}')">Book Appointment</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // Hospitals Grid & Map
+    function renderHospitals() {
+      const grid = document.getElementById('hospitalsGrid');
+      grid.innerHTML = hospitals.map(h => `
+        <div class="hospital-card">
+          <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+            <h3 style="color: #fff; font-size: 1.15rem;">${h.name}</h3>
+            <span class="badge badge-primary">${h.city}</span>
+          </div>
+          <div style="font-size: 0.85rem; color: var(--text-dim);">📍 ${h.address}</div>
+          <div style="font-size: 0.85rem; color: #cbd5e1;">🏥 ${h.beds}</div>
+          <div style="display: flex; gap: 8px; margin-top: 8px;">
+            <button class="btn btn-secondary btn-sm" onclick="viewHospitalMap('${h.name}', '${h.address}', '${h.lat}', '${h.lng}')">View Google Map</button>
+            <button class="btn btn-primary btn-sm" onclick="bookAtHospital('${h.name}')">Book Doctors</button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function viewHospitalMap(name, addr, lat, lng) {
+      document.getElementById('activeMapHospitalTitle').textContent = name;
+      document.getElementById('activeMapHospitalAddr').textContent = `${addr} • Geolocation Coordinates: ${lat}° N, ${lng}° W`;
+      document.getElementById('mapViewerContainer').scrollIntoView({ behavior: 'smooth' });
+      showToast(`🗺️ Google Maps centered on <strong>${name}</strong>`);
+    }
+
+    function simulateGoogleDirections() {
+      showToast("🚗 <strong>Google Maps GPS Active:</strong> Route calculated. Estimated travel time: 14 mins.");
+    }
+
+    // Booking Wizard
+    function openBookingModal() {
+      const select = document.getElementById('modalDoctorSelect');
+      select.innerHTML = doctors.map(d => `<option value="${d.name}">${d.name} (${d.specialty} - ${d.hospital})</option>`).join('');
+      updateBookingSlots();
+      document.getElementById('bookingModal').classList.add('active');
+    }
+
+    function quickBookDoctor(docName) {
+      openBookingModal();
+      document.getElementById('modalDoctorSelect').value = docName;
+      updateBookingSlots();
+    }
+
+    function bookAtHospital(hospName) {
+      switchTab('search');
+      document.getElementById('searchKeyword').value = hospName;
+      filterDoctors();
+    }
+
+    function updateBookingSlots() {
+      const container = document.getElementById('modalSlotsContainer');
+      const selectedDoc = document.getElementById('modalDoctorSelect').value;
+      const date = document.getElementById('modalApptDate').value;
+      const hiddenInput = document.getElementById('modalSelectedSlot');
+      hiddenInput.value = '';
+
+      const bookedSlots = appointments.filter(a => a.doctorName === selectedDoc && a.date === date && a.status !== 'Cancelled').map(a => a.timeSlot);
+
+      container.innerHTML = SLOTS.map(slot => {
+        const isBooked = bookedSlots.includes(slot);
+        return `
+          <div class="slot-pill ${isBooked ? 'disabled' : ''}" style="${isBooked ? 'opacity:0.3; pointer-events:none;' : ''}" onclick="selectSlot(this, '${slot}')">
+            ${slot}
+          </div>
+        `;
+      }).join('');
+    }
+
+    function selectSlot(el, slot) {
+      document.querySelectorAll('#modalSlotsContainer .slot-pill').forEach(p => p.classList.remove('active'));
+      el.classList.add('active');
+      document.getElementById('modalSelectedSlot').value = slot;
+    }
+
+    function handleBookAppointment(e) {
+      e.preventDefault();
+      const slot = document.getElementById('modalSelectedSlot').value;
+      if (!slot) {
+        alert("Please choose an available consultation time slot.");
+        return;
+      }
+
+      const docName = document.getElementById('modalDoctorSelect').value;
+      const doc = doctors.find(d => d.name === docName);
+      const date = document.getElementById('modalApptDate').value;
+      const symptoms = document.getElementById('modalCheckinSymptoms').value;
+
+      const newAppt = {
+        id: "MC-" + Math.floor(700 + Math.random() * 200),
+        patientName: currentRole === 'Patient' ? 'David Reynolds' : 'Walk-in Patient',
+        doctorName: doc.name,
+        specialty: doc.specialty,
+        hospital: doc.hospital,
+        date: date,
+        timeSlot: slot,
+        symptoms: symptoms,
+        status: "Confirmed",
+        diagnosis: null,
+        rating: null,
+        review: null
+      };
+
+      appointments.unshift(newAppt);
+      saveState();
+      closeModal('bookingModal');
+      showToast(`✅ Appointment <strong>#${newAppt.id}</strong> Confirmed! Digital check-in submitted. SMS reminder sent.`);
+      
+      renderPatientPortal();
+      renderAdminPortal();
+      switchTab('patient');
+    }
+
+    // Patient Portal
+    function renderPatientPortal() {
+      const upcoming = appointments.filter(a => a.status === 'Confirmed');
+      const past = appointments.filter(a => a.status === 'Completed' || a.status === 'Cancelled');
+
+      document.getElementById('patientUpcomingCount').textContent = upcoming.length;
+      document.getElementById('patientPastCount').textContent = past.filter(a => a.status === 'Completed').length;
+
+      const uBody = document.getElementById('patientUpcomingBody');
+      if (upcoming.length === 0) {
+        uBody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: var(--text-dim);">No upcoming appointments scheduled.</td></tr>`;
+      } else {
+        uBody.innerHTML = upcoming.map(a => `
+          <tr>
+            <td><strong>#${a.id}</strong></td>
+            <td><strong>${a.doctorName}</strong></td>
+            <td>${a.specialty} • ${a.hospital}</td>
+            <td>${a.date} at ${a.timeSlot}</td>
+            <td><span style="font-size: 0.8rem; color: #94a3b8;">${a.symptoms}</span></td>
+            <td><span class="badge badge-success">${a.status}</span></td>
+            <td>
+              <button class="btn btn-secondary btn-sm" onclick="rescheduleAppt('${a.id}')">Reschedule</button>
+              <button class="btn btn-danger btn-sm" onclick="cancelAppt('${a.id}')">Cancel</button>
+            </td>
+          </tr>
+        `).join('');
+      }
+
+      const pBody = document.getElementById('patientPastBody');
+      if (past.length === 0) {
+        pBody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: var(--text-dim);">No past consultation history.</td></tr>`;
+      } else {
+        pBody.innerHTML = past.map(a => `
+          <tr>
+            <td><strong>#${a.id}</strong></td>
+            <td>${a.doctorName}</td>
+            <td>${a.date}</td>
+            <td>${a.diagnosis || 'Standard Consultation'}</td>
+            <td>
+              ${a.rating ? `★ ${a.rating}/5 - <span style="font-size: 0.78rem; font-style: italic;">"${a.review}"</span>` : 
+                (a.status === 'Cancelled' ? '<span style="color: var(--danger);">Cancelled</span>' : '<em>Pending Review</em>')}
+            </td>
+            <td>
+              ${(!a.rating && a.status === 'Completed') ? `<button class="btn btn-primary btn-sm" onclick="openReviewModal('${a.id}')">Write Review</button>` : `<span style="font-size: 0.8rem; color: var(--text-dim);">Completed</span>`}
+            </td>
+          </tr>
+        `).join('');
+      }
+    }
+
+    function cancelAppt(id) {
+      if (confirm(`Cancel medical appointment #${id}? Clinic will be notified immediately.`)) {
+        const a = appointments.find(x => x.id === id);
+        if (a) {
+          a.status = 'Cancelled';
+          saveState();
+          showToast(`Appointment #${id} cancelled. SMS alert dispatched to patient and doctor.`);
+          renderPatientPortal();
+          renderAdminPortal();
+        }
+      }
+    }
+
+    function rescheduleAppt(id) {
+      const newDate = prompt("Enter new preferred date (YYYY-MM-DD):", "2026-11-19");
+      if (newDate) {
+        const a = appointments.find(x => x.id === id);
+        if (a) {
+          a.date = newDate;
+          saveState();
+          showToast(`Appointment #${id} successfully rescheduled to ${newDate}!`);
+          renderPatientPortal();
+          renderAdminPortal();
+        }
+      }
+    }
+
+    function savePatientDetails() {
+      showToast("Digital Health Record & Emergency Contacts updated in MedCare Cloud!");
+    }
+
+    // Review Modal
+    function openReviewModal(id) {
+      document.getElementById('reviewApptId').value = id;
+      document.getElementById('reviewModal').classList.add('active');
+    }
+
+    function handleReviewSubmit(e) {
+      e.preventDefault();
+      const id = document.getElementById('reviewApptId').value;
+      const rating = parseInt(document.getElementById('reviewRatingSelect').value);
+      const text = document.getElementById('reviewText').value;
+
+      const a = appointments.find(x => x.id === id);
+      if (a) {
+        a.rating = rating;
+        a.review = text;
+        
+        // Update doctor stats
+        const d = doctors.find(doc => doc.name === a.doctorName);
+        if (d) {
+          d.reviewsCount += 1;
+        }
+
+        saveState();
+        closeModal('reviewModal');
+        showToast("Review submitted successfully! Doctor ratings updated across the hospital network.");
+        renderPatientPortal();
+        renderAdminPortal();
+        filterDoctors();
+      }
+    }
+
+    // Admin Portal
+    function renderAdminPortal() {
+      document.getElementById('adminTotalAppts').textContent = appointments.length;
+      document.getElementById('adminActiveDoctors').textContent = doctors.length;
+
+      const tbody = document.getElementById('adminAppointmentsBody');
+      tbody.innerHTML = appointments.map(a => `
+        <tr>
+          <td><strong>#${a.id}</strong></td>
+          <td><strong>${a.patientName}</strong></td>
+          <td>${a.doctorName}</td>
+          <td>${a.date} • ${a.timeSlot}</td>
+          <td><span style="font-size: 0.8rem; color: #cbd5e1;">${a.symptoms}</span></td>
+          <td><span class="badge ${a.status === 'Confirmed' ? 'badge-success' : (a.status === 'Completed' ? 'badge-primary' : 'badge-danger')}">${a.status}</span></td>
+          <td>
+            ${a.status === 'Confirmed' ? `
+              <button class="btn btn-secondary btn-sm" onclick="markApptCompleted('${a.id}')">Complete</button>
+            ` : `<span style="font-size: 0.8rem; color: var(--text-dim);">${a.status}</span>`}
+          </td>
+        </tr>
+      `).join('');
+
+      // Reviews feed
+      const feed = document.getElementById('adminReviewsFeed');
+      const reviewed = appointments.filter(a => a.rating);
+      if (reviewed.length === 0) {
+        feed.innerHTML = `<div style="grid-column: 1/-1; color: var(--text-dim);">No patient reviews posted yet.</div>`;
+      } else {
+        feed.innerHTML = reviewed.map(r => `
+          <div style="background: rgba(255, 255, 255, 0.02); border: 1px solid var(--card-border); padding: 1rem; border-radius: 10px;">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+              <strong>${r.doctorName}</strong>
+              <span style="color: var(--accent);">★ ${r.rating}.0</span>
+            </div>
+            <div style="font-size: 0.78rem; color: var(--text-dim); margin-bottom: 8px;">Patient: ${r.patientName} (${r.date})</div>
+            <p style="font-size: 0.85rem; color: #cbd5e1; font-style: italic;">"${r.review}"</p>
+          </div>
+        `).join('');
+      }
+    }
+
+    function markApptCompleted(id) {
+      const a = appointments.find(x => x.id === id);
+      if (a) {
+        a.status = 'Completed';
+        a.diagnosis = "Consultation completed; diagnosis recorded in EHR.";
+        saveState();
+        showToast(`Consultation #${id} marked as completed. Review invite sent to patient.`);
+        renderPatientPortal();
+        renderAdminPortal();
+      }
+    }
+
+    // Hospital Registration
+    function openHospitalRegisterModal() {
+      document.getElementById('hospitalModal').classList.add('active');
+    }
+
+    function handleAddHospital(e) {
+      e.preventDefault();
+      const name = document.getElementById('hospName').value;
+      const city = document.getElementById('hospCity').value;
+      const address = document.getElementById('hospAddress').value;
+      const details = document.getElementById('hospDetails').value;
+
+      hospitals.push({
+        id: hospitals.length + 1,
+        name,
+        city,
+        address,
+        beds: details,
+        lat: (40.7 + Math.random() * 0.1).toFixed(4),
+        lng: (-73.9 - Math.random() * 0.1).toFixed(4)
+      });
+
+      saveState();
+      closeModal('hospitalModal');
+      renderHospitals();
+      showToast(`Hospital <strong>${name}</strong> registered and mapped in Google Maps.`);
+    }
+
+    // Add Doctor (Admin)
+    function openAddDoctorModal() {
+      document.getElementById('doctorModal').classList.add('active');
+    }
+
+    function handleAddDoctor(e) {
+      e.preventDefault();
+      const name = document.getElementById('docName').value;
+      const specialty = document.getElementById('docSpecialty').value;
+      const hospital = document.getElementById('docHospital').value;
+      const fee = parseInt(document.getElementById('docFee').value);
+
+      doctors.push({
+        id: doctors.length + 1,
+        name,
+        specialty,
+        hospital,
+        location: hospital.split(',')[1]?.trim() || "New York, NY",
+        qualifications: "Board Certified Specialist • Fellowship Trained",
+        rating: 5.0,
+        reviewsCount: 1,
+        fee,
+        avatar: "👨‍⚕️"
+      });
+
+      saveState();
+      closeModal('doctorModal');
+      filterDoctors();
+      renderAdminPortal();
+      showToast(`Doctor <strong>${name}</strong> added to MedCare staff schedule.`);
+    }
+
+    function closeModal(id) {
+      document.getElementById(id).classList.remove('active');
+    }
+
+    // Init
+    window.onload = function() {
+      filterDoctors();
+      renderHospitals();
+      renderPatientPortal();
+      renderAdminPortal();
+    };
+  </script>
+</body>
+</html>
+

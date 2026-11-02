@@ -1,0 +1,1271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>InsureEasy - Online Insurance Policy Management & Agent System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #6366f1;
+      --primary-hover: #4f46e5;
+      --secondary: #0ea5e9;
+      --accent: #10b981;
+      --danger: #ef4444;
+      --warning: #f59e0b;
+      --bg: #0b0f19;
+      --card-bg: #131d31;
+      --card-border: #1f3052;
+      --text: #f8fafc;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+      --radius: 14px;
+      --shadow: 0 12px 30px -8px rgba(0, 0, 0, 0.6);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .serif-title {
+      font-family: 'Playfair Display', serif;
+    }
+
+    header {
+      background: rgba(19, 29, 49, 0.92);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--card-border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      padding: 0.85rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: #fff;
+      font-size: 1.35rem;
+      font-weight: 800;
+    }
+
+    .brand-icon {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      padding: 8px 12px;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(99, 102, 241, 0.4);
+      font-size: 1.2rem;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
+
+    .nav-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-dim);
+      padding: 8px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.9rem;
+      transition: all 0.2s;
+    }
+
+    .nav-btn:hover, .nav-btn.active {
+      color: #fff;
+      background: rgba(99, 102, 241, 0.15);
+    }
+
+    .nav-btn.active {
+      color: var(--secondary);
+      border-bottom: 2px solid var(--secondary);
+      border-radius: 8px 8px 0 0;
+    }
+
+    .user-pill {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--card-border);
+      padding: 6px 14px;
+      border-radius: 30px;
+      font-size: 0.85rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .badge {
+      padding: 3px 8px;
+      border-radius: 20px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .badge-primary { background: rgba(99, 102, 241, 0.2); color: #818cf8; border: 1px solid #818cf8; }
+    .badge-secondary { background: rgba(14, 165, 233, 0.2); color: var(--secondary); border: 1px solid var(--secondary); }
+    .badge-success { background: rgba(16, 185, 129, 0.2); color: var(--accent); border: 1px solid var(--accent); }
+    .badge-warning { background: rgba(245, 158, 11, 0.2); color: var(--warning); border: 1px solid var(--warning); }
+    .badge-danger { background: rgba(239, 68, 68, 0.2); color: var(--danger); border: 1px solid var(--danger); }
+
+    .btn {
+      padding: 9px 18px;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 0.88rem;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: #fff;
+      box-shadow: 0 4px 15px rgba(99, 102, 241, 0.35);
+    }
+
+    .btn-primary:hover {
+      box-shadow: 0 6px 20px rgba(99, 102, 241, 0.55);
+      transform: translateY(-2px);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.08);
+      color: #fff;
+      border: 1px solid var(--card-border);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    .btn-sm {
+      padding: 6px 12px;
+      font-size: 0.8rem;
+      border-radius: 7px;
+    }
+
+    .btn-danger {
+      background: rgba(239, 68, 68, 0.2);
+      color: var(--danger);
+      border: 1px solid var(--danger);
+    }
+
+    .btn-danger:hover {
+      background: var(--danger);
+      color: #fff;
+    }
+
+    main {
+      flex: 1;
+      max-width: 1350px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem;
+      width: 100%;
+    }
+
+    .tab-view {
+      display: none;
+    }
+
+    .tab-view.active {
+      display: block;
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Comparison Matrix */
+    .compare-container {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .compare-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1.25rem;
+      margin-top: 1.25rem;
+    }
+
+    .compare-card {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--card-border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      transition: all 0.3s;
+    }
+
+    .compare-card:hover {
+      border-color: var(--secondary);
+      transform: translateY(-4px);
+    }
+
+    .policy-type-icon {
+      font-size: 2.8rem;
+      margin-bottom: 8px;
+    }
+
+    .policy-title {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 4px;
+    }
+
+    .policy-premium {
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: var(--secondary);
+      margin: 10px 0;
+    }
+
+    .policy-specs-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      font-size: 0.85rem;
+      color: #cbd5e1;
+      margin-bottom: 1.5rem;
+      flex: 1;
+    }
+
+    .policy-specs-list li {
+      list-style: none;
+      display: flex;
+      justify-content: space-between;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      padding-bottom: 4px;
+    }
+
+    /* Tables */
+    .table-container {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.88rem;
+    }
+
+    th {
+      background: rgba(255, 255, 255, 0.03);
+      padding: 12px 16px;
+      font-weight: 700;
+      color: var(--text-dim);
+      border-bottom: 1px solid var(--card-border);
+    }
+
+    td {
+      padding: 14px 16px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      color: #cbd5e1;
+    }
+
+    tr:hover td {
+      background: rgba(99, 102, 241, 0.05);
+    }
+
+    /* Modals */
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(8px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      padding: 1rem;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    .modal-box {
+      background: #131d31;
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      width: 100%;
+      max-width: 650px;
+      max-height: 90vh;
+      overflow-y: auto;
+      padding: 2rem;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8);
+      position: relative;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 1.25rem;
+      right: 1.25rem;
+      background: transparent;
+      border: none;
+      color: var(--text-dim);
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+
+    .form-group {
+      margin-bottom: 12px;
+    }
+
+    .form-label {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--text-muted);
+    }
+
+    .form-input, .form-select, .form-textarea {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      padding: 9px 12px;
+      color: #fff;
+      font-size: 0.9rem;
+      outline: none;
+    }
+
+    .form-input:focus, .form-select:focus, .form-textarea:focus {
+      border-color: var(--secondary);
+    }
+
+    /* Stats Grid */
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 1.25rem;
+      margin-bottom: 2rem;
+    }
+
+    .stat-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      padding: 1.25rem;
+      text-align: center;
+    }
+
+    .stat-val {
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: var(--secondary);
+    }
+
+    .stat-label {
+      font-size: 0.82rem;
+      color: var(--text-dim);
+      margin-top: 4px;
+    }
+
+    /* Toast */
+    #toastContainer {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 2000;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .toast {
+      background: #182642;
+      border: 1px solid var(--secondary);
+      color: #fff;
+      padding: 12px 18px;
+      border-radius: 10px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.7);
+      animation: slideIn 0.3s ease;
+      font-size: 0.9rem;
+    }
+
+    @keyframes slideIn {
+      from { transform: translateX(100%); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+
+    footer {
+      border-top: 1px solid var(--card-border);
+      padding: 1.5rem;
+      text-align: center;
+      font-size: 0.85rem;
+      color: var(--text-dim);
+      margin-top: auto;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <a href="#" class="brand">
+      <div class="brand-icon">🛡️</div>
+      <div>
+        <span class="serif-title">InsureEasy</span>
+        <span style="font-size: 0.72rem; display: block; color: var(--secondary); font-weight: 600;">DIGITAL INSURANCE MANAGEMENT PLATFORM</span>
+      </div>
+    </a>
+
+    <div class="nav-links">
+      <button class="nav-btn active" onclick="switchTab('compare')">Policy Comparison</button>
+      <button class="nav-btn" onclick="switchTab('user')">User Policy Dashboard</button>
+      <button class="nav-btn" onclick="switchTab('agent')">Agent Portal & SMS</button>
+      <button class="nav-btn" onclick="switchTab('admin')">Admin & Approvals</button>
+    </div>
+
+    <div style="display: flex; align-items: center; gap: 12px;">
+      <a href="index.html" class="btn btn-secondary btn-sm" title="Back to Experiments Hub">← Hub</a>
+      <div class="user-pill">
+        <span id="roleIndicator" class="badge badge-primary">User</span>
+        <span id="userNameDisplay" style="font-weight: 600;">Marcus Vance</span>
+        <button class="btn btn-secondary btn-sm" onclick="toggleAuthModal()" style="padding: 3px 8px; font-size: 0.72rem;">Switch Role</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main -->
+  <main>
+
+    <!-- Role Clearance Notice -->
+    <div style="background: rgba(99, 102, 241, 0.08); border: 1px solid var(--card-border); border-radius: var(--radius); padding: 0.9rem 1.5rem; margin-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px;">
+      <div style="font-size: 0.85rem;">
+        <strong style="color: var(--secondary);">Active View Clearance:</strong>
+        <span id="roleDescription">Logged in as Policyholder User (View policies, pay premiums, file claims, receive SMS alerts).</span>
+      </div>
+      <div style="display: flex; gap: 8px;">
+        <button class="btn btn-secondary btn-sm" onclick="quickSwitch('User')">User Role</button>
+        <button class="btn btn-secondary btn-sm" onclick="quickSwitch('Agent')">Agent Role</button>
+        <button class="btn btn-secondary btn-sm" onclick="quickSwitch('Admin')">Admin Role</button>
+      </div>
+    </div>
+
+    <!-- TAB 1: Policy Comparison Tool -->
+    <div id="tab-compare" class="tab-view active">
+      <div class="compare-container">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 12px;">
+          <div>
+            <h2 class="serif-title" style="color: #fff; font-size: 1.6rem;">Side-by-Side Insurance Policy Comparison</h2>
+            <p style="color: var(--text-dim); font-size: 0.85rem;">Compare deductibles, coverage limits, copays, and instant online applications.</p>
+          </div>
+          <button class="btn btn-primary btn-sm" onclick="openApplyPolicyModal()">+ Instant Online Application</button>
+        </div>
+
+        <div class="compare-grid" id="compareGrid">
+          <!-- Rendered via JS -->
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 2: User Dashboard (Manage Policies, Pay Premiums, File Claims, SMS) -->
+    <div id="tab-user" class="tab-view">
+      <div style="display: grid; grid-template-columns: 2fr 1fr; gap: 1.5rem; margin-bottom: 2rem;">
+        
+        <!-- Active Policies Table -->
+        <div class="table-container">
+          <div style="padding: 1rem 1.5rem; border-bottom: 1px solid var(--card-border); display: flex; justify-content: space-between; align-items: center;">
+            <h4 style="color: #fff;">My Active Insurance Policies</h4>
+            <span class="badge badge-success">Coverage Active</span>
+          </div>
+          <table>
+            <thead>
+              <tr>
+                <th>Policy No.</th>
+                <th>Coverage Type</th>
+                <th>Sum Insured</th>
+                <th>Next Premium Due</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="userPoliciesBody">
+              <!-- Rendered via JS -->
+            </tbody>
+          </table>
+        </div>
+
+        <!-- SMS Reminders & Alerts Box (Mandatory Requirement) -->
+        <div style="background: var(--card-bg); border: 1px solid var(--card-border); border-radius: var(--radius); padding: 1.5rem;">
+          <h3 style="color: #fff; font-size: 1.2rem; margin-bottom: 8px;">📲 Policyholder SMS Alerts</h3>
+          <p style="font-size: 0.82rem; color: var(--text-dim); margin-bottom: 1rem;">Automated SMS alerts transmitted by agents before and after due date.</p>
+          <div id="smsAlertsContainer" style="display: flex; flex-direction: column; gap: 10px;">
+            <!-- Rendered via JS -->
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Claims Filing & Tracker -->
+      <div style="background: var(--card-bg); border: 1px solid var(--card-border); border-radius: var(--radius); padding: 1.5rem;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
+          <div>
+            <h3 style="color: #fff; font-size: 1.25rem;">Online Insurance Claims Registry</h3>
+            <p style="color: var(--text-dim); font-size: 0.82rem;">Submit incident reports and monitor automated reimbursement status.</p>
+          </div>
+          <button class="btn btn-primary btn-sm" onclick="openFileClaimModal()">+ File New Claim</button>
+        </div>
+
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Claim ID</th>
+                <th>Policy No.</th>
+                <th>Incident Date</th>
+                <th>Claim Amount</th>
+                <th>Incident Details</th>
+                <th>Claim Status</th>
+              </tr>
+            </thead>
+            <tbody id="claimsTableBody">
+              <!-- Rendered via JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 3: Agent Portal (Register/Login, Create Customer, Send SMS Alert, Commission Dues) -->
+    <div id="tab-agent" class="tab-view">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+        <div>
+          <h2 class="serif-title" style="font-size: 1.8rem; color: #fff;">Insurance Agent Management Workspace</h2>
+          <p style="color: var(--text-dim); font-size: 0.85rem;">Manage customers, dispatch automated SMS notices before/after due date, and monitor commissions automatically.</p>
+        </div>
+        <div style="display: flex; gap: 8px;">
+          <button class="btn btn-secondary btn-sm" onclick="openAgentRegisterModal()">Agent Registration</button>
+          <button class="btn btn-primary btn-sm" onclick="openCreateCustomerModal()">+ Create New Customer</button>
+        </div>
+      </div>
+
+      <!-- Agent Commission & Dues Stat Cards (Automated Replacement of Manual Ledger) -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-val">$4,850</div>
+          <div class="stat-label">Calculated Commissions Earned</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-val" style="color: var(--accent);">$1,220</div>
+          <div class="stat-label">Pending Dues to be Disbursed</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-val" style="color: var(--warning);">18</div>
+          <div class="stat-label">Active Clients Managed</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-val" style="color: #38bdf8;">100%</div>
+          <div class="stat-label">Compliance Clearance</div>
+        </div>
+      </div>
+
+      <!-- Agent Customer Management & SMS Dispatcher -->
+      <div class="table-container">
+        <div style="padding: 1rem 1.5rem; border-bottom: 1px solid var(--card-border); display: flex; justify-content: space-between; align-items: center;">
+          <h4 style="color: #fff;">Assigned Policyholders & Renewal Management</h4>
+          <span class="badge badge-secondary">Agent License #AG-9402</span>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Client Name</th>
+              <th>Policy Assigned</th>
+              <th>Due Date</th>
+              <th>Commission Rate</th>
+              <th>Client Phone</th>
+              <th>Agent Actions</th>
+            </tr>
+          </thead>
+          <tbody id="agentClientsTableBody">
+            <!-- Rendered via JS -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- TAB 4: Admin Portal (Approve Agent Login, View Agent Details, Statistics) -->
+    <div id="tab-admin" class="tab-view">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+        <div>
+          <h2 class="serif-title" style="font-size: 1.8rem; color: #fff;">InsureEasy Administration & Compliance</h2>
+          <p style="color: var(--text-dim); font-size: 0.85rem;">Approve pending agent registrations, view all licensed agents, and oversee enterprise policy underwriting.</p>
+        </div>
+      </div>
+
+      <!-- Pending Agent Approvals Table (Mandatory Requirement) -->
+      <div class="table-container" style="margin-bottom: 2rem;">
+        <div style="padding: 1rem 1.5rem; border-bottom: 1px solid var(--card-border); display: flex; justify-content: space-between; align-items: center;">
+          <h4 style="color: #fff;">Pending Agent Registrations & Approvals</h4>
+          <span class="badge badge-warning">Admin Approval Required</span>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Agent ID</th>
+              <th>Agent Name</th>
+              <th>License No.</th>
+              <th>Email</th>
+              <th>Agency Branch</th>
+              <th>Approval Decision</th>
+            </tr>
+          </thead>
+          <tbody id="adminAgentApprovalBody">
+            <!-- Rendered via JS -->
+          </tbody>
+        </table>
+      </div>
+
+      <!-- View All Agent Details Table (Mandatory Requirement) -->
+      <div class="table-container">
+        <div style="padding: 1rem 1.5rem; border-bottom: 1px solid var(--card-border); display: flex; justify-content: space-between; align-items: center;">
+          <h4 style="color: #fff;">Authorized Agents Directory & Sales Records</h4>
+          <span class="badge badge-success">Active Field Force</span>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>Agent ID</th>
+              <th>Name</th>
+              <th>Total Policies Sold</th>
+              <th>Total Revenue</th>
+              <th>Commission Rate</th>
+              <th>Approval Status</th>
+            </tr>
+          </thead>
+          <tbody id="adminAllAgentsBody">
+            <!-- Rendered via JS -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- MODAL: Apply for Policy -->
+  <div class="modal-overlay" id="applyModal">
+    <div class="modal-box">
+      <button class="modal-close" onclick="closeModal('applyModal')">&times;</button>
+      <h2 class="serif-title" style="color: #fff; margin-bottom: 8px;">Apply for Insurance Coverage</h2>
+      <p style="color: var(--text-dim); font-size: 0.85rem; margin-bottom: 1.5rem;">Digital policy application with automated underwriting risk assessment.</p>
+
+      <form onsubmit="handleApplyPolicy(event)">
+        <div class="form-group">
+          <label class="form-label">Select Policy Plan</label>
+          <select id="applyPolicySelect" class="form-select">
+            <option value="Health Shield Comprehensive">Health Shield Comprehensive ($180/mo)</option>
+            <option value="Auto Premier Bumper-to-Bumper">Auto Premier Bumper-to-Bumper ($110/mo)</option>
+            <option value="Home & Property Citadel">Home & Property Citadel ($95/mo)</option>
+            <option value="Term Life Security Ultra">Term Life Security Ultra ($65/mo)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Beneficiary Full Name</label>
+          <input type="text" id="applyBeneficiary" class="form-input" value="Elena Vance (Spouse)" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Payment Schedule</label>
+          <select id="applyFreq" class="form-select">
+            <option value="Monthly">Monthly Recurring</option>
+            <option value="Quarterly">Quarterly (5% Discount)</option>
+            <option value="Annual">Annual Lump Sum (12% Discount)</option>
+          </select>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 10px;">Submit Application & Activate Policy</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: File Claim -->
+  <div class="modal-overlay" id="claimModal">
+    <div class="modal-box">
+      <button class="modal-close" onclick="closeModal('claimModal')">&times;</button>
+      <h2 class="serif-title" style="color: #fff; margin-bottom: 8px;">File Digital Insurance Claim</h2>
+      <p style="color: var(--text-dim); font-size: 0.85rem; margin-bottom: 1.5rem;">Submit incident loss specifics for expedited adjuster review.</p>
+
+      <form onsubmit="handleClaimSubmit(event)">
+        <div class="form-group">
+          <label class="form-label">Active Policy</label>
+          <select id="claimPolicySelect" class="form-select">
+            <option value="POL-9921">POL-9921 (Health Shield Comprehensive)</option>
+            <option value="POL-7412">POL-7412 (Auto Premier Collision)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Date of Incident</label>
+          <input type="date" id="claimDate" class="form-input" value="2026-10-30" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Estimated Loss / Claim Amount ($)</label>
+          <input type="number" id="claimAmount" class="form-input" value="1250" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Incident Description & Evidence Notes</label>
+          <textarea id="claimDesc" class="form-textarea" rows="3" placeholder="Describe the occurrence (e.g. emergency room consultation, collision damage)..." required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width: 100%;">Submit Claim for Settlement</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: Agent Registration (Admin Approval Required) -->
+  <div class="modal-overlay" id="agentRegisterModal">
+    <div class="modal-box">
+      <button class="modal-close" onclick="closeModal('agentRegisterModal')">&times;</button>
+      <h2 class="serif-title" style="color: #fff; margin-bottom: 8px;">Insurance Agent Registration</h2>
+      <p style="color: var(--text-dim); font-size: 0.85rem; margin-bottom: 1.5rem;">Submit license and credentials to administrator for approval.</p>
+
+      <form onsubmit="handleAgentRegisterSubmit(event)">
+        <div class="form-group">
+          <label class="form-label">Agent Full Name</label>
+          <input type="text" id="regAgentName" class="form-input" placeholder="e.g. Rachel Sterling" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">License Number</label>
+          <input type="text" id="regAgentLicense" class="form-input" placeholder="e.g. LIC-NY-88910" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Agency Branch</label>
+          <input type="text" id="regAgentBranch" class="form-input" placeholder="e.g. Metropolitan Northeast Branch" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Email Address</label>
+          <input type="email" id="regAgentEmail" class="form-input" placeholder="e.g. rachel@insureeasy.com" required>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width: 100%;">Submit for Admin Approval</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: Create Customer (Agent Action) -->
+  <div class="modal-overlay" id="createCustomerModal">
+    <div class="modal-box">
+      <button class="modal-close" onclick="closeModal('createCustomerModal')">&times;</button>
+      <h2 class="serif-title" style="color: #fff; margin-bottom: 8px;">Agent: Onboard New Customer</h2>
+      <p style="color: var(--text-dim); font-size: 0.85rem; margin-bottom: 1.5rem;">Register a customer, assign policies, and configure SMS renewal alerts.</p>
+
+      <form onsubmit="handleCreateCustomerSubmit(event)">
+        <div class="form-group">
+          <label class="form-label">Customer Name</label>
+          <input type="text" id="newCustName" class="form-input" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Contact Phone (For SMS Alerts)</label>
+          <input type="tel" id="newCustPhone" class="form-input" placeholder="+1 (555) 000-0000" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Policy to Assign</label>
+          <select id="newCustPolicy" class="form-select">
+            <option value="Health Shield Comprehensive">Health Shield Comprehensive</option>
+            <option value="Auto Premier Bumper-to-Bumper">Auto Premier Bumper-to-Bumper</option>
+            <option value="Home & Property Citadel">Home & Property Citadel</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">First Premium Due Date</label>
+          <input type="date" id="newCustDueDate" class="form-input" value="2026-11-20" required>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width: 100%;">Create Customer & Setup Alerts</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: Auth / Role Switch -->
+  <div class="modal-overlay" id="authModal">
+    <div class="modal-box" style="max-width: 420px;">
+      <button class="modal-close" onclick="closeModal('authModal')">&times;</button>
+      <h2 class="serif-title" style="color: #fff; margin-bottom: 8px;">Switch Role Clearance</h2>
+      <div style="display: flex; flex-direction: column; gap: 10px; margin-top: 15px;">
+        <button class="btn btn-secondary" onclick="quickSwitch('User'); closeModal('authModal');">Log in as Policyholder User</button>
+        <button class="btn btn-secondary" onclick="quickSwitch('Agent'); closeModal('authModal');">Log in as Field Insurance Agent</button>
+        <button class="btn btn-secondary" onclick="quickSwitch('Admin'); closeModal('authModal');">Log in as System Administrator</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Container -->
+  <div id="toastContainer"></div>
+
+  <footer>
+    <p>Experiment 12: InsureEasy Online Insurance Management Platform • Multi-Role Agent & Policyholder Portal</p>
+    <p style="margin-top: 4px; font-size: 0.75rem; color: var(--text-dim);">Internet Programming Laboratory • CSA4302</p>
+  </footer>
+
+  <script>
+    const COMPARISON_POLICIES = [
+      {
+        type: "Health",
+        icon: "🩺",
+        name: "Health Shield Comprehensive",
+        premium: "$180",
+        deductible: "$500",
+        coverageLimit: "$1,000,000",
+        copay: "10%",
+        features: ["Inpatient & Outpatient Hospitalization", "Prescription Drug Benefit (90%)", "Global Emergency Medical Evacuation", "Annual Preventive Health Screening"]
+      },
+      {
+        type: "Auto",
+        icon: "🚗",
+        name: "Auto Premier Bumper-to-Bumper",
+        premium: "$110",
+        deductible: "$250",
+        coverageLimit: "$500,000",
+        copay: "0%",
+        features: ["Collision & Comprehensive Loss", "Uninsured Motorist Protection", "24/7 Roadside Towing Concierge", "Rental Car Reimbursement Up to 30 Days"]
+      },
+      {
+        type: "Home",
+        icon: "🏡",
+        name: "Home & Property Citadel",
+        premium: "$95",
+        deductible: "$1,000",
+        coverageLimit: "$750,000",
+        copay: "0%",
+        features: ["Dwelling Structural Repair", "Personal Valuables & Jewelry Floater", "Liability & Medical Guest Protection", "Alternative Living Expenses during repairs"]
+      },
+      {
+        type: "Life",
+        icon: "🌱",
+        name: "Term Life Security Ultra",
+        premium: "$65",
+        deductible: "$0",
+        coverageLimit: "$1,500,000",
+        copay: "0%",
+        features: ["Guaranteed Level Premium for 25 Years", "Tax-Free Lump Sum Death Benefit", "Terminal Illness Accelerated Payout", "Convertible to Whole Life Policy"]
+      }
+    ];
+
+    let userPolicies = JSON.parse(localStorage.getItem('insure_user_policies')) || [
+      { id: "POL-9921", type: "Health Shield Comprehensive", sumInsured: "$1,000,000", dueDate: "2026-11-15", status: "Active" },
+      { id: "POL-7412", type: "Auto Premier Bumper-to-Bumper", sumInsured: "$500,000", dueDate: "2026-11-04", status: "Due Soon" }
+    ];
+
+    let claims = JSON.parse(localStorage.getItem('insure_claims')) || [
+      { id: "CLM-3104", policyId: "POL-9921", date: "2026-10-18", amount: "$640.00", desc: "Outpatient orthopedic consult and MRI diagnostics", status: "Settled" }
+    ];
+
+    let smsAlerts = JSON.parse(localStorage.getItem('insure_sms')) || [
+      { id: 1, title: "Upcoming Premium Due Alert", msg: "Hello Marcus, reminder that premium for POL-7412 is due on Nov 04. Pay online via InsureEasy to avoid late surcharges.", time: "2 hours ago" }
+    ];
+
+    let agentClients = JSON.parse(localStorage.getItem('insure_agent_clients')) || [
+      { name: "Marcus Vance", policy: "Health Shield Comprehensive", dueDate: "2026-11-15", commission: "12% ($21.60/mo)", phone: "+1 (555) 781-9921" },
+      { name: "Sophia Martinez", policy: "Auto Premier Bumper-to-Bumper", dueDate: "2026-11-04", commission: "10% ($11.00/mo)", phone: "+1 (555) 492-3810" },
+      { name: "Alexander Drake", policy: "Home & Property Citadel", dueDate: "2026-10-28", commission: "15% ($14.25/mo)", phone: "+1 (555) 902-1144" }
+    ];
+
+    let pendingAgents = JSON.parse(localStorage.getItem('insure_pending_agents')) || [
+      { id: "AG-9051", name: "Rachel Sterling", license: "LIC-NY-88910", email: "rachel@insureeasy.com", branch: "Northeast Metro" }
+    ];
+
+    let approvedAgents = JSON.parse(localStorage.getItem('insure_approved_agents')) || [
+      { id: "AG-9402", name: "David Sterling", sales: 48, revenue: "$48,500", commission: "12%", status: "Approved" },
+      { id: "AG-9118", name: "Claire Dupont", sales: 32, revenue: "$34,200", commission: "10%", status: "Approved" }
+    ];
+
+    let currentRole = "User"; // 'User', 'Agent', 'Admin'
+
+    function saveState() {
+      localStorage.setItem('insure_user_policies', JSON.stringify(userPolicies));
+      localStorage.setItem('insure_claims', JSON.stringify(claims));
+      localStorage.setItem('insure_sms', JSON.stringify(smsAlerts));
+      localStorage.setItem('insure_agent_clients', JSON.stringify(agentClients));
+      localStorage.setItem('insure_pending_agents', JSON.stringify(pendingAgents));
+      localStorage.setItem('insure_approved_agents', JSON.stringify(approvedAgents));
+    }
+
+    function showToast(msg) {
+      const c = document.getElementById('toastContainer');
+      const t = document.createElement('div');
+      t.className = 'toast';
+      t.innerHTML = msg;
+      c.appendChild(t);
+      setTimeout(() => t.remove(), 3500);
+    }
+
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-view').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+
+      const target = document.getElementById('tab-' + tabId);
+      if (target) target.classList.add('active');
+
+      const btn = Array.from(document.querySelectorAll('.nav-links .nav-btn')).find(b => 
+        b.getAttribute('onclick') && b.getAttribute('onclick').includes(tabId)
+      );
+      if (btn) btn.classList.add('active');
+
+      if (tabId === 'user') renderUserDashboard();
+      if (tabId === 'agent') renderAgentDashboard();
+      if (tabId === 'admin') renderAdminDashboard();
+    }
+
+    function quickSwitch(role) {
+      currentRole = role;
+      document.getElementById('roleIndicator').textContent = role;
+      const desc = document.getElementById('roleDescription');
+
+      if (role === 'User') {
+        document.getElementById('roleIndicator').className = 'badge badge-primary';
+        document.getElementById('userNameDisplay').textContent = 'Marcus Vance';
+        desc.textContent = "Logged in as Policyholder User (View policies, pay premiums, file claims, receive SMS alerts).";
+        switchTab('user');
+      } else if (role === 'Agent') {
+        document.getElementById('roleIndicator').className = 'badge badge-secondary';
+        document.getElementById('userNameDisplay').textContent = 'David Sterling (Agent)';
+        desc.textContent = "Logged in as Insurance Agent (Onboard customers, dispatch SMS renewal notices, monitor commission dues).";
+        switchTab('agent');
+      } else if (role === 'Admin') {
+        document.getElementById('roleIndicator').className = 'badge badge-danger';
+        document.getElementById('userNameDisplay').textContent = 'Chief Underwriter';
+        desc.textContent = "Logged in as Administrator (Approve pending agent licenses, audit sales records, enterprise analytics).";
+        switchTab('admin');
+      }
+
+      showToast(`Switched view to <strong>${role} Clearance</strong>.`);
+    }
+
+    function toggleAuthModal() {
+      document.getElementById('authModal').classList.add('active');
+    }
+
+    // Policy Comparison
+    function renderComparison() {
+      const grid = document.getElementById('compareGrid');
+      grid.innerHTML = COMPARISON_POLICIES.map(p => `
+        <div class="compare-card">
+          <div class="policy-type-icon">${p.icon}</div>
+          <span class="badge badge-primary" style="align-self: flex-start; margin-bottom: 6px;">${p.type} Coverage</span>
+          <h3 class="policy-title">${p.name}</h3>
+          <div class="policy-premium">${p.premium} <span style="font-size: 0.85rem; color: var(--text-dim); font-weight: normal;">/ month</span></div>
+          <ul class="policy-specs-list">
+            <li><span>Deductible:</span> <strong>${p.deductible}</strong></li>
+            <li><span>Max Coverage:</span> <strong>${p.coverageLimit}</strong></li>
+            <li><span>Copay:</span> <strong>${p.copay}</strong></li>
+            ${p.features.map(f => `<li><span style="font-size: 0.78rem;">✓ ${f}</span></li>`).join('')}
+          </ul>
+          <button class="btn btn-primary btn-sm" style="width: 100%; justify-content: center;" onclick="quickApplyPolicy('${p.name}')">Apply Online</button>
+        </div>
+      `).join('');
+    }
+
+    function quickApplyPolicy(policyName) {
+      document.getElementById('applyPolicySelect').value = policyName;
+      document.getElementById('applyModal').classList.add('active');
+    }
+
+    function openApplyPolicyModal() {
+      document.getElementById('applyModal').classList.add('active');
+    }
+
+    function handleApplyPolicy(e) {
+      e.preventDefault();
+      const plan = document.getElementById('applyPolicySelect').value;
+      const beneficiary = document.getElementById('applyBeneficiary').value;
+
+      const newPolicy = {
+        id: "POL-" + Math.floor(1000 + Math.random() * 9000),
+        type: plan,
+        sumInsured: "$1,000,000",
+        dueDate: "2026-12-01",
+        status: "Active"
+      };
+
+      userPolicies.push(newPolicy);
+      saveState();
+      closeModal('applyModal');
+      showToast(`🎉 Application approved! Policy <strong>#${newPolicy.id}</strong> issued for beneficiary ${beneficiary}.`);
+      renderUserDashboard();
+      switchTab('user');
+    }
+
+    // User Dashboard
+    function renderUserDashboard() {
+      const pBody = document.getElementById('userPoliciesBody');
+      pBody.innerHTML = userPolicies.map(p => `
+        <tr>
+          <td><strong>#${p.id}</strong></td>
+          <td>${p.type}</td>
+          <td>${p.sumInsured}</td>
+          <td>${p.dueDate}</td>
+          <td><span class="badge ${p.status === 'Active' ? 'badge-success' : 'badge-warning'}">${p.status}</span></td>
+          <td>
+            <button class="btn btn-secondary btn-sm" onclick="payPremium('${p.id}')">💳 Pay Premium</button>
+          </td>
+        </tr>
+      `).join('');
+
+      // SMS Alerts Box
+      const sBox = document.getElementById('smsAlertsContainer');
+      sBox.innerHTML = smsAlerts.map(s => `
+        <div style="background: rgba(255, 255, 255, 0.02); border: 1px solid var(--card-border); padding: 10px; border-radius: 8px;">
+          <div style="display: flex; justify-content: space-between; margin-bottom: 4px;">
+            <strong style="color: var(--secondary); font-size: 0.85rem;">${s.title}</strong>
+            <span style="font-size: 0.72rem; color: var(--text-dim);">${s.time}</span>
+          </div>
+          <p style="font-size: 0.8rem; color: #cbd5e1;">${s.msg}</p>
+        </div>
+      `).join('');
+
+      // Claims Table
+      const cBody = document.getElementById('claimsTableBody');
+      cBody.innerHTML = claims.map(c => `
+        <tr>
+          <td><strong>#${c.id}</strong></td>
+          <td>${c.policyId}</td>
+          <td>${c.date}</td>
+          <td><strong>${c.amount}</strong></td>
+          <td><span style="font-size: 0.82rem; color: var(--text-dim);">${c.desc}</span></td>
+          <td><span class="badge ${c.status === 'Settled' ? 'badge-success' : 'badge-primary'}">${c.status}</span></td>
+        </tr>
+      `).join('');
+    }
+
+    function payPremium(id) {
+      showToast(`✅ Payment received for policy #${id}! Digital tax receipt downloaded.`);
+      const p = userPolicies.find(x => x.id === id);
+      if (p) {
+        p.status = 'Active';
+        p.dueDate = '2026-12-15';
+        saveState();
+        renderUserDashboard();
+      }
+    }
+
+    // File Claim Modal
+    function openFileClaimModal() {
+      document.getElementById('claimModal').classList.add('active');
+    }
+
+    function handleClaimSubmit(e) {
+      e.preventDefault();
+      const policyId = document.getElementById('claimPolicySelect').value;
+      const date = document.getElementById('claimDate').value;
+      const amount = "$" + parseFloat(document.getElementById('claimAmount').value).toFixed(2);
+      const desc = document.getElementById('claimDesc').value;
+
+      const newClaim = {
+        id: "CLM-" + Math.floor(3000 + Math.random() * 2000),
+        policyId,
+        date,
+        amount,
+        desc,
+        status: "Reviewing"
+      };
+
+      claims.unshift(newClaim);
+      saveState();
+      closeModal('claimModal');
+      showToast(`Claim <strong>#${newClaim.id}</strong> submitted! Adjuster notified for priority settlement.`);
+      renderUserDashboard();
+    }
+
+    // Agent Portal
+    function renderAgentDashboard() {
+      const cBody = document.getElementById('agentClientsTableBody');
+      cBody.innerHTML = agentClients.map(c => `
+        <tr>
+          <td><strong>${c.name}</strong></td>
+          <td>${c.policy}</td>
+          <td>${c.dueDate}</td>
+          <td><strong style="color: var(--accent);">${c.commission}</strong></td>
+          <td>${c.phone}</td>
+          <td>
+            <div style="display: flex; gap: 6px;">
+              <button class="btn btn-secondary btn-sm" onclick="sendAgentSMS('${c.name}', '${c.phone}', 'before', '${c.dueDate}')">📲 Send Due SMS</button>
+              <button class="btn btn-danger btn-sm" onclick="sendAgentSMS('${c.name}', '${c.phone}', 'overdue', '${c.dueDate}')">⚠️ Overdue Alert</button>
+            </div>
+          </td>
+        </tr>
+      `).join('');
+    }
+
+    function sendAgentSMS(clientName, phone, type, dueDate) {
+      let msg = "";
+      if (type === 'before') {
+        msg = `Hello ${clientName}, friendly reminder that your policy renewal is due on ${dueDate}. Please pay to continue uninterrupted coverage.`;
+      } else {
+        msg = `URGENT: ${clientName}, your policy payment past due date (${dueDate}). Avoid policy lapse by settling dues immediately.`;
+      }
+
+      smsAlerts.unshift({
+        id: Date.now(),
+        title: type === 'before' ? `Upcoming Renewal Notice to ${clientName}` : `Urgent Overdue Alert to ${clientName}`,
+        msg,
+        time: "Just now"
+      });
+
+      saveState();
+      showToast(`📲 <strong>SMS Sent to ${phone}:</strong> "${msg}"`);
+      renderUserDashboard();
+    }
+
+    function openAgentRegisterModal() {
+      document.getElementById('agentRegisterModal').classList.add('active');
+    }
+
+    function handleAgentRegisterSubmit(e) {
+      e.preventDefault();
+      const name = document.getElementById('regAgentName').value;
+      const license = document.getElementById('regAgentLicense').value;
+      const branch = document.getElementById('regAgentBranch').value;
+      const email = document.getElementById('regAgentEmail').value;
+
+      pendingAgents.push({
+        id: "AG-" + Math.floor(9000 + Math.random() * 900),
+        name,
+        license,
+        email,
+        branch
+      });
+
+      saveState();
+      closeModal('agentRegisterModal');
+      showToast(`Agent application submitted for <strong>${name}</strong>. Awaiting administrator approval.`);
+      renderAdminDashboard();
+    }
+
+    function openCreateCustomerModal() {
+      document.getElementById('createCustomerModal').classList.add('active');
+    }
+
+    function handleCreateCustomerSubmit(e) {
+      e.preventDefault();
+      const name = document.getElementById('newCustName').value;
+      const phone = document.getElementById('newCustPhone').value;
+      const policy = document.getElementById('newCustPolicy').value;
+      const dueDate = document.getElementById('newCustDueDate').value;
+
+      agentClients.unshift({
+        name,
+        policy,
+        dueDate,
+        commission: "12% ($18.00/mo)",
+        phone
+      });
+
+      saveState();
+      closeModal('createCustomerModal');
+      showToast(`Customer <strong>${name}</strong> onboarded and assigned to ${policy}!`);
+      renderAgentDashboard();
+    }
+
+    // Admin Dashboard
+    function renderAdminDashboard() {
+      // Pending approvals
+      const pBody = document.getElementById('adminAgentApprovalBody');
+      if (pendingAgents.length === 0) {
+        pBody.innerHTML = `<tr><td colspan="6" style="text-align: center; color: var(--text-dim);">No pending agent registrations requiring review.</td></tr>`;
+      } else {
+        pBody.innerHTML = pendingAgents.map(a => `
+          <tr>
+            <td><strong>#${a.id}</strong></td>
+            <td>${a.name}</td>
+            <td>${a.license}</td>
+            <td>${a.email}</td>
+            <td>${a.branch}</td>
+            <td>
+              <div style="display: flex; gap: 6px;">
+                <button class="btn btn-primary btn-sm" onclick="approveAgent('${a.id}')">Approve</button>
+                <button class="btn btn-danger btn-sm" onclick="rejectAgent('${a.id}')">Reject</button>
+              </div>
+            </td>
+          </tr>
+        `).join('');
+      }
+
+      // Approved agents
+      const aBody = document.getElementById('adminAllAgentsBody');
+      aBody.innerHTML = approvedAgents.map(a => `
+        <tr>
+          <td><strong>#${a.id}</strong></td>
+          <td><strong>${a.name}</strong></td>
+          <td>${a.sales} Policies</td>
+          <td>${a.revenue}</td>
+          <td>${a.commission}</td>
+          <td><span class="badge badge-success">${a.status}</span></td>
+        </tr>
+      `).join('');
+    }
+
+    function approveAgent(id) {
+      const agent = pendingAgents.find(x => x.id === id);
+      if (agent) {
+        pendingAgents = pendingAgents.filter(x => x.id !== id);
+        approvedAgents.push({
+          id: agent.id,
+          name: agent.name,
+          sales: 0,
+          revenue: "$0",
+          commission: "10%",
+          status: "Approved"
+        });
+        saveState();
+        showToast(`Agent <strong>${agent.name}</strong> approved! Credentials cleared for system login.`);
+        renderAdminDashboard();
+      }
+    }
+
+    function rejectAgent(id) {
+      pendingAgents = pendingAgents.filter(x => x.id !== id);
+      saveState();
+      showToast(`Agent application rejected.`);
+      renderAdminDashboard();
+    }
+
+    function closeModal(id) {
+      document.getElementById(id).classList.remove('active');
+    }
+
+    // Init
+    window.onload = function() {
+      renderComparison();
+      renderUserDashboard();
+      renderAgentDashboard();
+      renderAdminDashboard();
+    };
+  </script>
+</body>
+</html>
+

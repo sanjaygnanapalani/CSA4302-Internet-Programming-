@@ -1,0 +1,1757 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BellaAura - Luxury Beauty Parlour & Spa Appointment System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --primary: #ec4899;
+      --primary-hover: #db2777;
+      --secondary: #a855f7;
+      --accent: #f59e0b;
+      --bg: #120917;
+      --card-bg: #1e1026;
+      --card-border: #381a49;
+      --text: #fdf2f8;
+      --text-muted: #f472b6;
+      --text-dim: #9d7d9e;
+      --success: #10b981;
+      --danger: #ef4444;
+      --warning: #f59e0b;
+      --radius: 14px;
+      --shadow: 0 12px 30px -8px rgba(0, 0, 0, 0.6);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .serif-title {
+      font-family: 'Playfair Display', serif;
+    }
+
+    header {
+      background: rgba(30, 16, 38, 0.88);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--card-border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      padding: 0.85rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: #fff;
+      font-size: 1.35rem;
+      font-weight: 800;
+    }
+
+    .brand-icon {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      padding: 8px 12px;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(236, 72, 153, 0.4);
+      font-size: 1.2rem;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 6px;
+      align-items: center;
+    }
+
+    .nav-btn {
+      background: transparent;
+      border: none;
+      color: var(--text-dim);
+      padding: 8px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.9rem;
+      transition: all 0.2s;
+    }
+
+    .nav-btn:hover, .nav-btn.active {
+      color: #fff;
+      background: rgba(236, 72, 153, 0.15);
+    }
+
+    .nav-btn.active {
+      color: var(--primary);
+      border-bottom: 2px solid var(--primary);
+      border-radius: 8px 8px 0 0;
+    }
+
+    .user-pill {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--card-border);
+      padding: 6px 14px;
+      border-radius: 30px;
+      font-size: 0.85rem;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .badge {
+      padding: 3px 8px;
+      border-radius: 20px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .badge-primary { background: rgba(236, 72, 153, 0.2); color: var(--primary); border: 1px solid var(--primary); }
+    .badge-success { background: rgba(16, 185, 129, 0.2); color: var(--success); border: 1px solid var(--success); }
+    .badge-warning { background: rgba(245, 158, 11, 0.2); color: var(--warning); border: 1px solid var(--warning); }
+    .badge-danger { background: rgba(239, 68, 68, 0.2); color: var(--danger); border: 1px solid var(--danger); }
+
+    .btn {
+      padding: 9px 18px;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 0.88rem;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      text-decoration: none;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      color: white;
+      box-shadow: 0 4px 15px rgba(236, 72, 153, 0.4);
+    }
+
+    .btn-primary:hover {
+      box-shadow: 0 6px 20px rgba(236, 72, 153, 0.6);
+      transform: translateY(-2px);
+    }
+
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.08);
+      color: #fff;
+      border: 1px solid var(--card-border);
+    }
+
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    .btn-sm {
+      padding: 6px 12px;
+      font-size: 0.8rem;
+      border-radius: 7px;
+    }
+
+    .btn-danger {
+      background: rgba(239, 68, 68, 0.2);
+      color: var(--danger);
+      border: 1px solid var(--danger);
+    }
+
+    .btn-danger:hover {
+      background: var(--danger);
+      color: white;
+    }
+
+    main {
+      flex: 1;
+      max-width: 1350px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem;
+      width: 100%;
+    }
+
+    .tab-view {
+      display: none;
+    }
+
+    .tab-view.active {
+      display: block;
+      animation: fadeIn 0.3s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Hero Banner */
+    .hero-banner {
+      background: linear-gradient(135deg, rgba(236, 72, 153, 0.15), rgba(168, 85, 247, 0.12));
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      padding: 2.5rem;
+      margin-bottom: 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-banner::after {
+      content: '✨';
+      position: absolute;
+      right: 20px;
+      bottom: -15px;
+      font-size: 7rem;
+      opacity: 0.07;
+      pointer-events: none;
+    }
+
+    .hero-content h1 {
+      font-size: 2.3rem;
+      margin-bottom: 8px;
+      background: linear-gradient(to right, #fff, #f472b6);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .hero-content p {
+      color: var(--text-dim);
+      max-width: 650px;
+      line-height: 1.6;
+    }
+
+    /* Service Cards Grid */
+    .filter-bar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-bottom: 1.75rem;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .cat-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .cat-pill {
+      padding: 7px 16px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      color: var(--text-dim);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+
+    .cat-pill.active, .cat-pill:hover {
+      background: var(--primary);
+      color: white;
+      border-color: var(--primary);
+    }
+
+    .search-box {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      padding: 8px 14px;
+      border-radius: 10px;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      min-width: 260px;
+    }
+
+    .search-box input {
+      background: transparent;
+      border: none;
+      color: #fff;
+      outline: none;
+      width: 100%;
+      font-size: 0.9rem;
+    }
+
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .service-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      transition: all 0.3s;
+      box-shadow: var(--shadow);
+      position: relative;
+    }
+
+    .service-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--primary);
+    }
+
+    .service-img {
+      height: 180px;
+      width: 100%;
+      object-fit: cover;
+      background: #2a1535;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 3rem;
+    }
+
+    .service-body {
+      padding: 1.25rem;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+
+    .service-title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 6px;
+    }
+
+    .service-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 8px 0;
+      font-size: 0.85rem;
+      color: var(--text-dim);
+    }
+
+    .service-price {
+      font-size: 1.3rem;
+      font-weight: 800;
+      color: var(--primary);
+    }
+
+    .service-desc {
+      font-size: 0.88rem;
+      color: #cbd5e1;
+      margin-bottom: 1rem;
+      flex: 1;
+      line-height: 1.5;
+    }
+
+    /* Stylist Section */
+    .stylists-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(290px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .stylist-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      text-align: center;
+      transition: all 0.3s;
+      position: relative;
+    }
+
+    .stylist-card:hover {
+      border-color: var(--secondary);
+      transform: translateY(-4px);
+    }
+
+    .stylist-avatar {
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      margin: 0 auto 12px;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.2rem;
+      border: 3px solid #381a49;
+    }
+
+    .stylist-name {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 4px;
+    }
+
+    .stylist-spec {
+      color: var(--primary);
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 8px;
+    }
+
+    .stylist-rating {
+      color: var(--accent);
+      font-size: 0.9rem;
+      margin-bottom: 10px;
+    }
+
+    .stylist-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+      justify-content: center;
+      margin-bottom: 12px;
+    }
+
+    .stylist-tag {
+      font-size: 0.72rem;
+      padding: 3px 8px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 12px;
+      color: var(--text-dim);
+    }
+
+    /* Calendar Grid */
+    .calendar-container {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      padding: 1.75rem;
+      margin-bottom: 2rem;
+    }
+
+    .calendar-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+    }
+
+    .cal-grid {
+      display: grid;
+      grid-template-columns: repeat(7, 1fr);
+      gap: 8px;
+    }
+
+    .cal-day-name {
+      text-align: center;
+      font-weight: 700;
+      color: var(--text-dim);
+      font-size: 0.8rem;
+      padding: 6px;
+    }
+
+    .cal-cell {
+      background: rgba(255, 255, 255, 0.02);
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      min-height: 90px;
+      padding: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .cal-cell:hover {
+      background: rgba(236, 72, 153, 0.1);
+      border-color: var(--primary);
+    }
+
+    .cal-cell.today {
+      border-color: var(--primary);
+      background: rgba(236, 72, 153, 0.08);
+    }
+
+    .cal-cell.locked {
+      background: rgba(239, 68, 68, 0.08);
+      border-color: rgba(239, 68, 68, 0.4);
+      cursor: not-allowed;
+    }
+
+    .cal-date-num {
+      font-weight: 700;
+      font-size: 0.9rem;
+      color: #fff;
+    }
+
+    .cal-events-preview {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
+
+    /* Modals */
+    .modal-overlay {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0, 0, 0, 0.75);
+      backdrop-filter: blur(8px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+      padding: 1rem;
+    }
+
+    .modal-overlay.active {
+      display: flex;
+    }
+
+    .modal-box {
+      background: #1e1026;
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      width: 100%;
+      max-width: 650px;
+      max-height: 90vh;
+      overflow-y: auto;
+      padding: 2rem;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8);
+      position: relative;
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 1.25rem;
+      right: 1.25rem;
+      background: transparent;
+      border: none;
+      color: var(--text-dim);
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+
+    .form-group {
+      margin-bottom: 1.25rem;
+    }
+
+    .form-label {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-muted);
+    }
+
+    .form-input, .form-select, .form-textarea {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      padding: 10px 14px;
+      color: #fff;
+      font-size: 0.9rem;
+      outline: none;
+      transition: border 0.2s;
+    }
+
+    .form-input:focus, .form-select:focus, .form-textarea:focus {
+      border-color: var(--primary);
+    }
+
+    .slots-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(85px, 1fr));
+      gap: 8px;
+      margin-top: 8px;
+    }
+
+    .slot-pill {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      padding: 8px;
+      text-align: center;
+      font-size: 0.82rem;
+      cursor: pointer;
+      color: #fff;
+      transition: all 0.2s;
+    }
+
+    .slot-pill:hover {
+      border-color: var(--primary);
+      background: rgba(236, 72, 153, 0.15);
+    }
+
+    .slot-pill.selected {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+      font-weight: 700;
+    }
+
+    .slot-pill.disabled {
+      opacity: 0.35;
+      cursor: not-allowed;
+      border-color: transparent;
+    }
+
+    /* Tables */
+    .table-container {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius);
+      overflow-x: auto;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      text-align: left;
+      font-size: 0.88rem;
+    }
+
+    th {
+      background: rgba(255, 255, 255, 0.03);
+      padding: 12px 16px;
+      font-weight: 700;
+      color: var(--text-dim);
+      border-bottom: 1px solid var(--card-border);
+    }
+
+    td {
+      padding: 14px 16px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      color: #cbd5e1;
+    }
+
+    tr:hover td {
+      background: rgba(236, 72, 153, 0.04);
+    }
+
+    /* Notification Banner */
+    .alert-banner {
+      background: rgba(236, 72, 153, 0.12);
+      border-left: 4px solid var(--primary);
+      padding: 12px 18px;
+      border-radius: 8px;
+      margin-bottom: 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.88rem;
+    }
+
+    /* Payment Gateway Selection Grid */
+    .gateways-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+      gap: 8px;
+      margin: 10px 0;
+    }
+
+    .gateway-option {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--card-border);
+      border-radius: 8px;
+      padding: 10px;
+      text-align: center;
+      cursor: pointer;
+      font-size: 0.82rem;
+      transition: all 0.2s;
+    }
+
+    .gateway-option:hover, .gateway-option.active {
+      border-color: var(--primary);
+      background: rgba(236, 72, 153, 0.15);
+    }
+
+    /* Toast */
+    #toastContainer {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 2000;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .toast {
+      background: #24122d;
+      border: 1px solid var(--primary);
+      color: #fff;
+      padding: 12px 18px;
+      border-radius: 10px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.7);
+      animation: slideIn 0.3s ease;
+      font-size: 0.9rem;
+    }
+
+    @keyframes slideIn {
+      from { transform: translateX(100%); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+
+    footer {
+      border-top: 1px solid var(--card-border);
+      padding: 1.5rem;
+      text-align: center;
+      font-size: 0.85rem;
+      color: var(--text-dim);
+      margin-top: auto;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header Navigation -->
+  <header>
+    <a href="#" class="brand">
+      <div class="brand-icon">💅</div>
+      <div>
+        <span>BellaAura</span>
+        <span style="font-size: 0.75rem; display: block; color: var(--primary); font-weight: 500;">LUXURY SALON & SPA</span>
+      </div>
+    </a>
+
+    <div class="nav-links">
+      <button class="nav-btn active" onclick="switchTab('services')">Services & Booking</button>
+      <button class="nav-btn" onclick="switchTab('stylists')">Stylist Profiles</button>
+      <button class="nav-btn" onclick="switchTab('calendar')">Reservations Calendar</button>
+      <button class="nav-btn" onclick="switchTab('dashboard')">My Account</button>
+      <button class="nav-btn" onclick="switchTab('manager')">Salon Manager Panel</button>
+    </div>
+
+    <div style="display: flex; align-items: center; gap: 12px;">
+      <a href="index.html" class="btn btn-secondary btn-sm" title="Back to Experiments Hub">← Hub</a>
+      <div class="user-pill">
+        <span id="roleIndicator" class="badge badge-primary">Customer</span>
+        <span id="userNameDisplay" style="font-weight: 600;">Sophia Martinez</span>
+        <button class="btn btn-secondary btn-sm" onclick="toggleRole()" style="padding: 3px 8px; font-size: 0.72rem;">Switch Role</button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main>
+
+    <!-- TAB 1: Services Catalog & Booking -->
+    <div id="tab-services" class="tab-view active">
+      <div class="hero-banner">
+        <div class="hero-content">
+          <span class="badge badge-primary" style="margin-bottom: 8px; display: inline-block;">Instant Real-Time Appointment Booking</span>
+          <h1 class="serif-title">Rejuvenate Your Senses & Radiance</h1>
+          <p>Browse our world-class styling, organic skincare rituals, nail art, and therapeutic spa packages. Select your favorite expert stylist and secure your preferred time slot in seconds.</p>
+          <div style="margin-top: 1.25rem; display: flex; gap: 12px;">
+            <button class="btn btn-primary" onclick="openBookingWizard()">📅 Book Appointment Now</button>
+            <button class="btn btn-secondary" onclick="switchTab('calendar')">View Live Calendar</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Filters & Search -->
+      <div class="filter-bar">
+        <div class="cat-pills" id="categoryFilterContainer">
+          <!-- Rendered via JS -->
+        </div>
+        <div class="search-box">
+          <span>🔍</span>
+          <input type="text" id="serviceSearchInput" placeholder="Search hair, facial, massage..." oninput="filterServices()">
+        </div>
+      </div>
+
+      <!-- Services Grid -->
+      <div class="services-grid" id="servicesGrid">
+        <!-- Rendered via JS -->
+      </div>
+    </div>
+
+    <!-- TAB 2: Stylist Profiles -->
+    <div id="tab-stylists" class="tab-view">
+      <div style="margin-bottom: 1.5rem; display: flex; justify-content: space-between; align-items: center;">
+        <div>
+          <h2 class="serif-title" style="font-size: 1.8rem; color: #fff;">Our Master Stylists & Therapists</h2>
+          <p style="color: var(--text-dim); font-size: 0.9rem;">Certified professionals dedicated to bespoke aesthetics and tailored wellness.</p>
+        </div>
+        <button class="btn btn-primary btn-sm" onclick="openBookingWizard()">Select a Stylist to Book</button>
+      </div>
+
+      <div class="stylists-grid" id="stylistsGrid">
+        <!-- Rendered via JS -->
+      </div>
+    </div>
+
+    <!-- TAB 3: Reservations Calendar -->
+    <div id="tab-calendar" class="tab-view">
+      <div class="calendar-container">
+        <div class="calendar-header">
+          <div>
+            <h2 class="serif-title" style="font-size: 1.6rem; color: #fff;">Interactive Reservations Calendar</h2>
+            <p style="color: var(--text-dim); font-size: 0.85rem;">Check real-time slot density, crucial day briefings, and manager lockouts.</p>
+          </div>
+          <div style="display: flex; gap: 8px;">
+            <button class="btn btn-secondary btn-sm" onclick="changeMonth(-1)">◀ Prev Month</button>
+            <span id="currentMonthYear" style="font-weight: 700; align-self: center; padding: 0 12px;">November 2026</span>
+            <button class="btn btn-secondary btn-sm" onclick="changeMonth(1)">Next Month ▶</button>
+            <button class="btn btn-primary btn-sm" onclick="openBookingWizard()">+ New Reservation</button>
+          </div>
+        </div>
+
+        <div class="cal-grid" id="calendarDaysGrid">
+          <!-- Calendar days rendered via JS -->
+        </div>
+      </div>
+
+      <!-- Date Info Quick Modal Box / Inspector -->
+      <div id="dateDetailsCard" style="background: var(--card-bg); border: 1px solid var(--card-border); border-radius: var(--radius); padding: 1.5rem; display: none;">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+          <h3 id="selectedDateTitle" style="color: var(--primary);">Schedule for Selected Date</h3>
+          <button class="btn btn-secondary btn-sm" onclick="document.getElementById('dateDetailsCard').style.display='none'">Close</button>
+        </div>
+        <div id="selectedDateBookingsList"></div>
+      </div>
+    </div>
+
+    <!-- TAB 4: Customer Account Page -->
+    <div id="tab-dashboard" class="tab-view">
+      <div style="display: grid; grid-template-columns: 1fr 2fr; gap: 1.5rem; margin-bottom: 2rem;">
+        <!-- Personal Data Card -->
+        <div style="background: var(--card-bg); border: 1px solid var(--card-border); border-radius: var(--radius); padding: 1.5rem;">
+          <h3 class="serif-title" style="font-size: 1.3rem; margin-bottom: 1rem; color: #fff;">Personal Data & Profile</h3>
+          <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 1.25rem;">
+            <div style="width: 60px; height: 60px; border-radius: 50%; background: linear-gradient(135deg, var(--primary), var(--secondary)); display: flex; align-items: center; justify-content: center; font-size: 1.6rem;">💄</div>
+            <div>
+              <h4 id="custProfileName" style="color: #fff;">Sophia Martinez</h4>
+              <p style="color: var(--text-dim); font-size: 0.85rem;">VIP Diamond Member</p>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Email Address</label>
+            <input type="email" id="custEmail" class="form-input" value="sophia.m@example.com">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Contact Phone (SMS Reminders)</label>
+            <input type="tel" id="custPhone" class="form-input" value="+1 (555) 782-9901">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Skin / Hair Notes & Preferences</label>
+            <input type="text" id="custNotes" class="form-input" value="Sensitive skin, prefers chamomile tea">
+          </div>
+          <button class="btn btn-primary btn-sm" onclick="updateCustomerProfile()">Save Personal Data</button>
+        </div>
+
+        <!-- Notification & Status Summary -->
+        <div style="background: var(--card-bg); border: 1px solid var(--card-border); border-radius: var(--radius); padding: 1.5rem;">
+          <h3 class="serif-title" style="font-size: 1.3rem; margin-bottom: 1rem; color: #fff;">Client Notification Center</h3>
+          <div class="alert-banner">
+            <div>
+              <strong>🔔 Auto-Reminder Active:</strong>
+              <div style="font-size: 0.82rem; color: #cbd5e1;">SMS & email reminders dispatched 24 hours prior to appointment slot.</div>
+            </div>
+            <span class="badge badge-success">Active</span>
+          </div>
+
+          <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 1.25rem;">
+            <div style="background: rgba(255, 255, 255, 0.02); border: 1px solid var(--card-border); padding: 1rem; border-radius: 10px; text-align: center;">
+              <div style="font-size: 1.8rem; font-weight: 800; color: var(--primary);" id="statUpcoming">0</div>
+              <div style="font-size: 0.8rem; color: var(--text-dim);">Upcoming Sessions</div>
+            </div>
+            <div style="background: rgba(255, 255, 255, 0.02); border: 1px solid var(--card-border); padding: 1rem; border-radius: 10px; text-align: center;">
+              <div style="font-size: 1.8rem; font-weight: 800; color: var(--success);" id="statCompleted">0</div>
+              <div style="font-size: 0.8rem; color: var(--text-dim);">Completed Rituals</div>
+            </div>
+            <div style="background: rgba(255, 255, 255, 0.02); border: 1px solid var(--card-border); padding: 1rem; border-radius: 10px; text-align: center;">
+              <div style="font-size: 1.8rem; font-weight: 800; color: var(--accent);" id="statRewards">450</div>
+              <div style="font-size: 0.8rem; color: var(--text-dim);">Aura Beauty Points</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Upcoming Reservations -->
+      <div style="margin-bottom: 2rem;">
+        <h3 class="serif-title" style="font-size: 1.4rem; margin-bottom: 1rem; color: #fff;">Upcoming Reservations</h3>
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Booking ID</th>
+                <th>Service(s)</th>
+                <th>Stylist</th>
+                <th>Date & Slot</th>
+                <th>Payment / Deposit</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="upcomingTableBody">
+              <!-- Rendered via JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Reservations History -->
+      <div>
+        <h3 class="serif-title" style="font-size: 1.4rem; margin-bottom: 1rem; color: #fff;">Past Reservations History</h3>
+        <div class="table-container">
+          <table>
+            <thead>
+              <tr>
+                <th>Booking ID</th>
+                <th>Service(s)</th>
+                <th>Stylist</th>
+                <th>Date</th>
+                <th>Paid Amount</th>
+                <th>Client Feedback</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="historyTableBody">
+              <!-- Rendered via JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 5: Salon Manager & Staff Panel -->
+    <div id="tab-manager" class="tab-view">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+        <div>
+          <h2 class="serif-title" style="font-size: 1.8rem; color: #fff;">Salon Manager & Staff Control Center</h2>
+          <p style="color: var(--text-dim); font-size: 0.9rem;">Manage all reservations, lockout unavailable hours, simulate automated reminders, and review customer feedback.</p>
+        </div>
+        <div style="display: flex; gap: 10px;">
+          <button class="btn btn-secondary btn-sm" onclick="openLockoutModal()">🔒 Lockout Hours / Dates</button>
+          <button class="btn btn-primary btn-sm" onclick="openBookingWizard()">+ Walk-in / Phone Reservation</button>
+        </div>
+      </div>
+
+      <!-- Control Tabs Inside Manager -->
+      <div class="table-container" style="margin-bottom: 2rem;">
+        <div style="padding: 1rem 1.5rem; border-bottom: 1px solid var(--card-border); display: flex; justify-content: space-between; align-items: center;">
+          <h4 style="color: #fff;">All Salon Reservations Live Master Log</h4>
+          <span class="badge badge-primary">Manager Clearance Enabled</span>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th>Customer</th>
+              <th>Service</th>
+              <th>Stylist</th>
+              <th>Date & Time</th>
+              <th>Payment Gateway</th>
+              <th>Status</th>
+              <th>Staff Actions</th>
+            </tr>
+          </thead>
+          <tbody id="managerReservationsBody">
+            <!-- Rendered via JS -->
+          </tbody>
+        </table>
+      </div>
+
+      <!-- Customer Feedback & Suggestions Hub -->
+      <div style="background: var(--card-bg); border: 1px solid var(--card-border); border-radius: var(--radius); padding: 1.5rem;">
+        <h3 class="serif-title" style="font-size: 1.3rem; margin-bottom: 1rem; color: #fff;">Customer Experience & Suggestions Feed</h3>
+        <div id="feedbackFeedGrid" style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 1.25rem;">
+          <!-- Feedback rendered via JS -->
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- MODAL: Booking Wizard -->
+  <div class="modal-overlay" id="bookingModal">
+    <div class="modal-box">
+      <button class="modal-close" onclick="closeModal('bookingModal')">&times;</button>
+      <h2 class="serif-title" style="margin-bottom: 6px; color: #fff;">Book an Appointment</h2>
+      <p style="color: var(--text-dim); font-size: 0.85rem; margin-bottom: 1.5rem;">Choose your service, preferred specialist, date, and checkout with full payment or partial deposit.</p>
+
+      <form id="bookingForm" onsubmit="handleBookingSubmit(event)">
+        <!-- Step 1: Select Service -->
+        <div class="form-group">
+          <label class="form-label">Select Service(s)</label>
+          <select id="modalServiceSelect" class="form-select" onchange="updateBookingCalculation()">
+            <!-- Populated via JS -->
+          </select>
+        </div>
+
+        <!-- Step 2: Choose Stylist -->
+        <div class="form-group">
+          <label class="form-label">Select Specialist / Stylist</label>
+          <select id="modalStylistSelect" class="form-select" onchange="loadAvailableSlots()">
+            <!-- Populated via JS -->
+          </select>
+        </div>
+
+        <!-- Step 3: Date & Slot Picker -->
+        <div class="form-group">
+          <label class="form-label">Select Date</label>
+          <input type="date" id="modalBookingDate" class="form-input" onchange="loadAvailableSlots()">
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Select Available Time Slot (Locked hours excluded)</label>
+          <div class="slots-grid" id="slotsContainer">
+            <!-- Rendered via JS -->
+          </div>
+          <input type="hidden" id="selectedSlotValue" required>
+        </div>
+
+        <!-- Step 4: Payment Terms -->
+        <div class="form-group" style="background: rgba(255, 255, 255, 0.02); border: 1px solid var(--card-border); padding: 1.2rem; border-radius: 10px;">
+          <label class="form-label" style="color: #fff; font-weight: 700;">Payment Terms & Deposit Option</label>
+          <div style="display: flex; gap: 15px; margin-bottom: 12px;">
+            <label style="display: flex; align-items: center; gap: 8px; font-size: 0.88rem; cursor: pointer;">
+              <input type="radio" name="paymentType" value="full" checked onchange="updateBookingCalculation()">
+              Pay Full Amount (<span id="calcFullPrice">$85</span>)
+            </label>
+            <label style="display: flex; align-items: center; gap: 8px; font-size: 0.88rem; cursor: pointer;">
+              <input type="radio" name="paymentType" value="deposit" onchange="updateBookingCalculation()">
+              Pay Partial Deposit (25% = <span id="calcDepositPrice">$21.25</span>)
+            </label>
+          </div>
+
+          <label class="form-label">Choose Payment Platform (20+ Integrations Available)</label>
+          <div class="gateways-grid" id="gatewaysList">
+            <div class="gateway-option active" onclick="selectGateway(this, 'Stripe')">💳 Stripe</div>
+            <div class="gateway-option" onclick="selectGateway(this, 'PayPal')">🅿️ PayPal</div>
+            <div class="gateway-option" onclick="selectGateway(this, 'Apple Pay')">🍎 Apple Pay</div>
+            <div class="gateway-option" onclick="selectGateway(this, 'Google Pay')">🇬 Google Pay</div>
+            <div class="gateway-option" onclick="selectGateway(this, 'Klarna')">🛍️ Klarna</div>
+            <div class="gateway-option" onclick="selectGateway(this, 'Square')">⏹️ Square</div>
+          </div>
+          <input type="hidden" id="selectedGateway" value="Stripe">
+
+          <div style="font-size: 0.78rem; color: var(--text-dim); margin-top: 8px;">
+            ⚠️ <em>Automatic Cancellation Policy:</em> Unpaid reservations will be released automatically if payment is not confirmed within 15 minutes.
+          </div>
+        </div>
+
+        <div style="display: flex; justify-content: flex-end; gap: 10px;">
+          <button type="button" class="btn btn-secondary" onclick="closeModal('bookingModal')">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="btnConfirmBooking">Confirm & Pay <span id="btnPayAmount">$85</span></button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: Lockout Hours (Manager) -->
+  <div class="modal-overlay" id="lockoutModal">
+    <div class="modal-box">
+      <button class="modal-close" onclick="closeModal('lockoutModal')">&times;</button>
+      <h2 class="serif-title" style="margin-bottom: 6px; color: #fff;">Lockout Hours & Staff Off-Times</h2>
+      <p style="color: var(--text-dim); font-size: 0.85rem; margin-bottom: 1.5rem;">Mark specific dates or hours as unavailable to prevent double booking or account for maintenance.</p>
+      
+      <form onsubmit="handleLockoutSubmit(event)">
+        <div class="form-group">
+          <label class="form-label">Select Date to Lockout</label>
+          <input type="date" id="lockoutDate" class="form-input" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Stylist / Area</label>
+          <select id="lockoutStylist" class="form-select">
+            <option value="All Stylists">Entire Salon / All Stylists</option>
+            <option value="Elena Vance">Elena Vance (Master Colorist)</option>
+            <option value="Julian Ross">Julian Ross (Artistic Director)</option>
+            <option value="Mia Takahashi">Mia Takahashi (Spa & Skincare)</option>
+            <option value="Chloe Monet">Chloe Monet (Nail & Lash Artist)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Reason for Lockout</label>
+          <input type="text" id="lockoutReason" class="form-input" placeholder="e.g. Masterclass training / Sanitization" required>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width: 100%;">Save Lockout Period</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- MODAL: Leave Review & Feedback -->
+  <div class="modal-overlay" id="reviewModal">
+    <div class="modal-box">
+      <button class="modal-close" onclick="closeModal('reviewModal')">&times;</button>
+      <h2 class="serif-title" style="margin-bottom: 6px; color: #fff;">Leave Stylist & Salon Feedback</h2>
+      <p style="color: var(--text-dim); font-size: 0.85rem; margin-bottom: 1.5rem;">Help us elevate your salon experience by rating your service.</p>
+      <form onsubmit="handleFeedbackSubmit(event)">
+        <input type="hidden" id="reviewBookingId">
+        <div class="form-group">
+          <label class="form-label">Rating (1 to 5 Stars)</label>
+          <select id="reviewRating" class="form-select">
+            <option value="5">⭐⭐⭐⭐⭐ (5/5) - Pure Perfection</option>
+            <option value="4">⭐⭐⭐⭐ (4/5) - Very Good</option>
+            <option value="3">⭐⭐⭐ (3/5) - Average</option>
+            <option value="2">⭐⭐ (2/5) - Needs Improvement</option>
+            <option value="1">⭐ (1/5) - Disappointing</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Customer Feedback & Suggestions</label>
+          <textarea id="reviewComment" class="form-textarea" rows="3" placeholder="Share your experience and any suggestions for improvement..." required></textarea>
+        </div>
+        <button type="submit" class="btn btn-primary" style="width: 100%;">Submit Feedback</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Toast Container -->
+  <div id="toastContainer"></div>
+
+  <footer>
+    <p>Experiment 7: Online Beauty Parlour Appointment Booking System • BellaAura Luxury Salon & Spa</p>
+    <p style="margin-top: 4px; font-size: 0.75rem; color: var(--text-dim);">Internet Programming Laboratory • CSA4302</p>
+  </footer>
+
+  <script>
+    // Initial Seed Data
+    const DEFAULT_SERVICES = [
+      { id: 1, name: "Balayage & Couture Hair Treatment", category: "Hair Care", duration: 120, price: 165, icon: "💇‍♀️", desc: "Custom hand-painted French balayage with Olaplex molecular bond builder and blow dry." },
+      { id: 2, name: "Hydra-Luxe Diamond Facial", category: "Skincare", duration: 75, price: 120, icon: "✨", desc: "Deep ultrasonic pore cleansing, diamond microdermabrasion, and cold collagen mask." },
+      { id: 3, name: "Aromatherapy Hot Stone Massage", category: "Spa & Massage", duration: 90, price: 140, icon: "🌿", desc: "Volcanic basalt stones with lavender and eucalyptus essential oils for muscle tension release." },
+      { id: 4, name: "Gel Sculpting & Crystal Nail Art", category: "Nail Studio", duration: 60, price: 75, icon: "💅", desc: "Russian precision cuticle prep, hard gel extensions with Swarovski crystal accents." },
+      { id: 5, name: "Royal Bridal Makeover & Hair Styling", category: "Bridal", duration: 180, price: 320, icon: "👑", desc: "HD airbrush makeup, couture updo, premium mink lashes, and touch-up concierge kit." },
+      { id: 6, name: "Keratin Smooth Therapy", category: "Hair Care", duration: 150, price: 195, icon: "💆‍♀️", desc: "Formaldehyde-free smoothing treatment providing 4 months of frizz-free glass hair." }
+    ];
+
+    const DEFAULT_STYLISTS = [
+      { id: 1, name: "Elena Vance", spec: "Master Colorist & Stylist", rating: 4.9, exp: "9 Years Exp.", avatar: "👩‍🦳", tags: ["Balayage", "Vidal Sassoon Certified", "Color Correction"] },
+      { id: 2, name: "Julian Ross", spec: "Artistic Creative Director", rating: 5.0, exp: "12 Years Exp.", avatar: "👨‍🦱", tags: ["Precision Cuts", "Runway Styling", "Texture Specialist"] },
+      { id: 3, name: "Mia Takahashi", spec: "Lead Aesthetician & Spa Guru", rating: 4.8, exp: "8 Years Exp.", avatar: "🧖‍♀️", tags: ["Hydra-Facials", "Holistic Aromatherapy", "Lymphatic Drainage"] },
+      { id: 4, name: "Chloe Monet", spec: "Nail Architect & Brow Artist", rating: 4.9, exp: "6 Years Exp.", avatar: "🌸", tags: ["Russian Manicure", "Lash Lamination", "Nail Sculpture"] }
+    ];
+
+    const TIME_SLOTS = ["09:00 AM", "10:30 AM", "12:00 PM", "01:30 PM", "03:00 PM", "04:30 PM", "06:00 PM", "07:30 PM"];
+
+    let services = JSON.parse(localStorage.getItem('bella_services')) || DEFAULT_SERVICES;
+    let stylists = JSON.parse(localStorage.getItem('bella_stylists')) || DEFAULT_STYLISTS;
+    let bookings = JSON.parse(localStorage.getItem('bella_bookings')) || [
+      {
+        id: "BA-8821",
+        customerName: "Sophia Martinez",
+        customerEmail: "sophia.m@example.com",
+        customerPhone: "+1 (555) 782-9901",
+        serviceName: "Hydra-Luxe Diamond Facial",
+        stylistName: "Mia Takahashi",
+        date: "2026-11-06",
+        timeSlot: "10:30 AM",
+        paymentType: "full",
+        totalAmount: 120,
+        paidAmount: 120,
+        gateway: "Stripe",
+        status: "Confirmed",
+        rating: null,
+        feedback: null
+      },
+      {
+        id: "BA-8820",
+        customerName: "Sophia Martinez",
+        customerEmail: "sophia.m@example.com",
+        customerPhone: "+1 (555) 782-9901",
+        serviceName: "Gel Sculpting & Crystal Nail Art",
+        stylistName: "Chloe Monet",
+        date: "2026-10-24",
+        timeSlot: "03:00 PM",
+        paymentType: "deposit",
+        totalAmount: 75,
+        paidAmount: 18.75,
+        gateway: "PayPal",
+        status: "Completed",
+        rating: 5,
+        feedback: "Chloe is an absolute perfectionist! My nails have lasted over 3 weeks without a scratch."
+      }
+    ];
+
+    let lockouts = JSON.parse(localStorage.getItem('bella_lockouts')) || [
+      { date: "2026-11-15", stylist: "All Stylists", reason: "Annual Salon Sanitization & Retreat" }
+    ];
+
+    let currentRole = "Customer"; // 'Customer' or 'Salon Manager'
+    let currentCategory = "All";
+    let calDate = new Date(2026, 10, 1); // Nov 2026
+
+    function saveState() {
+      localStorage.setItem('bella_services', JSON.stringify(services));
+      localStorage.setItem('bella_stylists', JSON.stringify(stylists));
+      localStorage.setItem('bella_bookings', JSON.stringify(bookings));
+      localStorage.setItem('bella_lockouts', JSON.stringify(lockouts));
+    }
+
+    function showToast(msg) {
+      const c = document.getElementById('toastContainer');
+      const t = document.createElement('div');
+      t.className = 'toast';
+      t.innerHTML = msg;
+      c.appendChild(t);
+      setTimeout(() => t.remove(), 3500);
+    }
+
+    function switchTab(tabId) {
+      document.querySelectorAll('.tab-view').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
+      
+      const target = document.getElementById('tab-' + tabId);
+      if (target) target.classList.add('active');
+
+      const btn = Array.from(document.querySelectorAll('.nav-links .nav-btn')).find(b => 
+        b.getAttribute('onclick') && b.getAttribute('onclick').includes(tabId)
+      );
+      if (btn) btn.classList.add('active');
+
+      if (tabId === 'calendar') renderCalendar();
+      if (tabId === 'dashboard') renderCustomerDashboard();
+      if (tabId === 'manager') renderManagerPanel();
+    }
+
+    function toggleRole() {
+      if (currentRole === 'Customer') {
+        currentRole = 'Salon Manager';
+        document.getElementById('roleIndicator').textContent = 'Salon Manager';
+        document.getElementById('roleIndicator').className = 'badge badge-warning';
+        document.getElementById('userNameDisplay').textContent = 'Valerie Stone (Director)';
+        showToast("Switched clearance to: <strong>Salon Manager / Staff</strong>");
+      } else {
+        currentRole = 'Customer';
+        document.getElementById('roleIndicator').textContent = 'Customer';
+        document.getElementById('roleIndicator').className = 'badge badge-primary';
+        document.getElementById('userNameDisplay').textContent = 'Sophia Martinez';
+        showToast("Switched profile to: <strong>Customer Dashboard</strong>");
+      }
+    }
+
+    // Render Categories
+    function renderCategories() {
+      const cats = ["All", "Hair Care", "Skincare", "Spa & Massage", "Nail Studio", "Bridal"];
+      const container = document.getElementById('categoryFilterContainer');
+      container.innerHTML = cats.map(c => `
+        <button class="cat-pill ${c === currentCategory ? 'active' : ''}" onclick="setCategory('${c}')">${c}</button>
+      `).join('');
+    }
+
+    function setCategory(cat) {
+      currentCategory = cat;
+      renderCategories();
+      filterServices();
+    }
+
+    // Render Services Grid
+    function filterServices() {
+      const q = (document.getElementById('serviceSearchInput').value || '').toLowerCase();
+      const grid = document.getElementById('servicesGrid');
+      
+      const filtered = services.filter(s => {
+        const matchCat = currentCategory === "All" || s.category === currentCategory;
+        const matchQ = s.name.toLowerCase().includes(q) || s.desc.toLowerCase().includes(q);
+        return matchCat && matchQ;
+      });
+
+      if (filtered.length === 0) {
+        grid.innerHTML = `<div style="grid-column: 1/-1; text-align: center; padding: 3rem; color: var(--text-dim);">No beauty services matched your criteria.</div>`;
+        return;
+      }
+
+      grid.innerHTML = filtered.map(s => `
+        <div class="service-card">
+          <div class="service-img">${s.icon}</div>
+          <div class="service-body">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+              <span class="badge badge-primary">${s.category}</span>
+              <span style="font-size: 0.8rem; color: var(--text-dim);">⏱️ ${s.duration} mins</span>
+            </div>
+            <h3 class="service-title" style="margin-top: 8px;">${s.name}</h3>
+            <p class="service-desc">${s.desc}</p>
+            <div class="service-meta">
+              <span class="service-price">$${s.price}</span>
+              <button class="btn btn-primary btn-sm" onclick="quickBookService(${s.id})">Book Slot</button>
+            </div>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    // Render Stylists Grid
+    function renderStylists() {
+      const grid = document.getElementById('stylistsGrid');
+      grid.innerHTML = stylists.map(st => `
+        <div class="stylist-card">
+          <div class="stylist-avatar">${st.avatar}</div>
+          <h3 class="stylist-name">${st.name}</h3>
+          <div class="stylist-spec">${st.spec}</div>
+          <div class="stylist-rating">★ ${st.rating} <span>(${st.exp})</span></div>
+          <div class="stylist-tags">
+            ${st.tags.map(t => `<span class="stylist-tag">${t}</span>`).join('')}
+          </div>
+          <button class="btn btn-secondary btn-sm" style="width: 100%;" onclick="quickBookStylist('${st.name}')">Check Slots</button>
+        </div>
+      `).join('');
+    }
+
+    // Calendar
+    function changeMonth(delta) {
+      calDate.setMonth(calDate.getMonth() + delta);
+      renderCalendar();
+    }
+
+    function renderCalendar() {
+      const monthNames = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+      document.getElementById('currentMonthYear').textContent = `${monthNames[calDate.getMonth()]} ${calDate.getFullYear()}`;
+
+      const grid = document.getElementById('calendarDaysGrid');
+      grid.innerHTML = '';
+
+      const dayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+      dayNames.forEach(d => {
+        const div = document.createElement('div');
+        div.className = 'cal-day-name';
+        div.textContent = d;
+        grid.appendChild(div);
+      });
+
+      const year = calDate.getFullYear();
+      const month = calDate.getMonth();
+      const firstDay = new Date(year, month, 1).getDay();
+      const totalDays = new Date(year, month + 1, 0).getDate();
+
+      for (let i = 0; i < firstDay; i++) {
+        const emptyCell = document.createElement('div');
+        emptyCell.style.opacity = '0.1';
+        grid.appendChild(emptyCell);
+      }
+
+      for (let day = 1; day <= totalDays; day++) {
+        const dateStr = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+        const cell = document.createElement('div');
+        cell.className = 'cal-cell';
+
+        const isLockout = lockouts.find(l => l.date === dateStr);
+        const dayBookings = bookings.filter(b => b.date === dateStr);
+
+        if (isLockout) {
+          cell.classList.add('locked');
+        }
+
+        cell.innerHTML = `
+          <div style="display: flex; justify-content: space-between;">
+            <span class="cal-date-num">${day}</span>
+            ${isLockout ? '<span style="font-size: 0.7rem;">🔒</span>' : ''}
+          </div>
+          <div class="cal-events-preview">
+            ${isLockout ? `<span style="color: var(--danger); font-size: 0.7rem;">${isLockout.reason.substring(0, 18)}...</span>` : 
+              (dayBookings.length > 0 ? `<span style="color: var(--primary); font-weight: 700;">${dayBookings.length} booking(s)</span>` : '<span style="color: #64748b;">Available</span>')}
+          </div>
+        `;
+
+        cell.onclick = () => inspectCalendarDate(dateStr, dayBookings, isLockout);
+        grid.appendChild(cell);
+      }
+    }
+
+    function inspectCalendarDate(dateStr, dayBookings, isLockout) {
+      const card = document.getElementById('dateDetailsCard');
+      const title = document.getElementById('selectedDateTitle');
+      const list = document.getElementById('selectedDateBookingsList');
+
+      card.style.display = 'block';
+      title.innerHTML = `📅 Date Briefing: ${dateStr}`;
+
+      if (isLockout) {
+        list.innerHTML = `
+          <div class="alert-banner" style="background: rgba(239, 68, 68, 0.15); border-left-color: var(--danger);">
+            <strong>🔒 UNAVAILABLE HOURS / LOCKOUT:</strong> ${isLockout.reason} (${isLockout.stylist})
+          </div>
+        `;
+        return;
+      }
+
+      if (dayBookings.length === 0) {
+        list.innerHTML = `
+          <p style="color: var(--text-dim); margin-bottom: 12px;">All stylist hours are open for reservations on this date.</p>
+          <button class="btn btn-primary btn-sm" onclick="openBookingWizardWithDate('${dateStr}')">Book a Slot for this Date</button>
+        `;
+      } else {
+        list.innerHTML = `
+          <div style="margin-bottom: 12px; color: var(--text-dim);">Existing booked appointments for this date:</div>
+          <div style="display: flex; flex-direction: column; gap: 8px;">
+            ${dayBookings.map(b => `
+              <div style="background: rgba(255, 255, 255, 0.03); border: 1px solid var(--card-border); padding: 10px; border-radius: 8px; display: flex; justify-content: space-between;">
+                <div>
+                  <strong>${b.timeSlot}</strong> - ${b.serviceName} (${b.stylistName})
+                  <div style="font-size: 0.78rem; color: var(--text-dim);">Client: ${b.customerName} • Status: ${b.status}</div>
+                </div>
+                <span class="badge ${b.status === 'Confirmed' ? 'badge-success' : 'badge-primary'}">${b.status}</span>
+              </div>
+            `).join('')}
+          </div>
+          <div style="margin-top: 12px;">
+            <button class="btn btn-primary btn-sm" onclick="openBookingWizardWithDate('${dateStr}')">+ Book Another Time Slot</button>
+          </div>
+        `;
+      }
+    }
+
+    // Booking Wizard Logic
+    function openBookingWizard() {
+      populateBookingDropdowns();
+      document.getElementById('modalBookingDate').value = "2026-11-10";
+      loadAvailableSlots();
+      updateBookingCalculation();
+      document.getElementById('bookingModal').classList.add('active');
+    }
+
+    function quickBookService(serviceId) {
+      openBookingWizard();
+      document.getElementById('modalServiceSelect').value = serviceId;
+      updateBookingCalculation();
+    }
+
+    function quickBookStylist(stylistName) {
+      openBookingWizard();
+      document.getElementById('modalStylistSelect').value = stylistName;
+      loadAvailableSlots();
+    }
+
+    function openBookingWizardWithDate(dateStr) {
+      openBookingWizard();
+      document.getElementById('modalBookingDate').value = dateStr;
+      loadAvailableSlots();
+    }
+
+    function populateBookingDropdowns() {
+      const sSelect = document.getElementById('modalServiceSelect');
+      sSelect.innerHTML = services.map(s => `<option value="${s.id}">${s.name} - $${s.price} (${s.duration} mins)</option>`).join('');
+
+      const stSelect = document.getElementById('modalStylistSelect');
+      stSelect.innerHTML = stylists.map(st => `<option value="${st.name}">${st.name} (${st.spec})</option>`).join('');
+    }
+
+    function loadAvailableSlots() {
+      const date = document.getElementById('modalBookingDate').value;
+      const stylist = document.getElementById('modalStylistSelect').value;
+      const container = document.getElementById('slotsContainer');
+      const hiddenInput = document.getElementById('selectedSlotValue');
+      hiddenInput.value = '';
+
+      const isLocked = lockouts.some(l => l.date === date && (l.stylist === 'All Stylists' || l.stylist === stylist));
+      if (isLocked) {
+        container.innerHTML = `<div style="grid-column: 1/-1; color: var(--danger); font-size: 0.85rem;">⚠️ Date is locked out by salon management. Please select another date.</div>`;
+        return;
+      }
+
+      // Check taken slots
+      const taken = bookings.filter(b => b.date === date && b.stylistName === stylist && b.status !== 'Cancelled').map(b => b.timeSlot);
+
+      container.innerHTML = TIME_SLOTS.map(slot => {
+        const isTaken = taken.includes(slot);
+        return `
+          <div class="slot-pill ${isTaken ? 'disabled' : ''}" onclick="${isTaken ? '' : `selectSlot(this, '${slot}')`}">
+            ${slot}
+          </div>
+        `;
+      }).join('');
+    }
+
+    function selectSlot(elem, slot) {
+      document.querySelectorAll('.slot-pill').forEach(p => p.classList.remove('selected'));
+      elem.classList.add('selected');
+      document.getElementById('selectedSlotValue').value = slot;
+    }
+
+    function selectGateway(elem, name) {
+      document.querySelectorAll('.gateway-option').forEach(g => g.classList.remove('active'));
+      elem.classList.add('active');
+      document.getElementById('selectedGateway').value = name;
+    }
+
+    function updateBookingCalculation() {
+      const sId = parseInt(document.getElementById('modalServiceSelect').value);
+      const s = services.find(x => x.id === sId) || services[0];
+      const fullPrice = s ? s.price : 80;
+      const depositPrice = (fullPrice * 0.25).toFixed(2);
+
+      document.getElementById('calcFullPrice').textContent = `$${fullPrice}`;
+      document.getElementById('calcDepositPrice').textContent = `$${depositPrice}`;
+
+      const paymentType = document.querySelector('input[name="paymentType"]:checked').value;
+      const payable = paymentType === 'full' ? fullPrice : depositPrice;
+      document.getElementById('btnPayAmount').textContent = `$${payable}`;
+    }
+
+    function handleBookingSubmit(e) {
+      e.preventDefault();
+      const slot = document.getElementById('selectedSlotValue').value;
+      if (!slot) {
+        alert("Please select an available appointment time slot.");
+        return;
+      }
+
+      const sId = parseInt(document.getElementById('modalServiceSelect').value);
+      const s = services.find(x => x.id === sId);
+      const stylist = document.getElementById('modalStylistSelect').value;
+      const date = document.getElementById('modalBookingDate').value;
+      const paymentType = document.querySelector('input[name="paymentType"]:checked').value;
+      const gateway = document.getElementById('selectedGateway').value;
+      const total = s.price;
+      const paid = paymentType === 'full' ? total : +(total * 0.25).toFixed(2);
+
+      const newBooking = {
+        id: "BA-" + Math.floor(1000 + Math.random() * 9000),
+        customerName: currentRole === 'Customer' ? 'Sophia Martinez' : 'Walk-in Guest',
+        customerEmail: 'sophia.m@example.com',
+        customerPhone: '+1 (555) 782-9901',
+        serviceName: s.name,
+        stylistName: stylist,
+        date: date,
+        timeSlot: slot,
+        paymentType: paymentType,
+        totalAmount: total,
+        paidAmount: paid,
+        gateway: gateway,
+        status: "Confirmed",
+        rating: null,
+        feedback: null
+      };
+
+      bookings.unshift(newBooking);
+      saveState();
+      closeModal('bookingModal');
+      showToast(`✨ Appointment Confirmed! Transaction processed via <strong>${gateway}</strong> ($${paid}). Confirmation SMS dispatched.`);
+      
+      renderCustomerDashboard();
+      renderManagerPanel();
+      renderCalendar();
+      switchTab('dashboard');
+    }
+
+    // Customer Dashboard
+    function renderCustomerDashboard() {
+      const upcoming = bookings.filter(b => b.status === 'Confirmed');
+      const past = bookings.filter(b => b.status === 'Completed' || b.status === 'Cancelled');
+
+      document.getElementById('statUpcoming').textContent = upcoming.length;
+      document.getElementById('statCompleted').textContent = past.filter(b => b.status === 'Completed').length;
+
+      const upcomingTbody = document.getElementById('upcomingTableBody');
+      if (upcoming.length === 0) {
+        upcomingTbody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: var(--text-dim);">No active upcoming appointments. Book your next ritual!</td></tr>`;
+      } else {
+        upcomingTbody.innerHTML = upcoming.map(b => `
+          <tr>
+            <td><strong>#${b.id}</strong></td>
+            <td>${b.serviceName}</td>
+            <td>${b.stylistName}</td>
+            <td>${b.date} • ${b.timeSlot}</td>
+            <td>
+              ${b.paymentType === 'full' ? `<span class="badge badge-success">Full ($${b.paidAmount})</span>` : `<span class="badge badge-warning">Deposit ($${b.paidAmount}/$${b.totalAmount})</span>`}
+              <div style="font-size: 0.72rem; color: var(--text-dim);">${b.gateway}</div>
+            </td>
+            <td><span class="badge badge-primary">${b.status}</span></td>
+            <td>
+              <button class="btn btn-secondary btn-sm" onclick="rescheduleBooking('${b.id}')">Reschedule</button>
+              <button class="btn btn-danger btn-sm" onclick="cancelBooking('${b.id}')">Cancel</button>
+            </td>
+          </tr>
+        `).join('');
+      }
+
+      const historyTbody = document.getElementById('historyTableBody');
+      if (past.length === 0) {
+        historyTbody.innerHTML = `<tr><td colspan="7" style="text-align: center; color: var(--text-dim);">No completed reservations history yet.</td></tr>`;
+      } else {
+        historyTbody.innerHTML = past.map(b => `
+          <tr>
+            <td><strong>#${b.id}</strong></td>
+            <td>${b.serviceName}</td>
+            <td>${b.stylistName}</td>
+            <td>${b.date}</td>
+            <td>$${b.paidAmount}</td>
+            <td>
+              ${b.rating ? `★ ${b.rating}/5 - <span style="font-size: 0.78rem; font-style: italic;">"${b.feedback}"</span>` : 
+                (b.status === 'Cancelled' ? '<span style="color: var(--danger);">Cancelled</span>' : '<em>Pending Review</em>')}
+            </td>
+            <td>
+              ${(!b.rating && b.status === 'Completed') ? `<button class="btn btn-primary btn-sm" onclick="openReviewModal('${b.id}')">Leave Review</button>` : `<span style="font-size: 0.8rem; color: var(--text-dim);">Archived</span>`}
+            </td>
+          </tr>
+        `).join('');
+      }
+    }
+
+    function cancelBooking(id) {
+      if (confirm(`Are you sure you want to cancel booking #${id}? Eligible refunds will be returned via the original payment gateway.`)) {
+        const b = bookings.find(x => x.id === id);
+        if (b) {
+          b.status = 'Cancelled';
+          saveState();
+          showToast(`Booking #${id} has been cancelled. SMS alert sent.`);
+          renderCustomerDashboard();
+          renderManagerPanel();
+          renderCalendar();
+        }
+      }
+    }
+
+    function rescheduleBooking(id) {
+      const newDate = prompt("Enter new date (YYYY-MM-DD):", "2026-11-18");
+      if (newDate) {
+        const b = bookings.find(x => x.id === id);
+        if (b) {
+          b.date = newDate;
+          saveState();
+          showToast(`Booking #${id} successfully rescheduled to ${newDate}!`);
+          renderCustomerDashboard();
+          renderManagerPanel();
+          renderCalendar();
+        }
+      }
+    }
+
+    function updateCustomerProfile() {
+      showToast("Customer personal data & skin preferences saved to profile!");
+    }
+
+    // Feedback modal
+    function openReviewModal(id) {
+      document.getElementById('reviewBookingId').value = id;
+      document.getElementById('reviewModal').classList.add('active');
+    }
+
+    function handleFeedbackSubmit(e) {
+      e.preventDefault();
+      const id = document.getElementById('reviewBookingId').value;
+      const rating = parseInt(document.getElementById('reviewRating').value);
+      const comment = document.getElementById('reviewComment').value;
+
+      const b = bookings.find(x => x.id === id);
+      if (b) {
+        b.rating = rating;
+        b.feedback = comment;
+        saveState();
+        closeModal('reviewModal');
+        showToast("Thank you for your valuable feedback! 50 Aura Beauty Points awarded.");
+        renderCustomerDashboard();
+        renderManagerPanel();
+      }
+    }
+
+    // Salon Manager Panel
+    function renderManagerPanel() {
+      const tbody = document.getElementById('managerReservationsBody');
+      tbody.innerHTML = bookings.map(b => `
+        <tr>
+          <td><strong>#${b.id}</strong></td>
+          <td>
+            <strong>${b.customerName}</strong>
+            <div style="font-size: 0.75rem; color: var(--text-dim);">${b.customerPhone}</div>
+          </td>
+          <td>${b.serviceName}</td>
+          <td>${b.stylistName}</td>
+          <td>${b.date} • ${b.timeSlot}</td>
+          <td>${b.gateway} (${b.paymentType})</td>
+          <td><span class="badge ${b.status === 'Confirmed' ? 'badge-success' : (b.status === 'Completed' ? 'badge-primary' : 'badge-danger')}">${b.status}</span></td>
+          <td>
+            <div style="display: flex; gap: 4px;">
+              ${b.status === 'Confirmed' ? `<button class="btn btn-secondary btn-sm" onclick="markCompleted('${b.id}')">Complete</button>` : ''}
+              <button class="btn btn-secondary btn-sm" onclick="simulateSendSMS('${b.id}', '${b.customerPhone}')">📱 Send SMS</button>
+              <button class="btn btn-secondary btn-sm" onclick="simulateCall('${b.id}', '${b.customerName}')">📞 Call</button>
+            </div>
+          </td>
+        </tr>
+      `).join('');
+
+      // Feedback Feed
+      const feed = document.getElementById('feedbackFeedGrid');
+      const ratedBookings = bookings.filter(b => b.rating);
+      if (ratedBookings.length === 0) {
+        feed.innerHTML = `<div style="grid-column: 1/-1; color: var(--text-dim);">No customer reviews submitted yet.</div>`;
+      } else {
+        feed.innerHTML = ratedBookings.map(b => `
+          <div style="background: rgba(255, 255, 255, 0.02); border: 1px solid var(--card-border); padding: 1rem; border-radius: 10px;">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
+              <strong>${b.customerName}</strong>
+              <span style="color: var(--accent);">★ ${b.rating}.0</span>
+            </div>
+            <div style="font-size: 0.8rem; color: var(--text-dim); margin-bottom: 8px;">Service: ${b.serviceName} • Stylist: ${b.stylistName}</div>
+            <p style="font-size: 0.85rem; color: #cbd5e1; font-style: italic;">"${b.feedback}"</p>
+          </div>
+        `).join('');
+      }
+    }
+
+    function markCompleted(id) {
+      const b = bookings.find(x => x.id === id);
+      if (b) {
+        b.status = 'Completed';
+        saveState();
+        showToast(`Appointment #${id} marked as completed. Feedback survey dispatched.`);
+        renderCustomerDashboard();
+        renderManagerPanel();
+      }
+    }
+
+    function simulateSendSMS(id, phone) {
+      showToast(`📲 <strong>SMS Sent to ${phone}:</strong> "Reminder: Your appointment #${id} at BellaAura is confirmed. Reply CANCEL if unable to attend."`);
+    }
+
+    function simulateCall(id, name) {
+      showToast(`📞 <strong>Automated Call Outbound to ${name}:</strong> Reservation #${id} briefing transmitted.`);
+    }
+
+    // Lockout modal
+    function openLockoutModal() {
+      document.getElementById('lockoutDate').value = "2026-11-20";
+      document.getElementById('lockoutModal').classList.add('active');
+    }
+
+    function handleLockoutSubmit(e) {
+      e.preventDefault();
+      const date = document.getElementById('lockoutDate').value;
+      const stylist = document.getElementById('lockoutStylist').value;
+      const reason = document.getElementById('lockoutReason').value;
+
+      lockouts.push({ date, stylist, reason });
+      saveState();
+      closeModal('lockoutModal');
+      showToast(`🔒 Hours Locked: ${date} for ${stylist} (${reason})`);
+      renderCalendar();
+    }
+
+    function closeModal(id) {
+      document.getElementById(id).classList.remove('active');
+    }
+
+    // Init
+    window.onload = function() {
+      renderCategories();
+      filterServices();
+      renderStylists();
+      renderCalendar();
+      renderCustomerDashboard();
+      renderManagerPanel();
+    };
+  </script>
+</body>
+</html>
